@@ -5,14 +5,8 @@
  */
 package papps;
 
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import static com.sun.xml.internal.ws.model.RuntimeModeler.PORT;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -20,12 +14,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import static java.lang.System.in;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.security.auth.callback.ConfirmationCallback.NO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,11 +41,11 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        File dir = new File(".\\PAPPS");
+        
         rootnode = new DefaultMutableTreeNode("PAPPS");
         treeModel = new DefaultTreeModel(rootnode);
         jTree1.setModel(treeModel);
-        DirList(dir,rootnode,true );
+        DirList(GlobalVars.target,rootnode,true );
         
         jTLinuxUser.setText("demo");
         jTHost.setText("192.168.15.61");
@@ -83,6 +74,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTinfosystem = new javax.swing.JTable();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTAufzaehlungen = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -151,7 +145,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)))
                 .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
@@ -190,10 +184,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(jTinfosystem);
-        jTinfosystem.getColumnModel().getColumn(0).setPreferredWidth(100);
-        jTinfosystem.getColumnModel().getColumn(0).setMaxWidth(150);
-        jTinfosystem.getColumnModel().getColumn(1).setPreferredWidth(100);
-        jTinfosystem.getColumnModel().getColumn(1).setMaxWidth(250);
+        if (jTinfosystem.getColumnModel().getColumnCount() > 0) {
+            jTinfosystem.getColumnModel().getColumn(0).setPreferredWidth(100);
+            jTinfosystem.getColumnModel().getColumn(0).setMaxWidth(150);
+            jTinfosystem.getColumnModel().getColumn(1).setPreferredWidth(100);
+            jTinfosystem.getColumnModel().getColumn(1).setMaxWidth(250);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -201,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -213,6 +209,50 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Infosystem", jPanel2);
+
+        jTAufzaehlungen.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Such", "Name", "Nummer", "Installiert"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(jTAufzaehlungen);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(205, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(263, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Aufzählungen", jPanel11);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,7 +275,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,7 +291,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
+            .addGap(0, 689, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,12 +325,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jTFOP.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(jTFOP);
-        jTFOP.getColumnModel().getColumn(0).setPreferredWidth(80);
-        jTFOP.getColumnModel().getColumn(0).setMaxWidth(150);
-        jTFOP.getColumnModel().getColumn(1).setPreferredWidth(100);
-        jTFOP.getColumnModel().getColumn(1).setMaxWidth(1000);
-        jTFOP.getColumnModel().getColumn(2).setPreferredWidth(100);
-        jTFOP.getColumnModel().getColumn(2).setMaxWidth(1000);
+        if (jTFOP.getColumnModel().getColumnCount() > 0) {
+            jTFOP.getColumnModel().getColumn(0).setPreferredWidth(80);
+            jTFOP.getColumnModel().getColumn(0).setMaxWidth(150);
+            jTFOP.getColumnModel().getColumn(1).setPreferredWidth(100);
+            jTFOP.getColumnModel().getColumn(1).setMaxWidth(1000);
+            jTFOP.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTFOP.getColumnModel().getColumn(2).setMaxWidth(1000);
+        }
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -312,7 +354,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
                     .addComponent(jScrollPane8))
                 .addContainerGap())
         );
@@ -332,7 +374,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
+            .addGap(0, 689, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,7 +387,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
+            .addGap(0, 689, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -492,7 +534,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 669, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -553,7 +595,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -575,11 +617,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
-            //Sync der Files
-            File source=new File("E:\\günter\\Eigene Dokumente\\PAPPS");
-            File target=new File("E:\\günter\\Eigene Dokumente\\NetBeansProjects\\PAPPS\\PAPPS");
+                     
+            
             //File source, File destination, boolean smart
-            FileSync.synchronize(source, target, true);
+            FileSync.synchronize(GlobalVars.source, GlobalVars.target, true);
             // Verzeichnisstruktur der PAPPS einlesen und als Tree darstellen
             //File dir = new File("C:\\Users\\gdenz.ABAS-PROJEKT\\Documents\\PAPPS");
             File dir = new File(".\\PAPPS");
@@ -621,43 +662,19 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTree1ValueChanged
 
-    private void jBConnectionTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConnectionTestActionPerformed
-        try {ByteArrayOutputStream error= new ByteArrayOutputStream();
-            StringBuilder fromServer=new StringBuilder();
-            int sshexitstatus=0;
-            SshClient sshclient=new SshClient();
-            sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
-            sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -a T",error,fromServer);
-             
-            if ((fromServer.indexOf("Kunde:Kunde")==0)&&(sshexitstatus==0))
-            {
-              //Verbindung erfoglreich  
-              JOptionPane.showMessageDialog (null, "Ssh Verbindung und Mandantenzugriff war erfolgreich!", "Ssh Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);  
-            }
-            else
-            {
-              JOptionPane.showMessageDialog (null, "Mandantenzugriff fehlerhaft!\n\n"+error, "Mandantenzugriff gescheitert", JOptionPane.ERROR_MESSAGE);
-            }    
-            System.out.println(fromServer);
-            System.out.println(error);
-            sshclient.sessiondisconnect();
-           // fromServer.close();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSchException ex) {
-            JOptionPane.showMessageDialog (null, "Fehler bei Aufbau der Ssh Verbindung:\n"+ex, "Ssh Verbdindung gescheitert", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jBConnectionTestActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //SPX kopieren
+
+        //FOP kopieren
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBInstallInfosystemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallInfosystemeActionPerformed
-       String arb="";
-       String name="";
-       File file;
-       StringBuilder fromServer=new StringBuilder();
-       ByteArrayOutputStream error= new ByteArrayOutputStream();
-       int sshexitstatus;
+        String arb="";
+        String name="";
+        File file;
+        StringBuilder fromServer=new StringBuilder();
+        ByteArrayOutputStream error= new ByteArrayOutputStream();
+        int sshexitstatus;
         //Infosysteme installieren
         for(int i=0;i<jTinfosystem.getRowCount();i++)
         {
@@ -675,35 +692,35 @@ public class MainFrame extends javax.swing.JFrame {
                 sshexitstatus=sshclient.sendfile(file.toString(), file.getName());
                 jTLog.append("                                         OK\n");
                 jTLog.update(jTLog.getGraphics());
-               //Infosystem auspacken
-               jTLog.append("Infosystem "+file.getName()+" auspacken\n");
-               jTLog.append("=======================================\n");
-               jTLog.update(jTLog.getGraphics());
-               sshexitstatus=sshclient.sendcommand("tar xzvf "+file.getName(), error, fromServer);
-               if (sshexitstatus==0) 
-                 {
-                    jTLog.append(fromServer.toString());  
+                //Infosystem auspacken
+                jTLog.append("Infosystem "+file.getName()+" auspacken\n");
+                jTLog.append("=======================================\n");
+                jTLog.update(jTLog.getGraphics());
+                sshexitstatus=sshclient.sendcommand("tar xzvf "+file.getName(), error, fromServer);
+                if (sshexitstatus==0)
+                {
+                    jTLog.append(fromServer.toString());
                     jTLog.append("=======================================\n");
                     jTLog.update(jTLog.getGraphics());
                     //Infosystem installieren
                     jTLog.append("Infosystem "+file.getName()+" installieren\n");
                     jTLog.update(jTLog.getGraphics());
-                    sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+new String(jPMandant.getPassword())+" -a IMPORT -s "+name+" -w "+arb, error, fromServer); 
-                    // sshexitstatus=sshclient.sendcommand("ls", error, fromServer); 
+                    sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+new String(jPMandant.getPassword())+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
+                    // sshexitstatus=sshclient.sendcommand("ls", error, fromServer);
                     if (sshexitstatus==0)
                     {
-                         jTLog.append(fromServer.toString());  
+                        jTLog.append(fromServer.toString());
                     }
                     else
                     {
-                         jTLog.append(error.toString());  
-                    }    
-                 }
-               else
-                 {
-                    jTLog.append(error.toString());  
-                 }
-               
+                        jTLog.append(error.toString());
+                    }
+                }
+                else
+                {
+                    jTLog.append(error.toString());
+                }
+
                 // Session beenden
                 sshclient.sessiondisconnect();
             } catch (InterruptedException ex) {
@@ -715,14 +732,38 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }    
+        }
     }//GEN-LAST:event_jBInstallInfosystemeActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //SPX kopieren
-        
-        //FOP kopieren
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jBConnectionTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConnectionTestActionPerformed
+        try {ByteArrayOutputStream error= new ByteArrayOutputStream();
+            StringBuilder fromServer=new StringBuilder();
+            int sshexitstatus=0;
+            SshClient sshclient=new SshClient();
+            sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
+            sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -a T",error,fromServer);
+
+            if ((fromServer.indexOf("Kunde:Kunde")==0)&&(sshexitstatus==0))
+            {
+                //Verbindung erfoglreich
+                JOptionPane.showMessageDialog (null, "Ssh Verbindung und Mandantenzugriff war erfolgreich!", "Ssh Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog (null, "Mandantenzugriff fehlerhaft!\n\n"+error, "Mandantenzugriff gescheitert", JOptionPane.ERROR_MESSAGE);
+            }
+            System.out.println(fromServer);
+            System.out.println(error);
+            sshclient.sessiondisconnect();
+            // fromServer.close();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSchException ex) {
+            JOptionPane.showMessageDialog (null, "Fehler bei Aufbau der Ssh Verbindung:\n"+ex, "Ssh Verbdindung gescheitert", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jBConnectionTestActionPerformed
    
     public void SystemLesen(File dir, String system)
     {DefaultTableModel model=null;
@@ -740,7 +781,12 @@ public class MainFrame extends javax.swing.JFrame {
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
-        
+        if (system.equals("Aufzaehlungen")) 
+        {
+            model =(DefaultTableModel) jTAufzaehlungen.getModel();
+            // Tabellenzeilen löschen
+            model.setNumRows(0);
+        }
       if (!system.equals("SPXSUB")) 
       {
           dir=new File(dir.toString()+"\\"+system);
@@ -773,6 +819,15 @@ public class MainFrame extends javax.swing.JFrame {
                            arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
                            name=files[i].getName();
                            model.addRow(new Object[]{arbdir,"",name,files[i]});   
+                        }
+                          if (system.equals("Aufzaehlungen"))
+                        {
+                           jBInstallInfosysteme.setEnabled(true); 
+                           arbdir=files[i].getName();
+                           arbdir=arbdir.substring(3,7);
+                           name=files[i].getName();
+                           name=name.substring(8,name.length()-4);
+                           model.addRow(new Object[]{arbdir,name,files[i]});   
                         }
                         System.out.print(" (Datei)\n");
                     }
@@ -931,6 +986,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPMandant;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -947,6 +1003,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTable jTAufzaehlungen;
     private javax.swing.JTable jTFOP;
     private javax.swing.JTextField jTHost;
     private javax.swing.JTextArea jTKurzInfo;
