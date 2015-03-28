@@ -493,6 +493,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jBInstallAufzaehlungen.setText("Aufzählungen");
         jBInstallAufzaehlungen.setEnabled(false);
+        jBInstallAufzaehlungen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBInstallAufzaehlungenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -767,6 +772,27 @@ public class MainFrame extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBConnectionTestActionPerformed
+
+    private void jBInstallAufzaehlungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallAufzaehlungenActionPerformed
+        File file=null;
+        // Aufzählungen Installieren
+        Aufzählungen aufzählungen=new Aufzählungen();
+         for(int i=0;i<jTAufzaehlungen.getRowCount();i++)
+         {
+            try {
+                file= new File (jTinfosystem.getValueAt(i, 4).toString());
+                aufzählungen.Install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(),file);
+            } catch (JSchException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SftpException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+         }
+                 
+    }//GEN-LAST:event_jBInstallAufzaehlungenActionPerformed
    
     public void SystemLesen(File dir, String system)
     {DefaultTableModel model=null;
@@ -826,10 +852,13 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                           if (system.equals("Aufzaehlungen"))
                         {
-                           jBInstallAufzaehlungen.setEnabled(true); 
-                           such=files[i].getName().substring(0,files[i].getName().indexOf("."));
-                           name=files[i].getName().substring(files[i].getName().indexOf(".")+1,files[i].getName().lastIndexOf("."));
-                           model.addRow(new Object[]{such,name,"",Boolean.FALSE,files[i]});   
+                            if (files[i].getName().contains(".csv"))
+                            {
+                                jBInstallAufzaehlungen.setEnabled(true); 
+                                such=files[i].getName().substring(0,files[i].getName().indexOf("."));
+                                name=files[i].getName().substring(files[i].getName().indexOf(".")+1,files[i].getName().lastIndexOf("."));
+                                model.addRow(new Object[]{such,name,"",Boolean.FALSE,files[i]});   
+                            }
                         }
                         System.out.print(" (Datei)\n");
                     }

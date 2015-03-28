@@ -855,6 +855,9 @@
                     <Property name="text" type="java.lang.String" value="Aufz&#xe4;hlungen"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBInstallAufzaehlungenActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
