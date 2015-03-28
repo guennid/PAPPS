@@ -107,10 +107,10 @@ public class MainFrame extends javax.swing.JFrame {
         jTLog = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jBInstallAufzaehlungen = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        openMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -215,14 +215,14 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Such", "Name", "Nummer", "Installiert"
+                "Such", "Name", "Nummer", "Installiert", "Lokale Datei"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -241,15 +241,15 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(528, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Aufzählungen", jPanel11);
@@ -491,6 +491,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Log");
 
+        jBInstallAufzaehlungen.setText("Aufzählungen");
+        jBInstallAufzaehlungen.setEnabled(false);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -503,14 +506,16 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel6))
+                            .addGroup(jPanel10Layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
                                 .addComponent(jBInstallInfosysteme)
-                                .addGap(71, 71, 71)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel6)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(38, 38, 38)
+                                .addComponent(jBInstallAufzaehlungen)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)))
+                        .addGap(69, 69, 69)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -519,7 +524,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInstallInfosysteme)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jBInstallAufzaehlungen))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -561,10 +567,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         fileMenu.add(jMenuItem1);
 
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Einstellungen");
-        fileMenu.add(openMenuItem);
-
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -595,7 +597,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -654,6 +656,7 @@ public class MainFrame extends javax.swing.JFrame {
                             KurzInfoLesen(pappinfo.dir);
                             SystemLesen(pappinfo.dir,"Infosystem");
                             SystemLesen(pappinfo.dir,"SPX");
+                            SystemLesen(pappinfo.dir,"Aufzaehlungen");
                             
                         }
                     }
@@ -769,6 +772,7 @@ public class MainFrame extends javax.swing.JFrame {
     {DefaultTableModel model=null;
     String arbdir;
     String name;
+    String such;
         if (system.equals("Infosystem")) 
         {
             model =(DefaultTableModel) jTinfosystem.getModel();
@@ -822,12 +826,10 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                           if (system.equals("Aufzaehlungen"))
                         {
-                           jBInstallInfosysteme.setEnabled(true); 
-                           arbdir=files[i].getName();
-                           arbdir=arbdir.substring(3,7);
-                           name=files[i].getName();
-                           name=name.substring(8,name.length()-4);
-                           model.addRow(new Object[]{arbdir,name,files[i]});   
+                           jBInstallAufzaehlungen.setEnabled(true); 
+                           such=files[i].getName().substring(0,files[i].getName().indexOf("."));
+                           name=files[i].getName().substring(files[i].getName().indexOf(".")+1,files[i].getName().lastIndexOf("."));
+                           model.addRow(new Object[]{such,name,"",Boolean.FALSE,files[i]});   
                         }
                         System.out.print(" (Datei)\n");
                     }
@@ -972,6 +974,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton jBConnectionTest;
+    private javax.swing.JButton jBInstallAufzaehlungen;
     private javax.swing.JButton jBInstallInfosysteme;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1016,7 +1019,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTinfosystem;
     private javax.swing.JTree jTree1;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
