@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class Aufzählungen {
     
-    public void Install(String LinuxUser, String LinuxPassword,String Host,File file) throws JSchException, IOException, SftpException
+    public void Install(String LinuxUser, String LinuxPassword,String Host,String MandantPassword, File file, ByteArrayOutputStream error, StringBuilder fromServer) throws JSchException, IOException, SftpException, InterruptedException
     {int sshexitstatus=0;
     File subfile=null;
     int i =0;
@@ -35,9 +35,11 @@ public class Aufzählungen {
                 sshclient.connect(LinuxUser, LinuxPassword,Host, 22);
                 sshexitstatus=sshclient.sendfile(subfile.toString(), subfile.getName());  
                 // Subfile importieren
-                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpimport.sh -p "+new String(jPMandant.getPassword())+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
+                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpimport.sh  -p "+MandantPassword+" ", error, fromServer);
             }
         
         }
+        //Mainfile kopieren 
+        //Mainfile importieren
     }
 }

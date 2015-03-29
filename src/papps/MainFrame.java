@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -41,12 +43,10 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        
         rootnode = new DefaultMutableTreeNode("PAPPS");
         treeModel = new DefaultTreeModel(rootnode);
         jTree1.setModel(treeModel);
         DirList(GlobalVars.target,rootnode,true );
-        
         jTLinuxUser.setText("demo");
         jTHost.setText("192.168.15.61");
         jPLinux.setText("demo");
@@ -775,13 +775,19 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBInstallAufzaehlungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallAufzaehlungenActionPerformed
         File file=null;
+         StringBuilder fromServer=new StringBuilder();
+        ByteArrayOutputStream error= new ByteArrayOutputStream();
         // Aufzählungen Installieren
         Aufzählungen aufzählungen=new Aufzählungen();
          for(int i=0;i<jTAufzaehlungen.getRowCount();i++)
          {
             try {
                 file= new File (jTinfosystem.getValueAt(i, 4).toString());
-                aufzählungen.Install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(),file);
+                try {
+                    aufzählungen.Install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(),new String (jPMandant.getPassword()),file, error,fromServer);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } catch (JSchException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
