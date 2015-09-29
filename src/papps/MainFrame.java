@@ -1,12 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+
+
+
+
+
+
 package papps;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import de.abas.ceks.jedp.CantBeginEditException;
+import de.abas.ceks.jedp.CantBeginSessionException;
+import de.abas.ceks.jedp.CantReadFieldPropertyException;
+import de.abas.ceks.jedp.EDPEditor;
+import de.abas.ceks.jedp.EDPFactory;
+import de.abas.ceks.jedp.EDPQuery;
+import de.abas.ceks.jedp.EDPSession;
+import de.abas.ceks.jedp.InvalidQueryException;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -15,14 +26,24 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import static papps.GlobalVars.ZDArray;
+import static papps.GlobalVars.ZDArrayNeu;
 
 /**
  *
@@ -38,10 +59,14 @@ public class MainFrame extends javax.swing.JFrame {
     
     private DefaultMutableTreeNode APPode;
     private DefaultMutableTreeNode SystemNode;
+    
+
+    
     /**
      * Creates new form NewApplication
      */
     public MainFrame() {
+        
         initComponents();
         rootnode = new DefaultMutableTreeNode("PAPPS");
         treeModel = new DefaultTreeModel(rootnode);
@@ -52,9 +77,69 @@ public class MainFrame extends javax.swing.JFrame {
         jPLinux.setText("demo");
         jTMandant.setText("demo");
         jPMandant.setText("lars");
+        jTVartab.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE); 
+        
+    }
+private  static class MyCellEditor extends AbstractCellEditor implements TableCellEditor {
+// static ?
+    
+    DefaultCellEditor checkbox = new DefaultCellEditor(new JComboBox(new Object[] {"abc"}));
+
+    private DefaultCellEditor lastSelected;
+
+    @Override
+    public Object getCellEditorValue() {
+
+        return lastSelected.getCellEditorValue();
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(final JTable  table,
+            Object value, boolean isSelected, final int row, int column) {
+            String db=table.getValueAt(row, 1).toString();
+            String grp=table.getValueAt(row, 2).toString();
+            int grpint=Integer.parseInt(grp);
+            int dbint=Integer.parseInt(db);
+            
+        
+            //String grp=table.getValueAt(row, 2).toString();
+             String[] comboarray;
+             comboarray=checkzd(dbint,grpint, table);
+            if (comboarray!=null ) 
+                                      {
+                                      //checkbox= new DefaultCellEditor(new JComboBox(new Object[] {comboarray}));
+                                       checkbox= new DefaultCellEditor(new JComboBox(comboarray));  
+                                       checkbox.addCellEditorListener(new CellEditorListener()
+                                               {
+
+                                           @Override
+                                           public void editingStopped(ChangeEvent e) 
+                                           {
+                                         //  System.out.println("Ende");                                         
+                                         //Den Frei Haken setzen in der Table
+                                           table.setValueAt(true, row, 4); 
+                                           }
+
+                                           @Override
+                                           public void editingCanceled(ChangeEvent e) {
+                                          //      System.out.println("Cancel");
+                                          // Brauchen wir nicht     
+                                           }
+                                                   
+                                               }
+                                               );
+         
+                                      }
+             
+            
+            
+            lastSelected = checkbox;
+            return checkbox.getTableCellEditorComponent(table, value, isSelected, row, column);
         
     }
 
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,7 +164,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTAufzaehlungen = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTVartab = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -108,6 +193,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jBInstallAufzaehlungen = new javax.swing.JButton();
+        jBInstallVartab = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -254,19 +340,39 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Aufzählungen", jPanel11);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTVartab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2"
+                "Vartab", "DB Orig", "Gruppe Orig", "DB Neu", "Vartab frei", "Lokale Datei"
             }
-        ));
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane7.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                boolean canornot=false;
+                canornot=checkEditVartab(rowIndex,columnIndex);
+                return canornot;
+
+            }
+        });
+        jTVartab.getTableHeader().setReorderingAllowed(false);
+        jTVartab.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTVartabFocusLost(evt);
+            }
+        });
+        jScrollPane7.setViewportView(jTVartab);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -499,6 +605,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jBInstallVartab.setText("Vartab");
+        jBInstallVartab.setEnabled(false);
+        jBInstallVartab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBInstallVartabActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -518,6 +632,8 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jBInstallInfosysteme)
                                 .addGap(38, 38, 38)
                                 .addComponent(jBInstallAufzaehlungen)
+                                .addGap(37, 37, 37)
+                                .addComponent(jBInstallVartab)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton1)))
                         .addGap(69, 69, 69)))
@@ -530,7 +646,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInstallInfosysteme)
                     .addComponent(jButton1)
-                    .addComponent(jBInstallAufzaehlungen))
+                    .addComponent(jBInstallAufzaehlungen)
+                    .addComponent(jBInstallVartab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -618,6 +735,8 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+   
+    
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
@@ -660,6 +779,7 @@ public class MainFrame extends javax.swing.JFrame {
                             //Kurzinfo einlesen
                             KurzInfoLesen(pappinfo.dir);
                             SystemLesen(pappinfo.dir,"Infosystem");
+                            SystemLesen(pappinfo.dir,"Vartab");
                             SystemLesen(pappinfo.dir,"SPX");
                             SystemLesen(pappinfo.dir,"Aufzaehlungen");
                             
@@ -744,17 +864,170 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBInstallInfosystemeActionPerformed
 
     private void jBConnectionTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConnectionTestActionPerformed
-        try {ByteArrayOutputStream error= new ByteArrayOutputStream();
+      
+         String passwd = new String(jPMandant.getPassword());
+        EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),passwd);                                         
+        //    EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),Arrays.toString(jPMandant.getPassword()));                                         
+            if (session !=null)
+            {
+               
+            EDPQuery edpQ1 = session.createQuery();
+            EDPEditor edpE1=session.createEditor();
+             try {
+                edpQ1.startQuery("12:10","","id");
+               if(edpQ1.getNextRecord())
+               {
+                    edpE1.beginView(edpQ1.getField("id"));
+                    // Wir sind im Betreibsdatensatz
+                    String zdname="zdname"; 
+                    String zdgrp="zdgrp"; 
+                    String zdgn="zdgn"; 
+                    
+                    for (int i=1;i<=40;i++)
+                    {    
+                        Integer meini =new Integer(i);
+                        if (i> 1) 
+                            {
+                            zdname="zdname"+meini.toString();
+                            zdgrp="zdgrp"+meini.toString();
+                            zdgn="zdgn"+meini.toString();
+                            }
+                        if (!edpE1.getFieldVal(zdname).equals(""))
+                        {// Dateiname ist da
+                            if (edpE1.getFieldVal(zdgrp).equals("ja"))
+                            {//Gruppen sind da
+                                int gruppennummer=0;
+                                String grp=edpE1.getFieldVal(zdgn);
+                                while (grp.indexOf(",")!=-1)
+                                {//Gruppen extrahieren
+                                    String gruppe=grp.substring(0,grp.indexOf(","));
+                                    if (!gruppe.equals(""))
+                                    {
+                                        ZDArray[i-1][gruppennummer]=gruppe;
+                                    }
+                                grp=grp.substring(grp.indexOf(",")+1,grp.length());
+                                gruppennummer++;  
+                                }
+                           // ZDArray[0][0]=edpE1.getFieldVal(zdname);         
+                            }
+                            else
+                            {// Keine Gruppen da, aber dadurch alles gesperrt
+                                for (int y=0;y<20;y++)
+                                {
+                                ZDArray[i-1][y]=edpE1.getFieldVal(zdname);       
+                                }
+                            }
+                        }
+                        else
+                            {
+                            for (int y=0;y<20;y++)
+                                {
+                                ZDArray[i-1][y]="";   
+                                }
+                            }
+                    }
+               }
+               
+            } catch (InvalidQueryException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CantBeginEditException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CantReadFieldPropertyException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              JOptionPane.showMessageDialog (null, "EDP Verbindung und Mandantenzugriff war erfolgreich!", "EDP Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);
+             
+            }
+            session.endSession();
+                
+    /*
+        try {
+            ByteArrayOutputStream error= new ByteArrayOutputStream();
             StringBuilder fromServer=new StringBuilder();
             int sshexitstatus=0;
             SshClient sshclient=new SshClient();
             sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
             sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -a T",error,fromServer);
+            //edpexport.sh -l 12:10 -f zdgn,zdgn2
+           // sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn8,zdgn9,zdgn10",error,fromServer);
 
             if ((fromServer.indexOf("Kunde:Kunde")==0)&&(sshexitstatus==0))
             {
                 //Verbindung erfoglreich
                 JOptionPane.showMessageDialog (null, "Ssh Verbindung und Mandantenzugriff war erfolgreich!", "Ssh Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);
+            
+           
+                
+   // ZD's abholen
+                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdname,zdname2,zdname3,zdname4,zdname5,zdname6,zdname7,zdname8,zdname9,zdname10,zdname11,,zdname12,zdname13,zdname14,zdname15,zdname16,zdname17,zdname18,zdname19,zdname20,zdname21,zdname22,zdname23,zdname24,zdname25,zdname26,zdname27,zdname28,zdname29,zdname30,zdname31,zdname32,zdname33,zdname34,zdname35,zdname36,zdname37,zdname38,zdname39,zdname40",error,fromServer);
+                if (sshexitstatus==0)
+                {
+                int zdnummer=0;    
+                String zdantwort=fromServer.toString();    
+                while (zdantwort.indexOf(";")!=-1)
+                        {   
+                       // Noch ne ZD raus schneiden mit allen Gruppen
+                       String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
+                        //Die Gruppen rausschneiden
+                       if (!zd.equals(""))
+                       {
+                       ZDArray[zdnummer][0]=zd;
+                       ZDArray[zdnummer][1]=zd;
+                       ZDArray[zdnummer][2]=zd;
+                       ZDArray[zdnummer][3]=zd;
+                       ZDArray[zdnummer][4]=zd;
+                       ZDArray[zdnummer][5]=zd;
+                       ZDArray[zdnummer][6]=zd;
+                       ZDArray[zdnummer][7]=zd;
+                       ZDArray[zdnummer][8]=zd;
+                       ZDArray[zdnummer][9]=zd;
+                       ZDArray[zdnummer][10]=zd;
+                       ZDArray[zdnummer][11]=zd;
+                       ZDArray[zdnummer][12]=zd;
+                       ZDArray[zdnummer][13]=zd;
+                       ZDArray[zdnummer][14]=zd;
+                       ZDArray[zdnummer][15]=zd;
+                       ZDArray[zdnummer][16]=zd;
+                       ZDArray[zdnummer][17]=zd;
+                       ZDArray[zdnummer][18]=zd;
+                       ZDArray[zdnummer][19]=zd;
+                       }
+                       
+                       // Und den Reststring kürzen um die erste ZD
+                       zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
+                         zdnummer++;
+                        }
+                }
+             
+                
+                // ZD's die Gruppen  abholen
+                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn9,zdgn10,zdgn11,,zdgn12,zdgn13,zdgn14,zdgn15,zdgn16,zdgn17,zdgn18,zdgn19,zdgn20,zdgn21,zdgn22,zdgn23,zdgn24,zdgn25,zdgn26,zdgn27,zdgn28,zdgn29,zdgn30,zdgn31,zdgn32,zdgn33,zdgn34,zdgn35,zdgn36,zdgn37,zdgn38,zdgn39,zdgn40",error,fromServer);
+                if (sshexitstatus==0)
+                {
+                int zdnummer=0;    
+                String zdantwort=fromServer.toString();    
+                while (zdantwort.indexOf(";")!=-1)
+                        {   
+                       // Noch ne ZD raus schneiden mit allen Gruppen
+                       String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
+                        //Die Gruppen rausschneiden
+                       int gruppennummer=0;
+                       while (zd.indexOf(",")!=-1)
+                            {
+                              String gruppe=zd.substring(0,zd.indexOf(","));
+                             // if (gruppe.equals(null)) gruppe="";
+                              if (!gruppe.equals(""))
+                              {
+                              ZDArray[zdnummer][gruppennummer]=gruppe;
+                              }
+                              zd=zd.substring(zd.indexOf(",")+1,zd.length());
+                               gruppennummer++;  
+                            }
+                       // Und den Reststring kürzen um die erste ZD
+                       zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
+                         zdnummer++;
+                        }
+                }
             }
             else
             {
@@ -770,7 +1043,7 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Fehler bei Aufbau der Ssh Verbindung:\n"+ex, "Ssh Verbdindung gescheitert", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }//GEN-LAST:event_jBConnectionTestActionPerformed
 
     private void jBInstallAufzaehlungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallAufzaehlungenActionPerformed
@@ -799,15 +1072,61 @@ public class MainFrame extends javax.swing.JFrame {
          }
                  
     }//GEN-LAST:event_jBInstallAufzaehlungenActionPerformed
+
+    private void jTVartabFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTVartabFocusLost
+   boolean vartuready=true;  
+   
+   
+        for (int i=0;i<jTVartab.getRowCount();i++)
+                                                {
+                                                 
+                                                 if ((boolean)(jTVartab.getValueAt(i, 4))==false)
+                                                 {
+                                                     vartuready=false;
+                                                 }
+                                                
+                                                }       
+                                                    if (vartuready==true)
+                                                 {
+                                                    jBInstallVartab.setEnabled(true);
+                                                 }
+    }//GEN-LAST:event_jTVartabFocusLost
+
+    private void jBInstallVartabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallVartabActionPerformed
+        //edpSession Aufbauen
+        String passwd = new String(jPMandant.getPassword());
+        EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),passwd);                                         
+        //    EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),Arrays.toString(jPMandant.getPassword()));                                         
+            if (session !=null)
+            {
+        //Install Routine in Klasse Vartab aufrufen
+        //Klasse erzeugen
+        Vartab vartab=new Vartab(); 
+        vartab.install(jTVartab,session);        
+            session.endSession();
+            }
+        
+    }//GEN-LAST:event_jBInstallVartabActionPerformed
    
     public void SystemLesen(File dir, String system)
     {DefaultTableModel model=null;
     String arbdir;
     String name;
     String such;
+    int dbint=0;
+    int gruppeint=0;
+    int dbneu=0;
+    boolean vartabfrei;
+  
         if (system.equals("Infosystem")) 
         {
             model =(DefaultTableModel) jTinfosystem.getModel();
+            // Tabellenzeilen löschen
+            model.setNumRows(0);
+        }
+         if (system.equals("Vartab")) 
+        {
+            model =(DefaultTableModel) jTVartab.getModel();
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
@@ -849,6 +1168,45 @@ public class MainFrame extends javax.swing.JFrame {
                            name=name.substring(8,name.length()-4);
                            model.addRow(new Object[]{arbdir,name,files[i]});   
                         }
+                        if (system.equals("Vartab"))
+                        {
+                          
+                           arbdir=files[i].getParent();
+                           arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
+                           name=files[i].getName();
+                           String db=name.substring(2,name.lastIndexOf("-"));
+                           dbint=parseInt(db);
+                           String gruppe=name.substring(name.lastIndexOf("-")+1,name.lastIndexOf("."));
+                           gruppeint=parseInt(gruppe);
+                           vartabfrei=true;
+                           
+                           if ((dbint==15)||(dbint>=18&&dbint<=37)||(dbint>=41&&dbint<=51)||(dbint>=71&&dbint<=80))
+                                   {
+                                     //wir habene ine Zusatzdatenbank
+                                       // Frei muss geprüft werden, deshalberst mal auf False setzen
+                                       vartabfrei=false;  
+                                       //CheckZD aufrufen
+                                      String[] comboarray;
+                                      //getneubelegteZD();
+                                      comboarray=checkzd(dbint,gruppeint, jTVartab);
+                                      if (comboarray==null ) 
+                                      {
+                                       //Rückgabearray nicht vorhanden, also keine probleme mit ZD
+                                      dbneu=dbint;    
+                                      vartabfrei=true;
+                                      
+                                      }
+                                      else
+                                      { 
+                                     // JComboBox combo = new JComboBox(comboarray);
+                                      //jTVartab.getColumn("DB Neu").setCellEditor(new DefaultCellEditor(combo));
+                                      jTVartab.getColumn("DB Neu").setCellEditor((new MyCellEditor()));
+                                   //   TableColumn mengenspalte=jTVartab.getColumnModel().getColumn("DB Neu");
+                                   //   mengenspalte.setCellEditor(new MyCellEditor());
+                                      }
+                                   }
+                           model.addRow(new Object[]{name,db,gruppe,dbneu,vartabfrei,files[i]});   
+                        }    
                         if (system.equals("SPXSUB"))
                         {
                            arbdir=files[i].getParent();
@@ -871,6 +1229,75 @@ public class MainFrame extends javax.swing.JFrame {
 		}
 	}
     }
+
+ 
+    public static String[] checkzd(int dbint,int gruppeint, JTable table)
+    {
+int dbtable=0;
+//Array mit den in jTVartab belegten ZD aufbauen        
+// Aber prüfen ob nicht schon in Table belegt
+        for (int i=0;i<40;i++)
+        {
+            ZDArrayNeu[i][0]="";
+             
+        }
+        for (int i=0;i<table.getRowCount();i++)
+            {
+                if (!table.getValueAt(i, 3).toString().equals("0"))
+                    {
+                       // Hier steht ein Wert drin,also wird hier eine db belegt
+                       dbtable = parseInt(table.getValueAt(i,3).toString());
+                        if ((dbtable>=18)&&(dbtable<=26)) dbtable=dbtable-17;
+                        if ((dbtable>=29)&&(dbtable<=37)) dbtable=dbtable-19;
+                        if ((dbtable>=41)&&(dbtable<=51)) dbtable=dbtable-22;
+                        if ((dbtable>=71)&&(dbtable<=80)) dbtable=dbtable-41;
+                       ZDArrayNeu[dbtable][0]=table.getValueAt(i, 5).toString();
+                    }
+            }
+
+//String[]comboarray;
+        List<String> combo = new ArrayList<String>();
+        if (dbint==15) dbint=0;
+        if ((dbint>=18)&&(dbint<=26)) dbint=dbint-17;
+        if ((dbint>=29)&&(dbint<=37)) dbint=dbint-19;
+        if ((dbint>=41)&&(dbint<=51)) dbint=dbint-22;
+        if ((dbint>=71)&&(dbint<=80)) dbint=dbint-41;
+        if (ZDArray[dbint][gruppeint]==null||ZDArray[dbint][gruppeint].equals(""))
+        {
+            return null; 
+        }
+        else 
+        {
+            // Schauen welche DB komplett frei ist
+            //String[] comboarray= new String[5];
+            for (int i=0;i<40;i++)
+            {
+                if (ZDArray[i][1].equals(""))
+                {
+                    // Im Array ist die db Frei
+                    // Aber nun noch schaune ob die evtl. in der jTVartab belegt wurde vom User
+                    if (ZDArrayNeu[i][0].equals("")) 
+                    {     
+                        // Immer noch frei, also in die Combobox rein schieben
+                    if (i==0) dbint=15;
+                    if ((i>=1)&&(i<=9)) dbint=i+17;
+                    if ((i>=10)&&(i<=18)) dbint=i+19;
+                    if ((i>=19)&&(i<=29)) dbint=i+22;
+                    if ((i>=30)&&(i<=39)) dbint=i+41;
+                    combo.add(Integer.toString(dbint));
+                    }
+                }
+            }
+            
+             
+        
+            return combo.toArray(new String[combo.size()]);
+        }
+        
+        
+            
+    }
+    
     
     public void KurzInfoLesen(File dir)
     {
@@ -941,6 +1368,22 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     
+     private EDPSession SessionAufbauen(String yserver, int yport, String ymandant, String ypasswort) 
+    { 
+      EDPSession  session = EDPFactory.createEDPSession ();
+        try {
+            session.beginSession(yserver, yport,ymandant, ypasswort, "JEDP_0001");
+            } catch (CantBeginSessionException ex) 
+                {
+                    JOptionPane.showMessageDialog(this, "Verbindungsaufnahme gescheitert\n\n" + ex, "EDP Fehler", JOptionPane.ERROR_MESSAGE);
+                //Verbindung nicht erfolgreich
+               return null;
+                }
+      return session;
+    }
+     
+     
+    
     class PappInfo {
 
        
@@ -1002,6 +1445,19 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+     public boolean checkEditVartab(int row,int column)
+    {
+     int db =Integer.parseInt(jTVartab.getValueAt(row, 1).toString());
+     if ((db==15)||(db>=18&&db<=37)||(db>=41&&db<=51)||(db>=71&&db<=80))
+        {
+            return true;
+        }
+     else 
+     {      
+     return false;   
+     }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
@@ -1011,6 +1467,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBConnectionTest;
     private javax.swing.JButton jBInstallAufzaehlungen;
     private javax.swing.JButton jBInstallInfosysteme;
+    private javax.swing.JButton jBInstallVartab;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -1048,8 +1505,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTLinuxUser;
     private javax.swing.JTextArea jTLog;
     private javax.swing.JTextField jTMandant;
+    private javax.swing.JTable jTVartab;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTinfosystem;
     private javax.swing.JTree jTree1;
