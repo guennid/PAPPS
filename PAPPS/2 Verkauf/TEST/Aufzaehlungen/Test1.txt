@@ -1,7 +1,5 @@
-[Aufzaehlung]
+[Aufzaehlung] 
 such#name#verweisart#
-aufzelem
-aufzelem
-[Bezeichner]
+[Wertemenge]
 such#katego#name#
-
+such2#katego#name2#

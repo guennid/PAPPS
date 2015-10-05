@@ -1,4 +1,2 @@
 Nummer#Name ZD#stammdaten#gruppen#Namen der Gruppe#
-1#test#ja#ja#testgruppe,,,,,,,,
-2#test#ja#ja#testgruppe,xy,,,,,,,
-32#test#ja#ja#testgruppe,xy,,,,,,,,,,,,,,
+1#testgd#ja#ja#testgruppe,,,,,,,,#

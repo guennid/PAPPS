@@ -33,20 +33,20 @@ import static papps.GlobalVars.ZDArrayNeu;
 public class Vartab {
     public static int ZD2Vartab (int zdnummer)
     {int vartabnummer=0;
-          if (zdnummer==0) zdnummer=15;
-                    if ((zdnummer>=1)&&(zdnummer<=9)) vartabnummer=zdnummer+17;
-                    if ((zdnummer>=10)&&(zdnummer<=18)) vartabnummer=zdnummer+19;
-                    if ((zdnummer>=19)&&(zdnummer<=29)) vartabnummer=zdnummer+22;
-                    if ((zdnummer>=30)&&(zdnummer<=39)) vartabnummer=zdnummer+41;
+          if (zdnummer==1) vartabnummer=15;
+                    if ((zdnummer>1)&&(zdnummer<=10)) vartabnummer=zdnummer+16;
+                    if ((zdnummer>10)&&(zdnummer<=19)) vartabnummer=zdnummer+18;
+                    if ((zdnummer>19)&&(zdnummer<=30)) vartabnummer=zdnummer+21;
+                    if ((zdnummer>30)&&(zdnummer<=39)) vartabnummer=zdnummer+40;
         return vartabnummer;
     }
     public static int Vartab2ZD (int vartabnummer)
-    {int zdnummer=0;
-         if (vartabnummer==15) zdnummer=0;
-        if ((vartabnummer>=18)&&(vartabnummer<=26)) zdnummer=vartabnummer-17;
-        if ((vartabnummer>=29)&&(vartabnummer<=37)) zdnummer=vartabnummer-19;
-        if ((vartabnummer>=41)&&(vartabnummer<=51)) zdnummer=vartabnummer-22;
-        if ((vartabnummer>=71)&&(vartabnummer<=80)) zdnummer=vartabnummer-41;
+    {int zdnummer=1;
+         if (vartabnummer==15) zdnummer=1;
+        if ((vartabnummer>=18)&&(vartabnummer<=26)) zdnummer=vartabnummer-16;
+        if ((vartabnummer>=29)&&(vartabnummer<=37)) zdnummer=vartabnummer-18;
+        if ((vartabnummer>=41)&&(vartabnummer<=51)) zdnummer=vartabnummer-21;
+        if ((vartabnummer>=71)&&(vartabnummer<=80)) zdnummer=vartabnummer-40;
         return zdnummer;
     }
     
@@ -58,13 +58,22 @@ public class Vartab {
         {
             String zdstring=table.getValueAt(i, 1).toString();
             int zdint=parseInt(zdstring);
-            if (zdint==zdnummer)
+            if (zdint==vartab)
                     {
-                       zdnummerret=parseInt(table.getValueAt(i, 3).toString());
+                       vartab=parseInt(table.getValueAt(i, 3).toString());
                        
                     }
         }
+        zdnummerret=Vartab2ZD(vartab);
         return zdnummerret;
+    }
+    public boolean DBini(String filename,JTable table)
+    {
+       //Zeile einlesen
+        
+        //Für DB und Gruppe jeweils eine FOP Zeile erzeugen
+        
+        return true; 
     }
     
     public boolean schreibbetrieb(String filename, EDPEditor edpE1, JTable table)
@@ -98,8 +107,8 @@ public class Vartab {
                 1#test#ja#ja#testgruppe,,,,,,,,
                 2#test#ja#ja#testgruppe,xy,,,,,,,
                 32#test#ja#ja#testgruppe,xy,,,,,,,,,,,,,,*/
-                zeile = br.readLine();
-                String[] zeilelist =zeile.split("#",4);
+               
+                String[] zeilelist =zeile.split("#",6);
                 dbnummerstr=zeilelist[0];
                 String name=zeilelist[1];
                 if (zeilelist[2].equals("ja") ) stammdaten=true; else stammdaten=false;
@@ -107,7 +116,7 @@ public class Vartab {
                 String gruppenstring=zeilelist[4];
                 int nummer=parseInt(dbnummerstr);
                 nummer=Vartabtranscode(nummer, table);
-                if (nummer==1) dbnummerstr="";
+                if (nummer==1) dbnummerstr=""; else dbnummerstr=new Integer(nummer).toString();
                 edpE1.setFieldVal(0,"zdname"+dbnummerstr,name);
                 if (edpE1.getFieldVal("zdart"+dbnummerstr).equals("ja"))
                 {
@@ -134,13 +143,12 @@ public class Vartab {
                 }
                   
                 
-                edpE1.endEditSave();
-                
-                
-                return true;
+              
                 
                 
             }
+              edpE1.endEditSave();
+                return true;
         } catch (CantBeginEditException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -248,14 +256,14 @@ public class Vartab {
     {
       
         EDPEditor edpE1=session.createEditor();
-        EDPEditObject eo = null;
+        //EDPEditObject eo = null;
         String [] tabFeld=new String[6];
         boolean status=false;
        
         // Betriebsdatensatz beschreiben
             String Betriebsdatenfile=table.getValueAt(0,5).toString();
             Betriebsdatenfile=Betriebsdatenfile.substring(0,Betriebsdatenfile.indexOf("V-"));
-            Betriebsdatenfile=Betriebsdatenfile+"Betriebdatensatz.txt";
+            Betriebsdatenfile=Betriebsdatenfile+"Betriebsdatensatz.txt";
             status=schreibbetrieb(Betriebsdatenfile,edpE1, table);
             
         String vartabfile="";

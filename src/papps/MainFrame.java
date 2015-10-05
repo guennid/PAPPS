@@ -36,6 +36,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
@@ -191,7 +192,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
         jBInstallInfosysteme = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTLog = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        jBinstallFOP = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jBInstallAufzaehlungen = new javax.swing.JButton();
         jBInstallVartab = new javax.swing.JButton();
@@ -302,14 +303,14 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
 
             },
             new String [] {
-                "Such", "Name", "Nummer", "Installiert", "Lokale Datei"
+                "Such", "Lokale Datei"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -588,11 +589,11 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
         jTLog.setName("Log"); // NOI18N
         jScrollPane6.setViewportView(jTLog);
 
-        jButton1.setText("FOP");
-        jButton1.setEnabled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBinstallFOP.setText("FOP");
+        jBinstallFOP.setEnabled(false);
+        jBinstallFOP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBinstallFOPActionPerformed(evt);
             }
         });
 
@@ -624,21 +625,20 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                         .addContainerGap()
                         .addComponent(jScrollPane6))
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel6))
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jBInstallInfosysteme)
-                                .addGap(38, 38, 38)
-                                .addComponent(jBInstallAufzaehlungen)
-                                .addGap(37, 37, 37)
-                                .addComponent(jBInstallVartab)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
-                        .addGap(69, 69, 69)))
+                        .addContainerGap()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 616, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jBInstallInfosysteme)
+                .addGap(38, 38, 38)
+                .addComponent(jBInstallAufzaehlungen)
+                .addGap(37, 37, 37)
+                .addComponent(jBInstallVartab)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBinstallFOP)
+                .addGap(81, 81, 81))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -646,7 +646,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInstallInfosysteme)
-                    .addComponent(jButton1)
+                    .addComponent(jBinstallFOP)
                     .addComponent(jBInstallAufzaehlungen)
                     .addComponent(jBInstallVartab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
@@ -782,6 +782,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             SystemLesen(pappinfo.dir,"Infosystem");
                             SystemLesen(pappinfo.dir,"Vartab");
                             SystemLesen(pappinfo.dir,"SPX");
+                            SystemLesen(pappinfo.dir,"FOP");
                             SystemLesen(pappinfo.dir,"Aufzaehlungen");
                             
                         }
@@ -791,77 +792,27 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
 
     }//GEN-LAST:event_jTree1ValueChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jBinstallFOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBinstallFOPActionPerformed
         //SPX kopieren
-
+        
+          FOPS fops =new FOPS();
+           for(int i=0;i<jTFOP.getRowCount();i++)
+         {
+        
+                File file= new File (jTFOP.getValueAt(i, 3).toString());
+                String dir= (jTFOP.getValueAt(i, 0)).toString();
+                boolean status=fops.install(jTLinuxUser.getText(),new String(jPLinux.getPassword()),jTHost.getText(),file,dir);
+             
+         }
+         
         //FOP kopieren
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jBinstallFOPActionPerformed
 
     private void jBInstallInfosystemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallInfosystemeActionPerformed
-        String arb="";
-        String name="";
-        File file;
-        StringBuilder fromServer=new StringBuilder();
-        ByteArrayOutputStream error= new ByteArrayOutputStream();
-        int sshexitstatus;
-        //Infosysteme installieren
-        for(int i=0;i<jTinfosystem.getRowCount();i++)
-        {
-            try {
-                arb=jTinfosystem.getValueAt(i, 0).toString();
-                name=jTinfosystem.getValueAt(i, 1).toString();
-                file= new File (jTinfosystem.getValueAt(i, 2).toString());
-                System.out.println(name);
-                // Verbindung aufnehmen
-                SshClient sshclient=new SshClient();
-                //Infosystem kopieren
-                jTLog.append("Infosystem "+file.getName()+" kopieren");
-                jTLog.update(jTLog.getGraphics());
-                sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
-                sshexitstatus=sshclient.sendfile(file.toString(), file.getName());
-                jTLog.append("                                         OK\n");
-                jTLog.update(jTLog.getGraphics());
-                //Infosystem auspacken
-                jTLog.append("Infosystem "+file.getName()+" auspacken\n");
-                jTLog.append("=======================================\n");
-                jTLog.update(jTLog.getGraphics());
-                sshexitstatus=sshclient.sendcommand("tar xzvf "+file.getName(), error, fromServer);
-                if (sshexitstatus==0)
-                {
-                    jTLog.append(fromServer.toString());
-                    jTLog.append("=======================================\n");
-                    jTLog.update(jTLog.getGraphics());
-                    //Infosystem installieren
-                    jTLog.append("Infosystem "+file.getName()+" installieren\n");
-                    jTLog.update(jTLog.getGraphics());
-                    sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+new String(jPMandant.getPassword())+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
-                    // sshexitstatus=sshclient.sendcommand("ls", error, fromServer);
-                    if (sshexitstatus==0)
-                    {
-                        jTLog.append(fromServer.toString());
-                    }
-                    else
-                    {
-                        jTLog.append(error.toString());
-                    }
-                }
-                else
-                {
-                    jTLog.append(error.toString());
-                }
-
-                // Session beenden
-                sshclient.sessiondisconnect();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SftpException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (JSchException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+         Infosysteme  infosysteme=new Infosysteme();
+     //    (JTable jTinfosystem, JTextArea jTLog,String LinuxUser, String LinuxPass, String Host, String MandantPass)
+        boolean status =infosysteme.install(jTinfosystem,jTLog,jTLinuxUser.getText(),new String (jPLinux.getPassword()),jTHost.getText(),new String(jPMandant.getPassword()));        
+            
     }//GEN-LAST:event_jBInstallInfosystemeActionPerformed
 
     private void jBConnectionTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConnectionTestActionPerformed
@@ -884,7 +835,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                     String zdgrp="zdgrp"; 
                     String zdgn="zdgn"; 
                     // Und durchlaufen alle Zusatzdatenbanken
-                    for (int i=1;i<=40;i++)
+                    for (int i=1;i<=GlobalVars.maxZDB;i++)
                     {    
                         Integer meini =new Integer(i);
                         if (i> 1) 
@@ -896,7 +847,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             }
                         if (!edpE1.getFieldVal(zdname).equals(""))
                         {// Dateiname ist da
-                            ZDArrayDB[i-1]=edpE1.getFieldVal(zdname);
+                            ZDArrayDB[i]=edpE1.getFieldVal(zdname);
                             if (edpE1.getFieldVal(zdgrp).equals("ja"))
                             {//Gruppen sind da
                                 int gruppennummer=0;
@@ -906,7 +857,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                                     String gruppe=grp.substring(0,grp.indexOf(","));
                                     if (!gruppe.equals(""))
                                     {
-                                        ZDArray[i-1][gruppennummer]=gruppe;
+                                        ZDArray[i][gruppennummer]=gruppe;
                                     }
                                     
                                 grp=grp.substring(grp.indexOf(",")+1,grp.length());
@@ -918,16 +869,16 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             {// Keine Gruppen da, aber dadurch alles gesperrt
                                 for (int y=0;y<20;y++)
                                 {
-                                ZDArray[i-1][y]=edpE1.getFieldVal(zdname);       
+                                ZDArray[i][y]=edpE1.getFieldVal(zdname);       
                                 }
                             }
                         }
                         else
                             {
-                                ZDArrayDB[i-1]="";
+                                ZDArrayDB[i]="";
                             for (int y=0;y<20;y++)
                                 {
-                                ZDArray[i-1][y]="";   
+                                ZDArray[i][y]="";   
                                 }
                             }
                     }
@@ -1053,26 +1004,19 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
 
     private void jBInstallAufzaehlungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallAufzaehlungenActionPerformed
         File file=null;
-         StringBuilder fromServer=new StringBuilder();
-        ByteArrayOutputStream error= new ByteArrayOutputStream();
+          String passwd = new String(jPMandant.getPassword());
+          EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),passwd);                                         
+          EDPSession session2=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),passwd);                                         
         // Aufzählungen Installieren
         Aufzählungen aufzählungen=new Aufzählungen();
          for(int i=0;i<jTAufzaehlungen.getRowCount();i++)
          {
-            try {
-                file= new File (jTinfosystem.getValueAt(i, 4).toString());
-                try {
-                    aufzählungen.Install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(),new String (jPMandant.getPassword()),file, error,fromServer);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (JSchException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SftpException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        
+                file= new File (jTAufzaehlungen.getValueAt(i, 1).toString());
+                boolean status=aufzählungen.Install(session,session2, file);
+                  
+                session.endSession();
+                session2.endSession();
              
          }
                  
@@ -1141,13 +1085,19 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
+          if (system.equals("FOPSUB")) 
+        {
+            model =(DefaultTableModel) jTFOP.getModel();
+            // Tabellenzeilen löschen
+            //model.setNumRows(0);
+        }
         if (system.equals("Aufzaehlungen")) 
         {
             model =(DefaultTableModel) jTAufzaehlungen.getModel();
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
-      if (!system.equals("SPXSUB")) 
+      if (!system.equals("SPXSUB")&& !system.equals("FOPSUB")) 
       {
           dir=new File(dir.toString()+"\\"+system);
       }
@@ -1161,6 +1111,12 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                         {
                             // In Ordner absteigen rekursiv
                             SystemLesen(files[i],"SPXSUB");
+                        }
+                         if (system.contains("FOP"))
+                        {
+                            // In Ordner absteigen rekursiv
+                            SystemLesen(files[i],"FOPSUB");
+                            jBinstallFOP.setEnabled(true);
                         }
                     }
                     else {
@@ -1179,6 +1135,8 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                            arbdir=files[i].getParent();
                            arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
                            name=files[i].getName();
+                           if (!name.equals("Betriebsdatensatz.txt"))
+                           {
                            String db=name.substring(2,name.lastIndexOf("-"));
                            dbint=parseInt(db);
                            String gruppe=name.substring(name.lastIndexOf("-")+1,name.lastIndexOf("."));
@@ -1188,7 +1146,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                            if ((dbint==15)||(dbint>=18&&dbint<=37)||(dbint>=41&&dbint<=51)||(dbint>=71&&dbint<=80))
                                    {
                                      //wir habene ine Zusatzdatenbank
-                                       // Frei muss geprüft werden, deshalberst mal auf False setzen
+                                       // Ob diese frei ist, muss geprüft werden, deshalb erst mal auf False setzen
                                        vartabfrei=false;  
                                        //CheckZD aufrufen
                                       String[] comboarray;
@@ -1211,7 +1169,8 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                                       }
                                    }
                            model.addRow(new Object[]{name,db,gruppe,dbneu,vartabfrei,files[i]});   
-                        }    
+                        }  
+                        }
                         if (system.equals("SPXSUB"))
                         {
                            arbdir=files[i].getParent();
@@ -1219,17 +1178,23 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                            name=files[i].getName();
                            model.addRow(new Object[]{arbdir,"",name,files[i]});   
                         }
+                         if (system.equals("FOPSUB"))
+                        {
+                           arbdir=files[i].getParent();
+                           arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
+                           name=files[i].getName();
+                           model.addRow(new Object[]{arbdir,name,"",files[i]});   
+                        }
                           if (system.equals("Aufzaehlungen"))
                         {
-                            if (files[i].getName().contains(".csv"))
-                            {
                                 jBInstallAufzaehlungen.setEnabled(true); 
                                 such=files[i].getName().substring(0,files[i].getName().indexOf("."));
-                                name=files[i].getName().substring(files[i].getName().indexOf(".")+1,files[i].getName().lastIndexOf("."));
-                                model.addRow(new Object[]{such,name,"",Boolean.FALSE,files[i]});   
-                            }
+                                //name=files[i].getName().substring(files[i].getName().indexOf(".")+1,files[i].getName().lastIndexOf("."));
+                                model.addRow(new Object[]{such,files[i]});   
+                            
                         }
                         System.out.print(" (Datei)\n");
+                        
                     }
 		}
 	}
@@ -1241,7 +1206,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
 int dbtable=0;
 //Array mit den in jTVartab belegten ZD aufbauen        
 // Aber prüfen ob nicht schon in Table belegt
-        for (int i=0;i<40;i++)
+        for (int i=1;i<=GlobalVars.maxZDB;i++)
         {
             ZDArrayNeu[i][0]="";
              
@@ -1279,7 +1244,7 @@ int dbtable=0;
         {
             // Schauen welche DB komplett frei ist
             //String[] comboarray= new String[5];
-            for (int i=0;i<40;i++)
+            for (int i=1;i<=GlobalVars.maxZDB;i++)
             {
                 if (ZDArrayDB[i].equals(""))
                 {
@@ -1478,7 +1443,7 @@ int dbtable=0;
     private javax.swing.JButton jBInstallAufzaehlungen;
     private javax.swing.JButton jBInstallInfosysteme;
     private javax.swing.JButton jBInstallVartab;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBinstallFOP;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
