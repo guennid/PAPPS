@@ -43,6 +43,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import static papps.GlobalVars.ZDArray;
+import static papps.GlobalVars.ZDArrayDB;
 import static papps.GlobalVars.ZDArrayNeu;
 
 /**
@@ -72,11 +73,11 @@ public class MainFrame extends javax.swing.JFrame {
         treeModel = new DefaultTreeModel(rootnode);
         jTree1.setModel(treeModel);
         DirList(GlobalVars.target,rootnode,true );
-        jTLinuxUser.setText("demo");
-        jTHost.setText("192.168.15.61");
-        jPLinux.setText("demo");
-        jTMandant.setText("demo");
-        jPMandant.setText("lars");
+        jTLinuxUser.setText("erp");
+        jTHost.setText("10.0.3.200");
+        jPLinux.setText("erp");
+        jTMandant.setText("erp");
+        jPMandant.setText("master");
         jTVartab.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE); 
         
     }
@@ -882,18 +883,20 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                     String zdname="zdname"; 
                     String zdgrp="zdgrp"; 
                     String zdgn="zdgn"; 
-                    
+                    // Und durchlaufen alle Zusatzdatenbanken
                     for (int i=1;i<=40;i++)
                     {    
                         Integer meini =new Integer(i);
                         if (i> 1) 
                             {
+                             // Für fortlaufende Nummerierung bei größer 1   
                             zdname="zdname"+meini.toString();
                             zdgrp="zdgrp"+meini.toString();
                             zdgn="zdgn"+meini.toString();
                             }
                         if (!edpE1.getFieldVal(zdname).equals(""))
                         {// Dateiname ist da
+                            ZDArrayDB[i-1]=edpE1.getFieldVal(zdname);
                             if (edpE1.getFieldVal(zdgrp).equals("ja"))
                             {//Gruppen sind da
                                 int gruppennummer=0;
@@ -905,6 +908,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                                     {
                                         ZDArray[i-1][gruppennummer]=gruppe;
                                     }
+                                    
                                 grp=grp.substring(grp.indexOf(",")+1,grp.length());
                                 gruppennummer++;  
                                 }
@@ -920,6 +924,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                         }
                         else
                             {
+                                ZDArrayDB[i-1]="";
                             for (int y=0;y<20;y++)
                                 {
                                 ZDArray[i-1][y]="";   
@@ -1247,22 +1252,26 @@ int dbtable=0;
                     {
                        // Hier steht ein Wert drin,also wird hier eine db belegt
                        dbtable = parseInt(table.getValueAt(i,3).toString());
-                        if ((dbtable>=18)&&(dbtable<=26)) dbtable=dbtable-17;
+                       dbtable=Vartab.Vartab2ZD(dbtable);
+                        /*if ((dbtable>=18)&&(dbtable<=26)) dbtable=dbtable-17;
                         if ((dbtable>=29)&&(dbtable<=37)) dbtable=dbtable-19;
                         if ((dbtable>=41)&&(dbtable<=51)) dbtable=dbtable-22;
-                        if ((dbtable>=71)&&(dbtable<=80)) dbtable=dbtable-41;
+                        if ((dbtable>=71)&&(dbtable<=80)) dbtable=dbtable-41;*/
                        ZDArrayNeu[dbtable][0]=table.getValueAt(i, 5).toString();
                     }
             }
 
 //String[]comboarray;
         List<String> combo = new ArrayList<String>();
-        if (dbint==15) dbint=0;
+      /*  if (dbint==15) dbint=0;
         if ((dbint>=18)&&(dbint<=26)) dbint=dbint-17;
         if ((dbint>=29)&&(dbint<=37)) dbint=dbint-19;
         if ((dbint>=41)&&(dbint<=51)) dbint=dbint-22;
-        if ((dbint>=71)&&(dbint<=80)) dbint=dbint-41;
-        if (ZDArray[dbint][gruppeint]==null||ZDArray[dbint][gruppeint].equals(""))
+        if ((dbint>=71)&&(dbint<=80)) dbint=dbint-41;*/
+        dbint=Vartab.Vartab2ZD(dbint);
+        
+        
+        if (ZDArrayDB[dbint]==null||ZDArrayDB[dbint].equals(""))
         {
             return null; 
         }
@@ -1272,19 +1281,20 @@ int dbtable=0;
             //String[] comboarray= new String[5];
             for (int i=0;i<40;i++)
             {
-                if (ZDArray[i][1].equals(""))
+                if (ZDArrayDB[i].equals(""))
                 {
                     // Im Array ist die db Frei
                     // Aber nun noch schaune ob die evtl. in der jTVartab belegt wurde vom User
                     if (ZDArrayNeu[i][0].equals("")) 
                     {     
                         // Immer noch frei, also in die Combobox rein schieben
-                    if (i==0) dbint=15;
+                    /*if (i==0) dbint=15;
                     if ((i>=1)&&(i<=9)) dbint=i+17;
                     if ((i>=10)&&(i<=18)) dbint=i+19;
                     if ((i>=19)&&(i<=29)) dbint=i+22;
-                    if ((i>=30)&&(i<=39)) dbint=i+41;
-                    combo.add(Integer.toString(dbint));
+                    if ((i>=30)&&(i<=39)) dbint=i+41;*/
+                    dbint=Vartab.ZD2Vartab(i);
+                        combo.add(Integer.toString(dbint));
                     }
                 }
             }

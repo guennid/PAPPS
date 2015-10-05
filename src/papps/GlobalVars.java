@@ -16,8 +16,9 @@ public class GlobalVars {
       public static File source=new File("E:\\günter\\Eigene Dokumente\\PAPPS");
       public static File target=new File(".\\PAPPS");
       public static String[][]  ZDArray =new String[40][20];
+      public static String[]  ZDArrayDB =new String[40];
       public static String ZDFree;
-      public static String[][] ZDArrayNeu= new String[40][20];
+      public static String[][] ZDArrayNeu= new String[40][21];
       
      
 }

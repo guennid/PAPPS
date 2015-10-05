@@ -31,18 +31,149 @@ import static papps.GlobalVars.ZDArrayNeu;
  * @author gdenz
  */
 public class Vartab {
+    public static int ZD2Vartab (int zdnummer)
+    {int vartabnummer=0;
+          if (zdnummer==0) zdnummer=15;
+                    if ((zdnummer>=1)&&(zdnummer<=9)) vartabnummer=zdnummer+17;
+                    if ((zdnummer>=10)&&(zdnummer<=18)) vartabnummer=zdnummer+19;
+                    if ((zdnummer>=19)&&(zdnummer<=29)) vartabnummer=zdnummer+22;
+                    if ((zdnummer>=30)&&(zdnummer<=39)) vartabnummer=zdnummer+41;
+        return vartabnummer;
+    }
+    public static int Vartab2ZD (int vartabnummer)
+    {int zdnummer=0;
+         if (vartabnummer==15) zdnummer=0;
+        if ((vartabnummer>=18)&&(vartabnummer<=26)) zdnummer=vartabnummer-17;
+        if ((vartabnummer>=29)&&(vartabnummer<=37)) zdnummer=vartabnummer-19;
+        if ((vartabnummer>=41)&&(vartabnummer<=51)) zdnummer=vartabnummer-22;
+        if ((vartabnummer>=71)&&(vartabnummer<=80)) zdnummer=vartabnummer-41;
+        return zdnummer;
+    }
     
+    public int Vartabtranscode(int zdnummer, JTable table)
+    {
+        int zdnummerret=0;
+        int vartab =ZD2Vartab(zdnummer);
+        for (int i=0;i<table.getRowCount();i++)
+        {
+            String zdstring=table.getValueAt(i, 1).toString();
+            int zdint=parseInt(zdstring);
+            if (zdint==zdnummer)
+                    {
+                       zdnummerret=parseInt(table.getValueAt(i, 3).toString());
+                       
+                    }
+        }
+        return zdnummerret;
+    }
+    
+    public boolean schreibbetrieb(String filename, EDPEditor edpE1, JTable table)
+    {                                                                                             
+        try {
+            FileReader fr = null;
+            boolean stammdaten=false;
+            boolean gruppen=false;
+            
+            String dbnamevar="";
+            String dbnummerstr="";
+            String[] zdgnliste;
+            int imax=0;
+            
+            edpE1.beginEdit(EDPEditor.EDIT_UPDATE,"12","10",EDPEditor.REFTYPE_NUMSW,"1");
+            
+            
+            
+            fr = new FileReader(filename);
+            
+            BufferedReader br = new BufferedReader(fr);
+            //Header1 lesen
+            String zeile="";
+            
+            zeile = br.readLine();
+            
+            System.out.println(zeile);
+            while( (zeile = br.readLine()) != null )
+            {
+                /*Nummer#Name ZD#stammdaten#gruppen#Namen der Gruppe#
+                1#test#ja#ja#testgruppe,,,,,,,,
+                2#test#ja#ja#testgruppe,xy,,,,,,,
+                32#test#ja#ja#testgruppe,xy,,,,,,,,,,,,,,*/
+                zeile = br.readLine();
+                String[] zeilelist =zeile.split("#",4);
+                dbnummerstr=zeilelist[0];
+                String name=zeilelist[1];
+                if (zeilelist[2].equals("ja") ) stammdaten=true; else stammdaten=false;
+                if (zeilelist[3].equals("ja") ) gruppen=true; else gruppen=false;
+                String gruppenstring=zeilelist[4];
+                int nummer=parseInt(dbnummerstr);
+                nummer=Vartabtranscode(nummer, table);
+                if (nummer==1) dbnummerstr="";
+                edpE1.setFieldVal(0,"zdname"+dbnummerstr,name);
+                if (edpE1.getFieldVal("zdart"+dbnummerstr).equals("ja"))
+                {
+                    // Stammdaten ist schon belegt und nicht mehr änderbar
+                    if (!stammdaten)
+                        
+                    {
+                        // wir haben ein Problem, Stammdaten ist angeklickt, wir wollen aber keine!
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (stammdaten)
+                    {
+                        // Feld per edp setzen
+                        edpE1.setFieldVal(0,"zdart"+dbnummerstr, "ja");
+                    }
+                }
+                if (gruppen)
+                {
+                     edpE1.setFieldVal(0,"zdgrp"+dbnummerstr, "ja");
+                     edpE1.setFieldVal(0,"zdgn"+dbnummerstr,gruppenstring);
+                }
+                  
+                
+                edpE1.endEditSave();
+                
+                
+                return true;
+                
+                
+            }
+        } catch (CantBeginEditException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (CantChangeFieldValException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (CantReadFieldPropertyException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (CantSaveException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public void schreibvars(EDPEditor edpE1,String vartabfile,int vzeile,boolean Kopf, JTable table)
     {FileReader fr = null;
+    boolean status=false;
         try {
             
+        
             fr = new FileReader(vartabfile);
             BufferedReader br = new BufferedReader(fr);
-            //Header lesen
+            //Header1 lesen
             String zeile = br.readLine();
             System.out.println(zeile);
-            
-               while( (zeile = br.readLine()) != null )
+            while( (zeile = br.readLine()) != null )
                         {
                         System.out.println(zeile);
                         // Zeile in einzelne Variablen Splitten
@@ -96,6 +227,7 @@ public class Vartab {
                 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (IOException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidRowOperationException ex) {
@@ -118,9 +250,14 @@ public class Vartab {
         EDPEditor edpE1=session.createEditor();
         EDPEditObject eo = null;
         String [] tabFeld=new String[6];
-        
+        boolean status=false;
        
-        
+        // Betriebsdatensatz beschreiben
+            String Betriebsdatenfile=table.getValueAt(0,5).toString();
+            Betriebsdatenfile=Betriebsdatenfile.substring(0,Betriebsdatenfile.indexOf("V-"));
+            Betriebsdatenfile=Betriebsdatenfile+"Betriebdatensatz.txt";
+            status=schreibbetrieb(Betriebsdatenfile,edpE1, table);
+            
         String vartabfile="";
         String db="";
         String gruppe="";
@@ -141,6 +278,8 @@ public class Vartab {
                
                 //per EDP auf die Vartab zugreifen
                 vartab="V-"+db+"-"+gruppe;
+                
+                
                 edpE1.beginEdit(EDPEditor.EDIT_UPDATE,"12","26",EDPEditor.REFTYPE_NUMSW,vartab);
                 // Alle Daten der Vartab ins Objekt laden
                 //eo=edpE1.getEditObject();
@@ -176,6 +315,8 @@ public class Vartab {
 
         }  
     }
+
+    
     
 }
  

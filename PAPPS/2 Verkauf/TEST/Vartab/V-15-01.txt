@@ -1,3 +1,5 @@
+Name ZD#stammdaten#gruppen#Name der Gruppe#
+test#ja#ja#testgruppe
 Name#Name2#K/T#Art#Art2#Skip#Bemerkung# 
 teytest1# #K#P15# #0# 1# 
 teytest2# #K#PS15# #0# 2#
