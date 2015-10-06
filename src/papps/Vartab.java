@@ -5,6 +5,8 @@
  */
 package papps;
 
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 import de.abas.ceks.jedp.CantBeginEditException;
 import de.abas.ceks.jedp.CantChangeFieldValException;
 import de.abas.ceks.jedp.CantInsertRowException;
@@ -17,13 +19,20 @@ import de.abas.ceks.jedp.EDPSession;
 import de.abas.ceks.jedp.InvalidQueryException;
 import de.abas.ceks.jedp.InvalidRowOperationException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import static papps.GlobalVars.Host;
+import static papps.GlobalVars.LinuxPass;
+import static papps.GlobalVars.LinuxUser;
 import static papps.GlobalVars.ZDArrayNeu;
 
 /**
@@ -50,10 +59,18 @@ public class Vartab {
         return zdnummer;
     }
     
-    public int Vartabtranscode(int zdnummer, JTable table)
+    public int Vartabtranscode(int zdnummer, JTable table, boolean isVartab)
     {
         int zdnummerret=0;
-        int vartab =ZD2Vartab(zdnummer);
+        int vartab=0;
+        if (isVartab) 
+        {
+            vartab=zdnummer;
+        }
+        else
+        {
+            vartab =ZD2Vartab(zdnummer);
+        }
         for (int i=0;i<table.getRowCount();i++)
         {
             String zdstring=table.getValueAt(i, 1).toString();
@@ -64,16 +81,77 @@ public class Vartab {
                        
                     }
         }
+        if (isVartab)
+        {
+            return vartab;
+        }
+        else
+        {    
         zdnummerret=Vartab2ZD(vartab);
         return zdnummerret;
+        }
     }
-    public boolean DBini(String filename,JTable table)
+    
+    public boolean DBini(String filename,JTable table,String frameworkno)
     {
-       //Zeile einlesen
+        try {
+            String dbKonfig="FWCONFIG."+frameworkno+".CFG";
+             PrintWriter pWriter = null; 
+            FileReader fr = null;
+            fr = new FileReader(filename);
+            BufferedReader br = new BufferedReader(fr);
+            //Header einlesen
+            String zeile=br.readLine();
+            //Zeile einlesen
+             pWriter = new PrintWriter(new BufferedWriter(new FileWriter(dbKonfig))); 
+             pWriter.println("..!interpreter english ");
+             while( (zeile = br.readLine()) != null )
+            {
+                String[]   zeilelist=zeile.split("#",6);
+                //String dbnummerstr=zeilelist[1];
+                int nummer=parseInt(zeilelist[1]);
+                nummer=Vartabtranscode(nummer, table,true);
+                //String dbnummerstr= new Integer (nummer).toString();
+                // if (nummer==1) dbnummerstr=""; else dbnummerstr=new Integer(nummer).toString();
+                //Für DB und Gruppe jeweils eine FOP Zeile erzeugen
+                //.FORMEL  VariableDB = Datei+dbnummerstr 
+                pWriter.println(".type text "+zeilelist[0]+" ? F|defined("+zeilelist[0]+")");
+                pWriter.println(".FORMULA "+zeilelist[0]+"="+new Integer (nummer).toString());
+                pWriter.println(".type text "+zeilelist[2]+" ? F|defined("+zeilelist[2]+")");
+                pWriter.println(".FORMULA "+zeilelist[2]+"="+zeilelist[3]);
+                
+            }   
+             if (pWriter !=null)
+             {
+                 pWriter.flush();
+                 pWriter.close();
+                 // Und jetzt das File übertragen
+                 StringBuilder fromServer=new StringBuilder();
+                ByteArrayOutputStream error= new ByteArrayOutputStream();
+                int sshexitstatus;
+                 SshClient sshclient=new SshClient();
+                 // Das Framework verzeichnis erstellen 
+                 sshclient.connect(GlobalVars.LinuxUser, GlobalVars.LinuxPass,GlobalVars.Host, 22);
+                 sshexitstatus=sshclient.sendcommand("mkdir owfw"+frameworkno, error, fromServer);
+                 sshexitstatus=sshclient.sendfile(dbKonfig, "./owfw"+frameworkno+"/"+dbKonfig);
+           
+             }
+            br.close();
+            fr.close();
+            return true;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSchException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SftpException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        //Für DB und Gruppe jeweils eine FOP Zeile erzeugen
-        
-        return true; 
+        return true;
     }
     
     public boolean schreibbetrieb(String filename, EDPEditor edpE1, JTable table)
@@ -82,18 +160,13 @@ public class Vartab {
             FileReader fr = null;
             boolean stammdaten=false;
             boolean gruppen=false;
-            
+            fr = new FileReader(filename);
             String dbnamevar="";
             String dbnummerstr="";
             String[] zdgnliste;
             int imax=0;
             
             edpE1.beginEdit(EDPEditor.EDIT_UPDATE,"12","10",EDPEditor.REFTYPE_NUMSW,"1");
-            
-            
-            
-            fr = new FileReader(filename);
-            
             BufferedReader br = new BufferedReader(fr);
             //Header1 lesen
             String zeile="";
@@ -115,7 +188,7 @@ public class Vartab {
                 if (zeilelist[3].equals("ja") ) gruppen=true; else gruppen=false;
                 String gruppenstring=zeilelist[4];
                 int nummer=parseInt(dbnummerstr);
-                nummer=Vartabtranscode(nummer, table);
+                nummer=Vartabtranscode(nummer, table, false);
                 if (nummer==1) dbnummerstr=""; else dbnummerstr=new Integer(nummer).toString();
                 edpE1.setFieldVal(0,"zdname"+dbnummerstr,name);
                 if (edpE1.getFieldVal("zdart"+dbnummerstr).equals("ja"))
@@ -252,17 +325,20 @@ public class Vartab {
             }
     }
     
-    public void install(JTable table, EDPSession session)
+    public void install(JTable table, EDPSession session, String frameworkNo)
     {
-      
+       String Betriebsdatenfile=table.getValueAt(0,5).toString();
+            Betriebsdatenfile=Betriebsdatenfile.substring(0,Betriebsdatenfile.indexOf("V-"));
+            
         EDPEditor edpE1=session.createEditor();
         //EDPEditObject eo = null;
         String [] tabFeld=new String[6];
         boolean status=false;
-       
+        // DBKonfig schreiben
+        DBini(Betriebsdatenfile+"DBKonfig.txt",table,frameworkNo);
+        
         // Betriebsdatensatz beschreiben
-            String Betriebsdatenfile=table.getValueAt(0,5).toString();
-            Betriebsdatenfile=Betriebsdatenfile.substring(0,Betriebsdatenfile.indexOf("V-"));
+           
             Betriebsdatenfile=Betriebsdatenfile+"Betriebsdatensatz.txt";
             status=schreibbetrieb(Betriebsdatenfile,edpE1, table);
             

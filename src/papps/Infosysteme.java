@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
  * @author gdenz
  */
 public class Infosysteme {
-    public boolean install(JTable jTinfosystem, JTextArea jTLog,String LinuxUser, String LinuxPass, String Host, String MandantPass)
+    public boolean install(JTable jTinfosystem, JTextArea jTLog)
     {
         String arb="";
         String name="";
@@ -41,7 +41,7 @@ public class Infosysteme {
                 //Infosystem kopieren
                 jTLog.append("Infosystem "+file.getName()+" kopieren");
                 jTLog.update(jTLog.getGraphics());
-                sshclient.connect(LinuxUser, LinuxPass,Host, 22);
+                sshclient.connect(GlobalVars.LinuxUser, GlobalVars.LinuxPass,GlobalVars.Host, 22);
                 sshexitstatus=sshclient.sendfile(file.toString(), file.getName());
                 jTLog.append("                                         OK\n");
                 jTLog.update(jTLog.getGraphics());
@@ -58,7 +58,7 @@ public class Infosysteme {
                     //Infosystem installieren
                     jTLog.append("Infosystem "+file.getName()+" installieren\n");
                     jTLog.update(jTLog.getGraphics());
-                    sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+MandantPass+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
+                    sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+GlobalVars.Mandantpass+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
                     // sshexitstatus=sshclient.sendcommand("ls", error, fromServer);
                     if (sshexitstatus==0)
                     {

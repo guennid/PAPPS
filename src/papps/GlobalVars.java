@@ -20,6 +20,14 @@ public class GlobalVars {
       public static String ZDFree;
       public static String[][] ZDArrayNeu= new String[41][21];
       public static int maxZDB=40;
+      public static String LinuxUser="";
+      public static String Host="";
+      public static String LinuxPass="";
+      public static String Mandant="";
+      public static String Mandantpass="";
+      public static int edpport=0;
+      public static boolean VerbindungOK=false;
+      
      
 }
 
