@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import static java.lang.Integer.parseInt;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -184,11 +185,13 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
         jScrollPane7 = new javax.swing.JScrollPane();
         jTVartab = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTschluessel = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTFOP = new javax.swing.JTable();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTFOPTXT = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -289,9 +292,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jTMaintainer, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(193, 193, 193))
+                                    .addComponent(jTMaintainer, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -499,15 +500,34 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
 
         jTabbedPane1.addTab("Vartab", jPanel3);
 
+        jTschluessel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(jTschluessel);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 709, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(304, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Schlüssel", jPanel8);
@@ -546,18 +566,30 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
             jTFOP.getColumnModel().getColumn(2).setMaxWidth(1000);
         }
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTFOPTXT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Maske", "Kommando", "Event", "Funktionstaste", "Feld", "K/T", "C/S", "FOP"
             }
-        ));
-        jScrollPane8.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(jTFOPTXT);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -746,25 +778,25 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                 .addContainerGap())
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jBInstallInfosysteme)
-                .addGap(38, 38, 38)
-                .addComponent(jBInstallAufzaehlungen)
-                .addGap(37, 37, 37)
-                .addComponent(jBInstallVartab)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jBinstallFOP)
-                .addGap(81, 81, 81))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jBInstallInfosysteme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBInstallVartab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBInstallAufzaehlungen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBinstallFOP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBInstallInfosysteme)
-                    .addComponent(jBinstallFOP)
-                    .addComponent(jBInstallAufzaehlungen)
-                    .addComponent(jBInstallVartab))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
+                .addComponent(jBInstallAufzaehlungen)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBInstallVartab)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addComponent(jBInstallInfosysteme)
+                .addGap(18, 18, 18)
+                .addComponent(jBinstallFOP)
+                .addGap(64, 64, 64)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -900,7 +932,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             SystemLesen(pappinfo.dir,"SPX");
                             SystemLesen(pappinfo.dir,"FOP");
                             SystemLesen(pappinfo.dir,"Aufzaehlungen");
-                            
+                            GlobalVars.dir=pappinfo.dir;
                         }
                     }
                 }
@@ -909,19 +941,31 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
     }//GEN-LAST:event_jTree1ValueChanged
 
     private void jBinstallFOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBinstallFOPActionPerformed
-        //SPX kopieren
-        
+        //SPX und FOP kopieren
+          jTLog.append("FOP's und Spx werden kopiert \n");
+          jTLog.append("=============================\n");
+          
           FOPS fops =new FOPS();
            for(int i=0;i<jTFOP.getRowCount();i++)
          {
-        
+                
+             
                 File file= new File (jTFOP.getValueAt(i, 3).toString());
+                jTLog.append(file.getName()+"\n");
+          
+              
                 String dir= (jTFOP.getValueAt(i, 0)).toString();
                 boolean status=fops.install(jTLinuxUser.getText(),new String(jPLinux.getPassword()),jTHost.getText(),file,dir);
              
          }
+          // fop.txt verändern
+          
+                            
+           boolean status=fops.foptxtinstall(jTFrameworkNo.getText(),jTLinuxUser.getText(),new String(jPLinux.getPassword()),jTHost.getText(),GlobalVars.dir,jTVartab);
+                        
+                
          
-        //FOP kopieren
+        
     }//GEN-LAST:event_jBinstallFOPActionPerformed
 
     private void jBInstallInfosystemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallInfosystemeActionPerformed
@@ -948,7 +992,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
         //    EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),Arrays.toString(jPMandant.getPassword()));                                         
             if (session !=null)
             {
-               
+               // ZD Belegungen aus Betriebsdatensatz abholen
             EDPQuery edpQ1 = session.createQuery();
             EDPEditor edpE1=session.createEditor();
              try {
@@ -1009,7 +1053,27 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             }
                     }
                }
+               // Und nun die Maskenliste abholen
+                  edpQ1.startQuery("12:26","","such,vmnr1");
+               while (edpQ1.getNextRecord())
+               {
+                   if (!edpQ1.getField(1).equals("VVAR"))
+                   {
+                   String db[]=edpQ1.getField(1).split("-");
+                   int dbi=Integer.parseInt(db[1]);
+                   if (dbi==15||dbi>=18&&dbi<=26||dbi>=29&&dbi<=37||dbi>=41&&dbi<=51||dbi>=71&&dbi<=80)
+                         // Für Zusatzdatenbanken die Maskennummer in ein Array einlagern für später (fop.txt und Masken)
+                   {
+                   int zd= Vartab.Vartab2ZD(Integer.parseInt(db[1]));
+                   int gruppe=(Integer.parseInt(db[2]));
+                   GlobalVars.MaskArray[zd][gruppe]=edpQ1.getField(2);
+                   
+                   
+                   }
+               }
+               }
                
+                   
             } catch (InvalidQueryException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 GlobalVars.VerbindungOK=false;
@@ -1198,7 +1262,12 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
     int gruppeint=0;
     int dbneu=0;
     boolean vartabfrei;
-  
+        if (system.equals("Schluessel"))
+         {
+            model =(DefaultTableModel) jTschluessel.getModel();
+            // Tabellenzeilen löschen
+            model.setNumRows(0);
+        }   
         if (system.equals("Infosystem")) 
         {
             model =(DefaultTableModel) jTinfosystem.getModel();
@@ -1245,7 +1314,8 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                             SystemLesen(files[i],"SPXSUB");
                         }
                          if (system.contains("FOP"))
-                        {
+                         {
+                           
                             // In Ordner absteigen rekursiv
                             SystemLesen(files[i],"FOPSUB");
                             jBinstallFOP.setEnabled(true);
@@ -1267,7 +1337,7 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                            arbdir=files[i].getParent();
                            arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
                            name=files[i].getName();
-                           if (!name.equals("Betriebsdatensatz.txt")&&(!name.equals("DBKonfig.txt")))
+                           if (!name.equals(GlobalVars.Betriebsdatensatztxtfile)&&(!name.equals(GlobalVars.DBKonfigtxtfile)))
                            {
                            String db=name.substring(2,name.lastIndexOf("-"));
                            dbint=parseInt(db);
@@ -1303,6 +1373,46 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                            model.addRow(new Object[]{name,db,gruppe,dbneu,vartabfrei,files[i]});   
                         }  
                         }
+                        if (system.equals("FOP"))
+                        {
+                              name=files[i].getName();
+                         if (name.equals(GlobalVars.foptxtfile))
+                            {
+                                // Fop Model erst mal retten
+                                DefaultTableModel modelfoptxt = (DefaultTableModel) jTFOPTXT.getModel();
+                               //Fop.txt einlesen 
+                               FileReader fr;
+                                try {
+                                    fr = new FileReader(files[i]);
+                                    BufferedReader br = new BufferedReader(fr);
+                                    //Header einlesen
+                                    String zeile = br.readLine();  
+                                    while( (zeile = br.readLine()) != null )
+                                    {
+                                        if (zeile.contains("[C]")||zeile.contains("[S]"))
+                                        {
+                                            //Zeile splitten mit CS
+                                            String[] zeilelist =zeile.split("\\s+",8);
+                                            modelfoptxt.addRow(new Object[]{zeilelist[0],zeilelist[1],zeilelist[2],zeilelist[3],zeilelist[4],zeilelist[5],zeilelist[6],zeilelist[7]});
+                                        }
+                                        else
+                                        {
+                                            //Zeile splitten ohne CS
+                                            String[] zeilelist =zeile.split("\\s",7);
+                                            modelfoptxt.addRow(new Object[]{zeilelist[0],zeilelist[1],zeilelist[2],zeilelist[3],zeilelist[4],zeilelist[5],"",zeilelist[6]});
+                                        }
+                                        
+                                        
+                                    }
+                                } catch (FileNotFoundException ex) {
+                                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                               
+                               
+                            }  
+                        }
                         if (system.equals("SPXSUB"))
                         {
                            arbdir=files[i].getParent();
@@ -1312,10 +1422,13 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                         }
                          if (system.equals("FOPSUB"))
                         {
+                            name=files[i].getName();
+  
                            arbdir=files[i].getParent();
                            arbdir=arbdir.substring(arbdir.lastIndexOf("\\")+1,arbdir.length());
                            name=files[i].getName();
                            model.addRow(new Object[]{arbdir,name,"",files[i]});   
+                            
                         }
                           if (system.equals("Aufzaehlungen"))
                         {
@@ -1325,6 +1438,11 @@ private  static class MyCellEditor extends AbstractCellEditor implements TableCe
                                 model.addRow(new Object[]{such,files[i]});   
                             
                         }
+                         if (system.equals("Schluessel"))
+                         {
+                              //jBInstallSchluessel.setEnabled(true); 
+                              //model.addRow(new Object[]{such,files[i]});  
+                         }
                         System.out.print(" (Datei)\n");
                         
                     }
@@ -1641,8 +1759,10 @@ int dbtable=0;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTAufzaehlungen;
     private javax.swing.JTable jTFOP;
+    private javax.swing.JTable jTFOPTXT;
     private javax.swing.JTextField jTFrameworkNo;
     private javax.swing.JTextField jTFrameworkpreis;
     private javax.swing.JTextField jTHost;
@@ -1655,11 +1775,11 @@ int dbtable=0;
     private javax.swing.JTextField jTVersion;
     private javax.swing.JTextField jTababas;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTbisabas;
     private javax.swing.JTextField jTedpPort;
     private javax.swing.JTable jTinfosystem;
     private javax.swing.JTree jTree1;
+    private javax.swing.JTable jTschluessel;
     private javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
 

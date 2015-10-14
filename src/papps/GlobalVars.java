@@ -15,7 +15,7 @@ import java.io.File;
 public class GlobalVars {
       public static File source=new File("E:\\günter\\Eigene Dokumente\\PAPPS");
       public static File target=new File(".\\PAPPS");
-      public static String[][]  ZDArray =new String[41][20];
+      public static String[][]  ZDArray =new String[41][21];
       public static String[]  ZDArrayDB =new String[41];
       public static String ZDFree;
       public static String[][] ZDArrayNeu= new String[41][21];
@@ -27,6 +27,14 @@ public class GlobalVars {
       public static String Mandantpass="";
       public static int edpport=0;
       public static boolean VerbindungOK=false;
+      public static String [][] MaskArray= new String[41][21];
+      public static File dir;
+      public static String foptxtfile="fop.txt";
+      public static String Betriebsdatensatztxtfile="Betriebsdatensatz.txt";
+      public static String DBKonfigtxtfile="DBKonfig.txt";
+      
+      
+      
       
      
 }

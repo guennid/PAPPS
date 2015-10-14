@@ -61,6 +61,9 @@ public class Vartab {
     
     public int Vartabtranscode(int zdnummer, JTable table, boolean isVartab)
     {
+        // Dateinummer in zdnummer, entweder 15 oder 1 
+        //isVartab = true wenn 15 und nicht die ZD Nummer
+        // zurück gibt es das was rein kam, entweder zd nummer oder Vartab, nur eben transkodiert
         int zdnummerret=0;
         int vartab=0;
         if (isVartab) 
@@ -341,7 +344,7 @@ public class Vartab {
            
             Betriebsdatenfile=Betriebsdatenfile+"Betriebsdatensatz.txt";
             status=schreibbetrieb(Betriebsdatenfile,edpE1, table);
-            
+        
         String vartabfile="";
         String db="";
         String gruppe="";

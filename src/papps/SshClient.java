@@ -13,9 +13,14 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,15 +48,27 @@ public class SshClient {
 
     public int sendfile(String source,String target) throws SftpException, JSchException
     { 
+      OutputStream outstream=null; 
+        
+            channel = session.openChannel("sftp");
+            channel.connect();
+           
+            //sftpchannel = (ChannelSftp) channel;
+            ((ChannelSftp)channel).put(source,target,null,sftpchannel.OVERWRITE);   
+            //sftpchannel.put(source,target,sftpchannel.OVERWRITE);
+            return channel.getExitStatus();
+        
+    }
+    
+     public int getfile(String source,String target) throws SftpException, JSchException
+    { 
       channel = session.openChannel("sftp"); 
       channel.connect();
      
       //sftpchannel = (ChannelSftp) channel;
-      ((ChannelSftp)channel).put(source,target,sftpchannel.OVERWRITE);
-      //sftpchannel.put(source,target,sftpchannel.OVERWRITE);
+      ((ChannelSftp)channel).get(source, target, null,sftpchannel.OVERWRITE );
       return channel.getExitStatus();   
     }
-    
    
     public int sendcommand(String command, ByteArrayOutputStream error,StringBuilder sbfromServer) throws JSchException, IOException, InterruptedException
     {   System.out.println(command);
