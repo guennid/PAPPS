@@ -6,6 +6,7 @@
 package papps;
 
 import java.io.File;
+import javax.swing.JTable;
 
 
 /**
@@ -32,10 +33,12 @@ public class GlobalVars {
       public static String foptxtfile="fop.txt";
       public static String Betriebsdatensatztxtfile="Betriebsdatensatz.txt";
       public static String DBKonfigtxtfile="DBKonfig.txt";
+      public static JTable jTablegd;
       
       
       
       
      
 }
+
 

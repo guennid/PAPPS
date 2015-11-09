@@ -1,0 +1,6 @@
+nummer#such#name#bname#bgrliste#bart#bbvname#baart#bsel#
+zn#bvname#
+1FW0001#FW-1-1#BDE-Schnittstelle: Gebucht#BDE-Schnittstelle_gebucht#15:0#(AutomaticTable)#-#(Both)#nein#
+1#ygebucht#
+2#yfehler#
+3#ysatztyp#
