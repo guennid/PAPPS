@@ -1,0 +1,26 @@
+    <pane.notebook msgId="b4c78e87-fdf8-4ec3-8334-f8537f40f606">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <erpfield msgId="97a0aa86-3827-4792-b0d8-984394069494" s3Name="0:yexport" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <label msgId="110a31a2-f23c-4b6d-957f-8be48325f58c" />
+      </cell>
+      <cell gridX="2" gridY="0">
+       <erpfield s3Name="0:yexdat" />
+      </cell>
+      <cell gridX="3" gridY="0" />
+      <cell gridX="0" gridY="1" />
+      <cell gridX="1" gridY="1" />
+      <cell gridX="2" gridY="1" />
+      <cell gridX="3" gridY="1" />
+      <cell gridX="0" gridY="2" />
+      <cell gridX="1" gridY="2" />
+      <cell gridX="2" gridY="2" />
+      <cell gridX="3" gridY="2" />
+      <cell gridX="0" gridY="3" />
+      <cell gridX="1" gridY="3" />
+      <cell gridX="2" gridY="3" />
+      <cell gridX="3" gridY="3" />
+     </layout.grid>
+    </pane.notebook>

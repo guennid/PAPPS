@@ -128,6 +128,7 @@ public class MainFrame extends javax.swing.JFrame {
                         MainFrame gui = ReferenceHolderClass.getGUI();
                         JTable jTablefoptxt = gui.getjTFOPTXT();  // hier hast du die TextArea
                         JTable jTschluessel = gui.getjTschluessel();
+                        JTable jTmasken=gui.getjTMasken();
                         //            .getjTFOPTXT();
                         Vartab vartab = new Vartab();
 
@@ -142,6 +143,10 @@ public class MainFrame extends javax.swing.JFrame {
                         Schluessel schluessel = new Schluessel();
                         //Transcoder aufrufen für 1. Stufe ( bei Shclüsseln ist es zweistufig, also später bei Import wird der rest transcodiert
                         schluessel.schluesseltranscode1(jTschluessel, suchzd, table.getCellEditor().getCellEditorValue().toString());
+                        // Masken instanzieren
+                        Masken masken = new Masken();
+                        //Transcoder für Maskennumemr aufrufen
+                        masken.maskentranscode(jTmasken, suchzd,table.getCellEditor().getCellEditorValue().toString());
 
                     }
 
@@ -210,6 +215,8 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane8 = new javax.swing.JScrollPane();
         jTFOPTXT = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTMasken = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -656,15 +663,39 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("FOP", jPanel4);
 
+        jTMasken.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Maske", "Neue Maske", "XML Datei", "Resources"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(jTMasken);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 709, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(360, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Masken", jPanel5);
@@ -985,6 +1016,7 @@ public class MainFrame extends javax.swing.JFrame {
                     SystemLesen(pappinfo.dir, "FOP");
                     SystemLesen(pappinfo.dir, "Aufzaehlungen");
                     SystemLesen(pappinfo.dir, "Schluessel");
+                    SystemLesen(pappinfo.dir, "Masken");
                     GlobalVars.dir = pappinfo.dir;
                 }
             }
@@ -1281,8 +1313,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTVartabVetoableChange
 
     private void jBInstallSchluesselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallSchluesselActionPerformed
+        
+         String passwd = new String(jPMandant.getPassword());
+        EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+        if (session != null) {
+            
+        
         Schluessel schluessel = new Schluessel();
-        boolean status = schluessel.Schluesselinstall(jTschluessel);
+        boolean status = schluessel.Schluesselinstall(jTschluessel,session);
+        session.endSession();
+        }
+        
     }//GEN-LAST:event_jBInstallSchluesselActionPerformed
 
     public void SystemLesen(File dir, String system) {
@@ -1321,6 +1362,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
         if (system.equals("Aufzaehlungen")) {
             model = (DefaultTableModel) jTAufzaehlungen.getModel();
+            // Tabellenzeilen löschen
+            model.setNumRows(0);
+        }
+        if (system.equals("Masken")) {
+            model = (DefaultTableModel) jTMasken.getModel();
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
@@ -1442,6 +1488,18 @@ public class MainFrame extends javax.swing.JFrame {
                         model.addRow(new Object[]{such, files[i]});
 
                     }
+                     if (system.equals("Masken")) {
+                        
+                        if (files[i].getName().endsWith(".xml")){                                                 
+                        String xml=files[i].getName();
+                        String maske=xml.substring(xml.indexOf(".")+1, xml.length());
+                        maske = maske.substring(0,maske.indexOf("."));
+                        String resource=xml.substring(0,xml.indexOf("-"))+"Ressources.language";
+                        model.addRow(new Object[]{maske,maske,xml,resource});
+                        }
+                        jBInstallAufzaehlungen.setEnabled(true);
+                    }
+                    
                     if (system.equals("Schluessel")) {
                         try {
                             FileReader fr;
@@ -1452,7 +1510,7 @@ public class MainFrame extends javax.swing.JFrame {
                             while ((zeile = br.readLine()) != null) {
                                 if (zeile.startsWith("1FW")) {
                                     String[] zeilelist = zeile.split("#", 8);
-                                    model.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[4], files[i].getName()});
+                                    model.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[4], files[i].toString()});
                                 }
                             }
                             fr.close();
@@ -1653,6 +1711,12 @@ public class MainFrame extends javax.swing.JFrame {
         return this.jTschluessel;
     }
 
+  // getter für Instanzierung wegen static/non static
+    public JTable getjTMasken() {
+        return this.jTMasken;
+    }
+  
+    
     class PappInfo {
 
         private String name;
@@ -1766,6 +1830,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1785,6 +1850,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea jTLog;
     private javax.swing.JTextField jTMaintainer;
     private javax.swing.JTextField jTMandant;
+    private javax.swing.JTable jTMasken;
     private javax.swing.JTable jTVartab;
     private javax.swing.JTextField jTVersion;
     private javax.swing.JTextField jTababas;
