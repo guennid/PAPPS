@@ -11,6 +11,7 @@ import de.abas.ceks.jedp.EDPQuery;
 import de.abas.ceks.jedp.EDPSession;
 import de.abas.ceks.jedp.InvalidQueryException;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -146,6 +147,7 @@ public class MainFrame extends javax.swing.JFrame {
                         // Masken instanzieren
                         Masken masken = new Masken();
                         //Transcoder für Maskennumemr aufrufen
+                        
                         masken.maskentranscode(jTmasken, suchzd,table.getCellEditor().getCellEditorValue().toString());
 
                     }
@@ -242,6 +244,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBInstallAufzaehlungen = new javax.swing.JButton();
         jBInstallVartab = new javax.swing.JButton();
         jBInstallSchluessel = new javax.swing.JButton();
+        jBInstallMasken = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -845,6 +848,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jBInstallMasken.setText("Masken");
+        jBInstallMasken.setEnabled(false);
+        jBInstallMasken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBInstallMaskenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -865,7 +876,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jBInstallAufzaehlungen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBinstallFOP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(47, 47, 47)
-                .addComponent(jBInstallSchluessel)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jBInstallSchluessel)
+                    .addComponent(jBInstallMasken))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
@@ -879,8 +892,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInstallInfosysteme)
                     .addComponent(jBInstallSchluessel))
-                .addGap(18, 18, 18)
-                .addComponent(jBinstallFOP)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jBinstallFOP))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jBInstallMasken)))
                 .addGap(64, 64, 64)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1126,7 +1144,7 @@ public class MainFrame extends javax.swing.JFrame {
                         {
                             int zd = Vartab.Vartab2ZD(Integer.parseInt(db[1]));
                             int gruppe = (Integer.parseInt(db[2]));
-                            GlobalVars.MaskArray[zd][gruppe] = edpQ1.getField(2);
+                            GlobalVars.MaskArray[zd][gruppe] = edpQ1.getField(2).trim();
 
                         }
                     }
@@ -1326,6 +1344,22 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jBInstallSchluesselActionPerformed
 
+    private void jBInstallMaskenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallMaskenActionPerformed
+  File file = null;
+  setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        String passwd = new String(jPMandant.getPassword());
+        EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+       
+        // Aufzählungen Installieren
+        Masken masken=new Masken();
+        boolean status = masken.maskenInstall(jTMasken,jTLog, session,jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText());
+
+            session.endSession();
+       setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));     
+
+        
+    }//GEN-LAST:event_jBInstallMaskenActionPerformed
+
     public void SystemLesen(File dir, String system) {
         DefaultTableModel model = null;
         String arbdir;
@@ -1494,10 +1528,16 @@ public class MainFrame extends javax.swing.JFrame {
                         String xml=files[i].getName();
                         String maske=xml.substring(xml.indexOf(".")+1, xml.length());
                         maske = maske.substring(0,maske.indexOf("."));
-                        String resource=xml.substring(0,xml.indexOf("-"))+"Ressources.language";
+                        String resource=xml.substring(0,xml.indexOf("-"))+"-Resources.language";
                         model.addRow(new Object[]{maske,maske,xml,resource});
                         }
-                        jBInstallAufzaehlungen.setEnabled(true);
+                        if (files[i].getName().endsWith(".tgz")){                                                 
+                        String xml=files[i].getName();
+                        String maske=xml.substring(xml.indexOf(".")+1, xml.length());
+                        maske = maske.substring(0,maske.indexOf("."));
+                        model.addRow(new Object[]{maske,maske,xml,"TGZ"});
+                        }
+                        jBInstallMasken.setEnabled(true);
                     }
                     
                     if (system.equals("Schluessel")) {
@@ -1797,6 +1837,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBConnectionTest;
     private javax.swing.JButton jBInstallAufzaehlungen;
     private javax.swing.JButton jBInstallInfosysteme;
+    private javax.swing.JButton jBInstallMasken;
     private javax.swing.JButton jBInstallSchluessel;
     private javax.swing.JButton jBInstallVartab;
     private javax.swing.JCheckBox jBKostenpflicht;

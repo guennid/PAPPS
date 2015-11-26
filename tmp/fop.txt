@@ -1,5 +1,0 @@
-Anfang FW 1
-103 * feldaus * charge T [C] owfo/F.32.CHARGE.FA 
-32 * buttonnach * ymachbe T [C] owfo/F.32.YMACHBE.BN 
-31 * feldaus * artex T  owfo/F.31.ART.FA 
-ENDE FW 1
