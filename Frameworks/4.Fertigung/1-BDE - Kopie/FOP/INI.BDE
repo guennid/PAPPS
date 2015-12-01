@@ -1,0 +1,242 @@
+..!interpreter german
+..
+.. @Name@: INI.BDE
+..
+.. @Funktion@: BDE Ini File
+..
+.. @Version@: 2
+..
+.. Hinweis: Diese Datei wurde automatisch generiert.
+..          énderungen dÅrfen nicht hier sondern nur
+..          mittels Infosystem INIDATEI geÑndert werden.
+.. Datum: 10.11.15
+..
+.. Bearbeiter: abas-Hî
+..
+.. Masken-FOP-Sequenz
+.. -> xyBMaske wird normalerweise vom rufenden Programm gefÅllt.
+..             Wenn nicht, setze ich voraus, dass es nicht
+..             innerhalb einer Maske laufen soll.
+.art bool       xyBoolMaske        ? _F|defined(xyBoolMaske)
+.weiter NOMASK                     ? _(U|xyBoolMaske)
+..
+.. Benennung/Funktion
+.formel   M|ykbenennung = "BDE Ini File"
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTmandant"
+.formel   M|ywert      = "gmbhdevelop15r4"
+.formel   M|ybem       = "Aktiver Mandant"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBexportsave"
+.formel   M|ywert      = "TRUE"
+.formel   M|ybem       = "BA/AS Export markieren"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBexportsql"
+.formel   M|ywert      = "FALSE"
+.formel   M|ybem       = "SQL Export"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBexportascii"
+.formel   M|ywert      = "TRUE"
+.formel   M|ybem       = "ASCII Export"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTexportfile"
+.formel   M|ywert      = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/abas2zeus"
+.formel   M|ybem       = "Export File"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBexportba"
+.formel   M|ywert      = "FALSE"
+.formel   M|ybem       = "BA exportieren?"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBexportas"
+.formel   M|ywert      = "TRUE"
+.formel   M|ybem       = "AS exportieren?"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBnochmal"
+.formel   M|ywert      = "FALSE"
+.formel   M|ybem       = "Schalter fÅr erneute öbertragung der BA/AS"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTexparbg"
+.formel   M|ywert      = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/arbg2zeus"
+.formel   M|ybem       = "Export Arbeitsgang"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTexpmasch"
+.formel   M|ywert      = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/masch2zeus"
+.formel   M|ybem       = "Export Maschinen"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTpasswort"
+.formel   M|ywert      = "bgmbhdevelop15r4"
+.formel   M|ybem       = "Passwort fÅr BDE-Import"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Text"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyTimportfile"
+.formel   M|ywert      = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/zeus2abas"
+.formel   M|ybem       = "Import File"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBimportdel"
+.formel   M|ywert      = "TRUE"
+.formel   M|ybem       = "Import File lîschen?"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Integer"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyImastellen"
+.formel   M|ywert      = "5"
+.formel   M|ybem       = "Mitarbeiter-Nummer muss auf 5 Stellen mit fÅhrenden Nullen erweitert werden"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBfertigmld"
+.formel   M|ywert      = "TRUE"
+.formel   M|ybem       = "autom. fertigmelden, wenn F kommt"
+..
+.mache Maske Zeile +O
+.zuweisen M|yart       = "Bool"
+.zuweisen M|yerweitert = "Datum, Jahr vierstellig"       ? F|defined(M|yerweitert)
+.formel   M|yvname     = "xyBtmploesch"
+.formel   M|ywert      = "FALSE"
+.formel   M|ybem       = "tmp-Datei lîschen, wenn kein EDP-Fehler"
+..
+.. @Def-End@
+.weiter
+..
+..
+!NOMASK: Ab hier keine Maskenverarbeitung mehr
+.. @Def-Start@
+.. Text|xyTmandant|gmbhdevelop15r4|Aktiver Mandant||
+.. Aktiver Mandant
+.ART Text xyTmandant ? _F|defined(xyTmandant)
+.formel xyTmandant = "gmbhdevelop15r4"
+..
+..
+.. Bool|xyBexportsave|TRUE|BA/AS Export markieren||
+.. BA/AS Export markieren
+.ART Bool xyBexportsave ? _F|defined(xyBexportsave)
+.formel xyBexportsave = G|true
+..
+..
+.. Bool|xyBexportsql|FALSE|SQL Export||
+.. SQL Export
+.ART Bool xyBexportsql ? _F|defined(xyBexportsql)
+.formel xyBexportsql = G|false
+..
+..
+.. Bool|xyBexportascii|TRUE|ASCII Export||
+.. ASCII Export
+.ART Bool xyBexportascii ? _F|defined(xyBexportascii)
+.formel xyBexportascii = G|true
+..
+..
+.. Text|xyTexportfile|/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/abas2zeus|Export File||
+.. Export File
+.ART Text xyTexportfile ? _F|defined(xyTexportfile)
+.formel xyTexportfile = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/abas2zeus"
+..
+..
+.. Bool|xyBexportba|FALSE|BA exportieren?||
+.. BA exportieren?
+.ART Bool xyBexportba ? _F|defined(xyBexportba)
+.formel xyBexportba = G|false
+..
+..
+.. Bool|xyBexportas|TRUE|AS exportieren?||
+.. AS exportieren?
+.ART Bool xyBexportas ? _F|defined(xyBexportas)
+.formel xyBexportas = G|true
+..
+..
+.. Bool|xyBnochmal|FALSE|Schalter fÅr erneute öbertragung der BA/AS||
+.. Schalter fÅr erneute öbertragung der BA/AS
+.ART Bool xyBnochmal ? _F|defined(xyBnochmal)
+.formel xyBnochmal = G|false
+..
+..
+.. Text|xyTexparbg|/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/arbg2zeus|Export Arbeitsgang||
+.. Export Arbeitsgang
+.ART Text xyTexparbg ? _F|defined(xyTexparbg)
+.formel xyTexparbg = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/arbg2zeus"
+..
+..
+.. Text|xyTexpmasch|/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/masch2zeus|Export Maschinen||
+.. Export Maschinen
+.ART Text xyTexpmasch ? _F|defined(xyTexpmasch)
+.formel xyTexpmasch = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/masch2zeus"
+..
+..
+.. Text|xyTpasswort|bgmbhdevelop15r4|Passwort fÅr BDE-Import||
+.. Passwort fÅr BDE-Import
+.ART Text xyTpasswort ? _F|defined(xyTpasswort)
+.formel xyTpasswort = "bgmbhdevelop15r4"
+..
+..
+.. Text|xyTimportfile|/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/zeus2abas|Import File||
+.. Import File
+.ART Text xyTimportfile ? _F|defined(xyTimportfile)
+.formel xyTimportfile = "/u1/gmbh/framework/owframework/2015r4/BDE-Transfer/zeus2abas"
+..
+..
+.. Bool|xyBimportdel|TRUE|Import File lîschen?||
+.. Import File lîschen?
+.ART Bool xyBimportdel ? _F|defined(xyBimportdel)
+.formel xyBimportdel = G|true
+..
+..
+.. Integer|xyImastellen|5|Mitarbeiter-Nummer muss auf 5 Stellen mit fÅhrenden Nullen erweitert werden||
+.. Mitarbeiter-Nummer muss auf 5 Stellen mit fÅhrenden Nullen erweitert werden
+.ART Integer xyImastellen ? _F|defined(xyImastellen)
+.formel xyImastellen = 5
+..
+..
+.. Bool|xyBfertigmld|TRUE|autom. fertigmelden, wenn F kommt||
+.. autom. fertigmelden, wenn F kommt
+.ART Bool xyBfertigmld ? _F|defined(xyBfertigmld)
+.formel xyBfertigmld = G|true
+..
+..
+.. Bool|xyBtmploesch|FALSE|tmp-Datei lîschen, wenn kein EDP-Fehler||
+.. tmp-Datei lîschen, wenn kein EDP-Fehler
+.ART Bool xyBtmploesch ? _F|defined(xyBtmploesch)
+.formel xyBtmploesch = G|false
+..
+..
+.. @Def-End@
+..
+.. Programm verlassen
+.weiter

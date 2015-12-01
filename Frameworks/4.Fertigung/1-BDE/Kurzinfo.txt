@@ -1,0 +1,2 @@
+Hier steht die Paketbeschreibung für das Installationsprogramm.
+Bla Bla Bla.
