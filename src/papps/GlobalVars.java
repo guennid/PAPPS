@@ -14,8 +14,9 @@ import javax.swing.JTable;
  * @author günter
  */
 public class GlobalVars {
-      public static File source=new File("E:\\günter\\Eigene Dokumente\\PAPPS");
-      public static File target=new File(".\\PAPPS");
+    //  public static File source=new File("E:\\günter\\Eigene Dokumente\\PAPPS");
+     public static File source=new File("\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks");
+      public static File target=new File(".\\Frameworks");
       public static String[][]  ZDArray =new String[41][21];
       public static String[]  ZDArrayDB =new String[41];
       public static String ZDFree;

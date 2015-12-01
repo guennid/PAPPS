@@ -245,6 +245,9 @@ public class MainFrame extends javax.swing.JFrame {
         jBInstallVartab = new javax.swing.JButton();
         jBInstallSchluessel = new javax.swing.JButton();
         jBInstallMasken = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -856,53 +859,74 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Phase 1");
+        jButton1.setEnabled(false);
+
+        jButton3.setText("Phase 2");
+        jButton3.setEnabled(false);
+
+        jButton4.setText("Aufrufparameter");
+        jButton4.setEnabled(false);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 685, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane6))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addGroup(jPanel10Layout.createSequentialGroup()
+                                        .addComponent(jBInstallAufzaehlungen)
+                                        .addGap(15, 15, 15)
+                                        .addComponent(jBInstallVartab, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jBInstallSchluessel))
+                            .addComponent(jButton3)
+                            .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addComponent(jBInstallInfosysteme, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBinstallFOP, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBInstallMasken)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jBInstallInfosysteme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jBInstallVartab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jBInstallAufzaehlungen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jBinstallFOP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(47, 47, 47)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jBInstallSchluessel)
-                    .addComponent(jBInstallMasken))
+                .addContainerGap()
+                .addComponent(jLabel6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jBInstallAufzaehlungen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jBInstallVartab)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBInstallAufzaehlungen)
+                    .addComponent(jBInstallVartab)
+                    .addComponent(jBInstallSchluessel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInstallInfosysteme)
-                    .addComponent(jBInstallSchluessel))
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jBinstallFOP))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jBInstallMasken)))
-                .addGap(64, 64, 64)
+                    .addComponent(jBinstallFOP)
+                    .addComponent(jBInstallMasken)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1082,14 +1106,20 @@ public class MainFrame extends javax.swing.JFrame {
         GlobalVars.Mandant = jTMandant.getText();
         GlobalVars.Mandantpass = new String(jPMandant.getPassword());
         GlobalVars.edpport = Integer.parseInt(jTedpPort.getText());
-
+        jTLog.append("----------Verbindungstest----------\n"); 
+        jTLog.append("EDP Verbindung aufbauen"); 
+        jTLog.paint(jTLog.getGraphics());
         EDPSession session = SessionAufbauen(GlobalVars.Host, GlobalVars.edpport, GlobalVars.Mandant, GlobalVars.Mandantpass);
         //    EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),Arrays.toString(jPMandant.getPassword()));                                         
         if (session != null) {
+            jTLog.append("           OK\n"); 
+            jTLog.paint(jTLog.getGraphics());
             // ZD Belegungen aus Betriebsdatensatz abholen
             EDPQuery edpQ1 = session.createQuery();
             EDPEditor edpE1 = session.createEditor();
             try {
+                jTLog.append("Belegung der ZD abholen"); 
+                jTLog.paint(jTLog.getGraphics());
                 edpQ1.startQuery("12:10", "", "id");
                 if (edpQ1.getNextRecord()) {
                     edpE1.beginView(edpQ1.getField("id"));
@@ -1135,6 +1165,8 @@ public class MainFrame extends javax.swing.JFrame {
                     }
                 }
                 // Und nun die Maskenliste abholen
+                jTLog.append("             OK\nMaskenzuordnungen abholen"); 
+                jTLog.paint(jTLog.getGraphics());
                 edpQ1.startQuery("12:26", "", "such,vmnr1");
                 while (edpQ1.getNextRecord()) {
                     if (!edpQ1.getField(1).equals("VVAR")) {
@@ -1149,7 +1181,8 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                     }
                 }
-
+                jTLog.append("     OK\n"); 
+                jTLog.paint(jTLog.getGraphics());
             } catch (InvalidQueryException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 GlobalVars.VerbindungOK = false;
@@ -1164,6 +1197,7 @@ public class MainFrame extends javax.swing.JFrame {
             GlobalVars.VerbindungOK = true;
 
         }
+       
         session.endSession();
 
         /*
@@ -1353,7 +1387,9 @@ public class MainFrame extends javax.swing.JFrame {
         // Aufzählungen Installieren
         Masken masken=new Masken();
         boolean status = masken.maskenInstall(jTMasken,jTLog, session,jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText());
-
+       if (status) jTLog.append("Masken erfolgreich verarbeitet");
+          jTLog.append("--------------------------------\n");
+        jTLog.paint(jTLog.getGraphics());
             session.endSession();
        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));     
 
@@ -1842,7 +1878,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBInstallVartab;
     private javax.swing.JCheckBox jBKostenpflicht;
     private javax.swing.JButton jBinstallFOP;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

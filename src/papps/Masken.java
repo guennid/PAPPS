@@ -7,6 +7,11 @@ package papps;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import de.abas.ceks.jedp.CantBeginEditException;
+import de.abas.ceks.jedp.CantChangeFieldValException;
+import de.abas.ceks.jedp.CantReadFieldPropertyException;
+import de.abas.ceks.jedp.CantSaveException;
+import de.abas.ceks.jedp.EDPEditor;
 import de.abas.ceks.jedp.EDPSession;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,7 +45,7 @@ public class Masken {
                 for (int grnummer = 0; grnummer < 21; grnummer++) {
                     // Wenn nun die Maskennummer zur aktuellen Tabellenzeile passt
                     if (GlobalVars.MaskArray[dbnummer][grnummer].equals(table.getValueAt(i, 0))) {
-                   // Dann wissen wir die Datei und die GR
+                        // Dann wissen wir die Datei und die GR
                         //die muss aber noch übersetzt werden in Vartab anstatt DB
                         Vartab vartab = new Vartab();
                         dbnummer = vartab.ZD2Vartab(dbnummer);
@@ -62,12 +67,89 @@ public class Masken {
             }
         }
     }
-
+public void maskegenerieren(EDPSession session,String maskennummer, String prio)
+{
+        try {
+            EDPEditor edpE1 = null;
+            boolean individuelleMaskeDa = false;
+            
+            edpE1 = session.createEditor();
+            edpE1.beginEdit(EDPEditor.EDIT_GET, "Infosystem", "",
+                    EDPEditor.REFTYPE_NUMSW, "MASKE");
+            edpE1.setFieldVal(0, "selmasknr", maskennummer);
+            edpE1.setFieldVal(0, "bstart", "");
+            int maxrows = edpE1.getRowCount();
+            int aktrow = 1;
+            // schauen ob eine individuelle Maske schon vorhanden ist
+            while (aktrow <= maxrows) {
+                if (edpE1.getFieldVal(aktrow, "tprio").equals(prio.toUpperCase()) && edpE1.getFieldVal(aktrow, "tstdmaske").equals("nein")) {
+                    // Individuelle Maske ist vorhanden
+                    edpE1.setFieldVal(aktrow, "tmaskgen","");
+                    
+                }
+                aktrow++;
+            } 
+        edpE1.endEditSave();
+        } catch (CantBeginEditException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantChangeFieldValException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantReadFieldPropertyException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantSaveException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+public void individuelleMaskePruefen(EDPSession session, String maskennummer, String prio)
+{       try {
+    EDPEditor edpE1 = null;
+     boolean individuelleMaskeDa = false;
+     
+    edpE1 = session.createEditor();
+    edpE1.beginEdit(EDPEditor.EDIT_GET, "Infosystem", "",
+            EDPEditor.REFTYPE_NUMSW, "MASKE");
+    edpE1.setFieldVal(0, "selmasknr", maskennummer);
+    edpE1.setFieldVal(0, "bstart", "");
+    int maxrows = edpE1.getRowCount();
+    int aktrow = 1;
+    // schauen ob eine individuelle Maske schon vorhanden ist
+    while (aktrow <= maxrows) {
+        if (edpE1.getFieldVal(aktrow, "tprio").equals(prio.toUpperCase()) && edpE1.getFieldVal(aktrow, "tstdmaske").equals("nein")) {
+            // Individuelle Maske ist vorhanden
+            individuelleMaskeDa = true;
+            
+        }
+        aktrow++;
+    }
+    if (individuelleMaskeDa == false) {
+        // wenn keine Maske vorhanden, dann individualisieren
+        aktrow = 1;
+        while (aktrow <= maxrows) {
+            if (edpE1.getFieldVal(aktrow, "tprio").equals(prio.toUpperCase())) {
+                edpE1.setFieldVal(aktrow, "tindivid", "");
+            }
+            aktrow++;
+        }
+        
+    }
+    edpE1.endEditSave();
+        } catch (CantBeginEditException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantChangeFieldValException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantReadFieldPropertyException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CantSaveException ex) {
+            Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}
     public boolean maskenInstall(JTable table, JTextArea jTLog, EDPSession session, String LinuxUser, String LinuxPass, String Host) {
         try {
             ByteArrayOutputStream error = new ByteArrayOutputStream();
             StringBuilder fromServer = new StringBuilder();
             StringBuilder screenls = new StringBuilder();
+            StringBuilder screenlsstring = new StringBuilder();
             String maskennummer;
             String fromServerString = "";
             String[] fromServerArray;
@@ -81,21 +163,24 @@ public class Masken {
             int sshexitstatus = 0;
             File file = null;
             int zielzeile = 0;
+           
+           
             //SSh Verbindung zum Mandanten öffnen
             SshClient sshclient = new SshClient();
             sshclient.connect(LinuxUser, LinuxPass, Host, 22);
+
+            jTLog.append("----------Maskenimport----------\n");
             
-            //ls im screen Verzeichnis
             
-            sshexitstatus = sshclient.sendcommand("ls screens -l", error, screenls);
-            jTLog.append("Vorhandene Masken aus Mandanten eingelesen\n");
+            jTLog.append("Vorhandene Masken aus Mandanten ermittelt\n");
+            jTLog.paint(jTLog.getGraphics());
             //Dateinamen erzeugen
             for (int i = 0; i < table.getRowCount(); i++) {
                 xmlziel = table.getValueAt(i, 2).toString().replace(table.getValueAt(i, 0).toString(), table.getValueAt(i, 1).toString());
                 resourcesziel = table.getValueAt(i, 3).toString().replace(table.getValueAt(i, 0).toString(), table.getValueAt(i, 1).toString());
                 maskennummer = table.getValueAt(i, 1).toString();
-                // schauen ob das Maskenverzeichnis vorhanden ist im ls
-                masksearch = screenls.indexOf("screen_" + maskennummer + "\n");
+                
+                
                 // hab ich eine ZD und ein Masken TGZ?      
                 if (table.getValueAt(i, 3).equals("TGZ")) {
                     prio = xmlziel.substring(xmlziel.indexOf(".") + 1, xmlziel.lastIndexOf("."));
@@ -103,38 +188,34 @@ public class Masken {
                     // Dann kann ich die Maske einfach auf den Serverv kopieren
                     file = new File(GlobalVars.dir + "\\Masken\\" + table.getValueAt(i, 2).toString());
                     sshexitstatus = sshclient.sendfile(file.toString(), xmlziel);
+                    jTLog.append("Neue Maske " + maskennummer + prio + " wird hochgeladen\n");
+                    jTLog.paint(jTLog.getGraphics());
                     // und importieren
+                    jTLog.append("Neue Maske " + maskennummer + prio + " wird im Mandanten importiert\n");
+                    jTLog.paint(jTLog.getGraphics());
                     sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;screen_import.sh -n " + maskennummer + " -p " + prio + " " + xmlziel, error, fromServer);
                     // und generieren
-                    sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;edpinfosys.sh -p " + GlobalVars.Mandantpass + " -n MASKE -s selmasknr,bstart,1:tmaskgen -w'" + maskennummer + ";1;1'", error, fromServer);
-                   jTLog.append(error.toString());
+                    jTLog.append("Neue Maske " + maskennummer + prio + " wird generiert\n");
+                    jTLog.paint(jTLog.getGraphics());
+                    // Maske generieren
+                    maskegenerieren(session,maskennummer,prio);
+                    
+                    jTLog.append(error.toString());
+                    // Kein ZD und kein TGZ File, also muss die Maske integriert werden
                 } else {
-
-                    if (masksearch <= 0) {
-                        sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;edpinfosys.sh -p " + GlobalVars.Mandantpass + " -n MASKE -s selmasknr,bstart,1:tindivid,2:tindivid,3:tindivid -w'" + maskennummer + ";1;1;1;1'", error, fromServer);
-
-                        System.out.println(error);
-                    }
-                    //Maske ist vorhanden
                     prio = xmlziel.substring(xmlziel.indexOf(".") + 1, xmlziel.lastIndexOf("."));
                     prio = prio.substring(prio.indexOf(".") + 1, prio.indexOf("-"));
-
-                    // Nun noch schauen welche Prioritäten da sind
-                    sshexitstatus = sshclient.sendcommand("ls screens/screen_" + maskennummer + " -l", error, fromServer);
-
-                    fromServerString = fromServer.toString();
-                    fromServerArray = fromServerString.split("\n");
-
-                    // Wir müssen durchs Array durchlaufen um die Prios raus zu finden
-                    for (int iServer = 0; iServer < fromServerArray.length; iServer++) {
-                        //die Prio aus dem fromServerArray raus fischen
-                        String prioServermaske = fromServerArray[iServer].substring(fromServerArray[iServer].length() - 1, fromServerArray[iServer].length());
-                        if (prioServermaske.equals(prio)) {
-                           jTLog.append("Maske "+maskennummer+" "+prio+" wird erweitert\n");
+                    // Maske individualisieren falls notwendig
+                    individuelleMaskePruefen(session,maskennummer, prio);
+                   
                             // Maske abholen
+                            jTLog.append("Maske " + maskennummer + " " + prio + " wird geladen\n");
+                            jTLog.paint(jTLog.getGraphics());
                             String servermaske = "./screens/screen_" + maskennummer + "/" + prio + "/screen_" + maskennummer + "_" + prio + "_M.xml";
                             sshexitstatus = sshclient.getfile(servermaske, "tmp\\" + maskennummer + prio + ".xml");
                             //Maske einlesen
+                            jTLog.append("Maske " + maskennummer + " " + prio + " wird erweitert\n");
+                            jTLog.paint(jTLog.getGraphics());
                             BufferedReader inservermaske = new BufferedReader(new FileReader("tmp\\" + maskennummer + prio + ".xml"));
 
                             BufferedReader inmaske = new BufferedReader(new FileReader(GlobalVars.dir + "\\Masken\\" + table.getValueAt(i, 2).toString()));
@@ -172,13 +253,14 @@ public class Masken {
                             outservermaske.close();
 
                             //Datei zurück zum server schicken
+                            jTLog.append("Maske " + maskennummer + " " + prio + " wird gesendet\n");
+                            jTLog.paint(jTLog.getGraphics());
                             sshexitstatus = sshclient.sendfile("tmp\\" + maskennummer + prio + "X.xml", servermaske);
-                            
-                         // Jetzt noch die Resources Datei an die Resources auf dem server anhängen
 
+                         // Jetzt noch die Resources Datei an die Resources auf dem server anhängen
                             sshexitstatus = sshclient.sendfile(GlobalVars.dir + "\\Masken\\" + table.getValueAt(i, 3).toString(), "./screens/screen_" + maskennummer + "/" + prio + "/ResourcesFW");
                             sshexitstatus = sshclient.sendcommand("cat  ./screens/screen_" + maskennummer + "/" + prio + "/ResourcesFW  >> ./screens/screen_" + maskennummer + "/" + prio + "/Resources.language", error, fromServer);
-                        //  
+                            //  
 
                             sshexitstatus = sshclient.sendcommand("ls screens/screen_" + maskennummer + "/" + prio + "/Resources_* -l", error, fromServer);
                             resourcesServerString = fromServer.toString();
@@ -189,16 +271,20 @@ public class Masken {
                                 }
 
                             }
+                            jTLog.append("Maske " + maskennummer + " " + prio + " wird generiert\n");
+                            jTLog.paint(jTLog.getGraphics());
                             // Maske nun noch generieren
-                            sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;edpinfosys.sh -p " + GlobalVars.Mandantpass + " -n MASKE -s selmasknr,bstart,1:tmaskgen,2:tmaskgen,3:tmaskgen,4:tmaskgen -w'" + maskennummer + ";1;1;1;1;1'", error, fromServer);
+                           maskegenerieren(session,maskennummer, prio);
+                            
                             //System.out.println(error);
-                            jTLog.append(error.toString());
+                            //jTLog.append(error.toString());
                         }
                         //System.out.println();
 
                         // Danach einfügen des neuen Registers
                         // und zurücksenden der Datei auf den Server
-                    }
+                        //XX
+                    
 
                     // Maske nicht da, neu individualisieren
                     //Maske abholen
@@ -213,14 +299,15 @@ public class Masken {
                      sshexitstatus = sshclient.sendfile(file.toString(), "./screens/screen_"+maskennummer+"/"+resourcesziel);
                      */
         // In fromServer steht nun der ls, den wir nun anschauen müssen ob der screen schon da ist
-        // Maske kopieren
+                    // Maske kopieren
                     // Resources kopieren
                     // Prüfung auf bestehende individuelle Maske
                     // Maske erzeugen 
                     // Oder Maske anhängen
                 }
-            }
-
+        
+        
+        
         } catch (JSchException ex) {
             Logger.getLogger(Masken.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
