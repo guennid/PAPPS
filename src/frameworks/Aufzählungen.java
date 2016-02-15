@@ -23,6 +23,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -30,19 +32,152 @@ import java.util.logging.Logger;
  */
 public class Aufzählungen {
     
-    public boolean Install(EDPSession session, EDPSession session2,File datei) 
+    public boolean Install(EDPSession session, File datei, JTextArea jTLog) 
     {  FileReader fr = null;
        String zeile="";
        String zeileaufz;
-            
+     String[] zeilelistaufz;      
          EDPQuery edpQW = session.createQuery();
-         EDPQuery edpQA = session2.createQuery();
+      //   EDPQuery edpQA = session2.createQuery();
          EDPEditor edpEW=session.createEditor();
-         EDPEditor edpEA=session2.createEditor();
+        // EDPEditor edpEA=session2.createEditor();
          
         
             
         try {
+            if (datei.toString().contains("Werte"))
+                    {
+                    // Wertemengen   
+            fr = new FileReader(datei);
+            BufferedReader br = new BufferedReader(fr);
+            //Header einlesen
+            zeileaufz = br.readLine();
+           while( (zeileaufz = br.readLine()) != null )
+           {
+            zeilelistaufz =zeileaufz.split("#",11);
+            zeilelistaufz[0]=zeilelistaufz[0].replace("-",":");
+            edpQW.startQuery(zeilelistaufz[0],"","nummer=="+ zeilelistaufz[1],"id");
+            if (edpQW.getNextRecord())
+            {
+                jTLog.append("Wertemenge "+zeilelistaufz[1]+ " geändert\n");
+                // Datensatz gibt es shcon, also editieren
+                        edpEW.beginEdit(edpQW.getField("id")); 
+                         edpEW.setFieldVal("such", zeilelistaufz[2]);
+                         edpEW.setFieldVal("name", zeilelistaufz[3]);
+                         edpEW.setFieldVal("name2", zeilelistaufz[4]);
+                         edpEW.setFieldVal("langtxt", zeilelistaufz[5]);
+                         edpEW.setFieldVal("kbezbspr", zeilelistaufz[6]);
+                         edpEW.setFieldVal("katego", zeilelistaufz[7]);
+                         edpEW.setFieldVal("icontxt", zeilelistaufz[8]);
+                         edpEW.setFieldVal("besch", zeilelistaufz[9]);
+                         edpEW.endEditSave();
+                         
+            }
+            else
+            {
+                 // Datensatz Neu anlegen 
+                        String db=zeilelistaufz[0].substring(0,zeilelistaufz[0].indexOf(":"));
+                        String gruppe=zeilelistaufz[0].substring(zeilelistaufz[0].indexOf(":")+1,zeilelistaufz[0].length());
+                        edpEW.beginEditNew(db,gruppe);
+                         edpEW.setFieldVal("nummer", zeilelistaufz[1]);
+                         edpEW.setFieldVal("such", zeilelistaufz[2]);
+                         edpEW.setFieldVal("name", zeilelistaufz[3]);
+                         edpEW.setFieldVal("name2", zeilelistaufz[4]);
+                         edpEW.setFieldVal("langtxt", zeilelistaufz[5]);
+                         edpEW.setFieldVal("kbezbspr", zeilelistaufz[6]);
+                         edpEW.setFieldVal("katego", zeilelistaufz[7]);
+                         edpEW.setFieldVal("icontxt", zeilelistaufz[8]);
+                         edpEW.setFieldVal("besch", zeilelistaufz[9]);
+                         edpEW.endEditSave();
+                         jTLog.append("Wertemenge "+zeilelistaufz[1]+ " neu angelegt\n");
+                       //   xxxxx
+            }
+           }
+            }
+            else
+            {
+                //Aufzählung
+                fr = new FileReader(datei);
+            BufferedReader br = new BufferedReader(fr);
+            //Header einlesen
+            zeileaufz = br.readLine();
+            zeileaufz = br.readLine();
+            zeileaufz = br.readLine();
+            zeilelistaufz =zeileaufz.split("#",12);
+            edpQW.startQuery("107:01","","nummer=="+zeilelistaufz[1],"id");
+            if (edpQW.getNextRecord())
+            {
+                  jTLog.append("Aufzählung "+zeilelistaufz[1]+ " geändert\n");
+                // Datensatz gibt es shcon, aslo editieren
+                 edpEW.beginEdit(edpQW.getField("id")); 
+                 edpEW.setFieldVal("such",zeilelistaufz[2]);
+                edpEW.setFieldVal("name",zeilelistaufz[3]);
+                edpEW.setFieldVal("name2",zeilelistaufz[4]);
+                edpEW.setFieldVal("classname",zeilelistaufz[5]);
+                //edpEW.setFieldVal("tabart",zeilelistaufz[6]);
+                edpEW.setFieldVal("fldname",zeilelistaufz[7]);
+                edpEW.setFieldVal("fldkname",zeilelistaufz[8]);
+                edpEW.setFieldVal("fldbezname",zeilelistaufz[9]);
+                edpEW.setFieldVal("fldiname",zeilelistaufz[10]);
+                edpEW.deleteAllRows();
+                while( (zeileaufz = br.readLine()) != null )
+                {
+                   
+                    zeilelistaufz=zeileaufz.split("#",12);
+                    edpEW.insertRow(zeilelistaufz[1]);
+                    
+                     edpEW.setFieldVal(zeilelistaufz[1],"vaufzelem",zeilelistaufz[2]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebez",zeilelistaufz[3]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aefix",zeilelistaufz[4]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aekbez",zeilelistaufz[5]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aekfix",zeilelistaufz[6]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebezeichner",zeilelistaufz[7]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebezfix",zeilelistaufz[8]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aeaktiv",zeilelistaufz[9]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aedefault",zeilelistaufz[10]);
+                     
+                     
+                }
+                 edpEW.endEditSave();
+            }
+            else
+            {
+                jTLog.append("Aufzählung "+zeilelistaufz[1]+ " neu angelegt\n");
+                //Datensatz neu anlegen
+                edpEW.beginEditNew("107","01");
+                edpEW.setFieldVal("nummer",zeilelistaufz[1]);
+                edpEW.setFieldVal("such",zeilelistaufz[2]);
+                edpEW.setFieldVal("name",zeilelistaufz[3]);
+                edpEW.setFieldVal("name2",zeilelistaufz[4]);
+                edpEW.setFieldVal("classname",zeilelistaufz[5]);
+                edpEW.setFieldVal("tabart",zeilelistaufz[6]);
+                edpEW.setFieldVal("fldname",zeilelistaufz[7]);
+                edpEW.setFieldVal("fldkname",zeilelistaufz[8]);
+                edpEW.setFieldVal("fldbezname",zeilelistaufz[9]);
+                edpEW.setFieldVal("fldiname",zeilelistaufz[10]);
+                while( (zeileaufz = br.readLine()) != null )
+                {
+                   
+                    zeilelistaufz=zeileaufz.split("#",12);
+                    edpEW.insertRow(zeilelistaufz[1]);
+                    
+                     edpEW.setFieldVal(zeilelistaufz[1],"vaufzelem",zeilelistaufz[2]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebez",zeilelistaufz[3]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aefix",zeilelistaufz[4]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aekbez",zeilelistaufz[5]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aekfix",zeilelistaufz[6]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebezeichner",zeilelistaufz[7]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aebezfix",zeilelistaufz[8]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aeaktiv",zeilelistaufz[9]);
+                     edpEW.setFieldVal(zeilelistaufz[1],"aedefault",zeilelistaufz[10]);
+                     
+                     
+                }
+                 edpEW.endEditSave();
+                  
+            }    
+            }
+           /*
             // Datei einlesen
             fr = new FileReader(datei);
             BufferedReader br = new BufferedReader(fr);
@@ -102,22 +237,29 @@ public class Aufzählungen {
                 edpEA.insertRow(edpEA.getRowCount()+1);
                edpEA.setFieldVal(edpEA.getCurrentRow(),"aufzelem" ,zeilelist[0]);
             }
-            edpEA.endEditSave();
+            edpEA.endEditSave();*/
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         } catch (IOException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CantBeginEditException ex) {
-            Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         } catch (InvalidQueryException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
+        } catch (CantBeginEditException ex) {
+            Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         } catch (CantChangeFieldValException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         } catch (CantSaveException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         } catch (InvalidRowOperationException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
+            jTLog.append(ex.toString());
         }
           
         

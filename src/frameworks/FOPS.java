@@ -7,6 +7,7 @@ package frameworks;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import de.abas.ceks.jedp.EDPSession;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +19,7 @@ import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -109,9 +111,15 @@ public class FOPS {
         return true;
     }
 
-    public boolean install(String LinuxUser, String LinuxPass, String Host, File file, String dir) {
+    public boolean install(String LinuxUser, String LinuxPass, String Host, File file, String dir,EDPSession session,  JTextArea jTLog, boolean isfile) {
         try {
-
+            boolean status;
+            // Arbeitsbereich erweitern
+            if (!isfile)
+            {
+            jTLog.append("Arbeitsbereich "+ dir+" erweitern\n");
+             status = Arbeitsbereiche.arbeitsbereicherweitern(dir,session);
+            }
             //FOps und SPX
             StringBuilder fromServer = new StringBuilder();
             ByteArrayOutputStream error = new ByteArrayOutputStream();
@@ -119,14 +127,34 @@ public class FOPS {
 
             SshClient sshclient = new SshClient();
             sshclient.connect(LinuxUser, LinuxPass, Host, 22);
-
+            if (isfile)
+            {
+                // File irgendwo
+                if (!dir.contains("$HOMEDIR"))
+                {
+                sshexitstatus = sshclient.sendcommand("mkdir " + dir, error, fromServer);
+                sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
+                }
+                else
+                {
+                sshexitstatus= sshclient.sendcommand("eval `sh denv.sh`;echo $HOMEDIR", error, fromServer);
+                String homedir=fromServer.toString().replaceAll("\n", "");
+                dir=dir.replace("$HOMEDIR", homedir);
+                sshexitstatus = sshclient.sendfile(file.toString(),dir + "/" + file.getName());
+                }
+            }
+            else
+            {
+                //fop oder spx
             if (file.getName().endsWith(".spx")) {
                 sshexitstatus = sshclient.sendcommand("mkdir spx/" + dir, error, fromServer);
                 sshexitstatus = sshclient.sendfile(file.toString(), "spx/" + dir + "/" + file.getName());
             } else {
                 sshexitstatus = sshclient.sendcommand("mkdir " + dir, error, fromServer);
                 sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
-            }
+            }    
+            }    
+            
 
             return true;
         } catch (JSchException ex) {

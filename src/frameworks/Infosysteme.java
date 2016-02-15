@@ -7,11 +7,15 @@ package frameworks;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import de.abas.ceks.jedp.CantBeginSessionException;
+import de.abas.ceks.jedp.EDPFactory;
+import de.abas.ceks.jedp.EDPSession;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
@@ -20,8 +24,10 @@ import javax.swing.JTextArea;
  * @author gdenz
  */
 public class Infosysteme {
-    public boolean install(JTable jTinfosystem, JTextArea jTLog)
+    public boolean install(JTable jTinfosystem, JTextArea jTLog, EDPSession session)
     {
+        Thread sync = new Thread();
+        boolean status;        
         String arb="";
         String name="";
         File file;
@@ -33,6 +39,9 @@ public class Infosysteme {
         {
             try {
                 arb=jTinfosystem.getValueAt(i, 0).toString();
+                // Arbeitsbereich erweitern
+                jTLog.append("Arbeitsbereich "+ arb+" erweitern");
+                status = Arbeitsbereiche.arbeitsbereicherweitern(arb,session);
                 name=jTinfosystem.getValueAt(i, 1).toString();
                 file= new File (jTinfosystem.getValueAt(i, 2).toString());
                 System.out.println(name);
@@ -94,4 +103,5 @@ public class Infosysteme {
     }
     
     
+
 }

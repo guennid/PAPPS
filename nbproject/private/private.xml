@@ -3,14 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/MainFrame.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/Vartab.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/SshClient.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/GlobalVars.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/FOPS.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/Masken.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/Schluessel.java</file>
-            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/papps/Aufzählungen.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Aufzählungen.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/SshClient.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Vartab.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/ReferenceHolderClass.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/FileSync.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Infosysteme.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/GlobalVars.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Masken.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Arbeitsbereiche.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/MainFrame.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/FOPS.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/MyLogger.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Properties.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Update.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Schluessel.java</file>
+            <file>file:/C:/Users/gdenz.ABAS-PROJEKT/Documents/NetBeansProjects/PAPPS/src/frameworks/Einstellungen.java</file>
         </group>
     </open-files>
 </project-private>

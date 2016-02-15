@@ -1,0 +1,4 @@
+#Frameworks
+#Fri Feb 12 16:27:41 CET 2016
+FrameworksSource=\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\develop
+UpdateSource=\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks

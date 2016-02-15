@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -42,7 +43,7 @@ public class Schluessel {
         }
     }
 
-    public boolean Schluesselinstall(JTable table,EDPSession session) {
+    public boolean Schluesselinstall(JTable table,EDPSession session,  JTextArea jTLog) {
       FileReader fr = null;
         String dbgr="";
         String zeile="";
@@ -108,18 +109,29 @@ public class Schluessel {
                              edpSE.endEditSave();
           } catch (InvalidQueryException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append(ex.toString());
+              
           } catch (CantBeginEditException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append(ex.toString());
           } catch (CantChangeFieldValException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append("FEHLER: "+ex.toString());
+              edpSE.endEditCancel();
           } catch (FileNotFoundException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append("FEHLER: "+ex.toString());
           } catch (IOException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append("FEHLER: "+ex.toString());
           } catch (InvalidRowOperationException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append("FEHLER: "+ex.toString());
+              edpSE.endEditCancel();
           } catch (CantSaveException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
+              jTLog.append("FEHLER: "+ex.toString());
+              edpSE.endEditCancel();
           }
         
       }

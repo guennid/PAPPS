@@ -34,6 +34,7 @@ import static frameworks.GlobalVars.Host;
 import static frameworks.GlobalVars.LinuxPass;
 import static frameworks.GlobalVars.LinuxUser;
 import static frameworks.GlobalVars.ZDArrayNeu;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -157,7 +158,7 @@ public class Vartab {
         return true;
     }
     
-    public boolean schreibbetrieb(String filename, EDPEditor edpE1, JTable table)
+    public boolean schreibbetrieb(String filename, EDPEditor edpE1, JTable table,JTextArea jTLog)
     {                                                                                             
         try {
             FileReader fr = null;
@@ -201,6 +202,8 @@ public class Vartab {
                         
                     {
                         // wir haben ein Problem, Stammdaten ist angeklickt, wir wollen aber keine!
+                        jTLog.append("Fehler im Betriebsdatensatz: \n");
+                        jTLog.append("ZD "+nummer+ "ist als Stammdaten markiert\n");
                         return false;
                     }
                 }
@@ -227,6 +230,9 @@ public class Vartab {
                 return true;
         } catch (CantBeginEditException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            edpE1.endEditCancel();
+             jTLog.append("Fehler beim Editieren des Betriebsdatensatzes \n");
+             jTLog.append(ex.toString());
             return false;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
@@ -236,19 +242,29 @@ public class Vartab {
             return false;
         } catch (CantChangeFieldValException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            edpE1.endEditCancel();
+             jTLog.append("Fehler beim Editieren des Betreibsdatensatzes \n");
+             jTLog.append(ex.toString());
             return false;
+            
         } catch (CantReadFieldPropertyException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+           edpE1.endEditCancel();
             return false;
         } catch (CantSaveException ex) {
             Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            edpE1.endEditCancel();
+             jTLog.append("Fehler beim Editieren des Betriebsdatensatzes \n");
+             jTLog.append(ex.toString());
+            return false;
         }
-        return false;
+        
     }
 
     public void schreibvars(EDPEditor edpE1,String vartabfile,int vzeile,boolean Kopf, JTable table)
     {FileReader fr = null;
     boolean status=false;
+    boolean verweisgeaendert=false;
         try {
             
         
@@ -262,7 +278,7 @@ public class Vartab {
                         System.out.println(zeile);
                         // Zeile in einzelne Variablen Splitten
                         String[] parts = zeile.split("#");
-                        if ((Kopf && parts[2].equals("K")) ||(!Kopf && parts[2].equals("T")))
+                        if ((Kopf && parts[2].equals("nein")) ||(!Kopf && parts[2].equals("ja")))
                             {
                                System.out.println(parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]+" "+parts[4]+" "+parts[5]);
                                
@@ -280,7 +296,9 @@ public class Vartab {
                                 String vV  = vordp.replaceAll("[0-9]","");
                                 // vdb muss nun umgesetzt werden auf die gewählte db
                                 // Die Info holen wir uns aus der Vartab Table
-                                 for (int i=0;i<table.getRowCount();i++)
+                                verweisgeaendert=false; 
+                                for (int i=0;i<table.getRowCount();i++)
+                                    
                                     {
                                     if (table.getValueAt(i, 1).toString().equals(vdb))
                                         {
@@ -288,9 +306,13 @@ public class Vartab {
                                         int dbtable = parseInt(table.getValueAt(i,3).toString());
                                         String neuvar=vV+dbtable+nachdp;
                                         edpE1.setFieldVal(vzeile,"vitf", neuvar);
-                       
+                                        verweisgeaendert=true;
                                         }
                                     }
+                                if (!verweisgeaendert){
+                                    //es gab keine notwendige Änderung also doch so schreiben
+                                   edpE1.setFieldVal(vzeile,"vitf", parts[3]); 
+                                }
                                 System.out.println(vdb);
  
  
@@ -299,10 +321,13 @@ public class Vartab {
                                {    
                                edpE1.setFieldVal(vzeile,"vitf", parts[3]);
                                }
-                               edpE1.setFieldVal(vzeile,"vitnf", parts[4]);
-                               edpE1.setFieldVal(vzeile,"vskip", parts[5]);
-                               edpE1.setFieldVal(vzeile,"vbeds", parts[6]);
-                               vzeile++;
+                               //edpE1.setFieldVal(vzeile,"vitnf", parts[4]);
+                                edpE1.setFieldVal(vzeile, "vskip", parts[5]);
+                                if (parts.length == 7) {
+                                    edpE1.setFieldVal(vzeile, "vbeds", parts[6]);
+                                }
+
+                                vzeile++;
                             }
                         }        
                     
@@ -328,23 +353,28 @@ public class Vartab {
             }
     }
     
-    public void install(JTable table, EDPSession session, String frameworkNo)
+    public void install(JTable table, EDPSession session, String frameworkNo,JTextArea jTLog)
     {
        String Betriebsdatenfile=table.getValueAt(0,5).toString();
             Betriebsdatenfile=Betriebsdatenfile.substring(0,Betriebsdatenfile.indexOf("V-"));
-            
+        jTLog.append("------Vartab------\n");
+        jTLog.paint(jTLog.getGraphics());    
         EDPEditor edpE1=session.createEditor();
         //EDPEditObject eo = null;
         String [] tabFeld=new String[6];
         boolean status=false;
         // DBKonfig schreiben
+        jTLog.append("DB Konfig schreiben\n");
+        jTLog.paint(jTLog.getGraphics());
         DBini(Betriebsdatenfile+"DBKonfig.txt",table,frameworkNo);
         
         // Betriebsdatensatz beschreiben
-           
+           jTLog.append("Betriebsdatensatz schreiben\n");
+        jTLog.paint(jTLog.getGraphics());
             Betriebsdatenfile=Betriebsdatenfile+"Betriebsdatensatz.txt";
-            status=schreibbetrieb(Betriebsdatenfile,edpE1, table);
-        
+            status=schreibbetrieb(Betriebsdatenfile,edpE1, table,jTLog);
+        if (status)
+        {
         String vartabfile="";
         String db="";
         String gruppe="";
@@ -365,14 +395,28 @@ public class Vartab {
                
                 //per EDP auf die Vartab zugreifen
                 vartab="V-"+db+"-"+gruppe;
-                
+                jTLog.append("Vartab "+vartab+ " schreiben\n");
+        jTLog.paint(jTLog.getGraphics());
                 
                 edpE1.beginEdit(EDPEditor.EDIT_UPDATE,"12","26",EDPEditor.REFTYPE_NUMSW,vartab);
                 // Alle Daten der Vartab ins Objekt laden
                 //eo=edpE1.getEditObject();
+                edpE1.setFieldVal(0,"vresein","1" );
                 
-                        
-                for (int vzeile=1; vzeile<=edpE1.getRowCount(); vzeile++)
+                int vzeile=edpE1.getCurrentRow();
+                edpE1.deleteRow(vzeile);
+                schreibvars(edpE1,vartabfile,vzeile,true, table);
+              
+                if (edpE1.getFieldVal(0,"vvtabe").equals("ja"))
+                        {
+                edpE1.setFieldVal(0,"vtresein","1" );
+                
+                vzeile=edpE1.getCurrentRow();
+                edpE1.deleteRow(vzeile);
+                schreibvars(edpE1,vartabfile,edpE1.getRowCount()+1,false, table);
+                        }
+                /*
+                for (vzeile=1; vzeile<=edpE1.getRowCount(); vzeile++)
                 {
                    System.out.println(edpE1.getFieldVal(vzeile,"vkt")+" "+vzeile);
                    if (edpE1.getFieldVal(vzeile,"vkt").equals("ja"))
@@ -380,27 +424,34 @@ public class Vartab {
                              //Wir sind am Ende der Kopfvartab  
                                System.out.println("KOPF "+vartab);
                                schreibvars(edpE1,vartabfile,vzeile,true, table);
-                               break;
+                             
                            }  
                 }
                 System.out.println("Tabelle "+vartab);
                 schreibvars(edpE1,vartabfile,edpE1.getRowCount()+1,false, table);
-                //edpE1.updateEditObject(eo);
+                //edpE1.updateEditObject(eo);*/
                 edpE1.endEditSave();
+                //session.endSession();
                 
                     // Zeilen der Datei lesen
                  
 
-              
+            
             } catch (CantBeginEditException ex) {
                 Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
             } catch (CantSaveException ex) {
                 Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CantChangeFieldValException ex) {
+               
+                Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
             } catch (CantReadFieldPropertyException ex) {
+                Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidRowOperationException ex) {
                 Logger.getLogger(Vartab.class.getName()).log(Level.SEVERE, null, ex);
             } 
 
         }  
+      }
     }
 
     
