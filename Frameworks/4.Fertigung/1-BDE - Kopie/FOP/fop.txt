@@ -1,2 +1,0 @@
-113  *       maskpruef *  *  *  [C]  owfw1/S0113.SV
-76   *       maskpruef *  *  *  [C]  owfw1/S0076.SV

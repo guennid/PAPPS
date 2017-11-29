@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S8" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid msgId="e167fba5-c116-4b57-8253-082ddd9c5c31">
+    <metainfo axis="row" grid="0" indent="large" />
+    <cell gridX="0" gridY="0" />
+    <cell gridX="1" gridY="0">
+     <label msgId="abcea5b3-8e71-4cd1-8884-188b334a198a" />
+    </cell>
+    <cell gridX="2" gridY="0">
+     <label msgId="2a0be46e-1f26-413c-8eda-5661867e64ea" />
+    </cell>
+    <cell gridX="3" gridY="0">
+     <label msgId="384de7cf-baf8-4f49-bb12-7ec5ee0849de" />
+    </cell>
+    <cell gridX="4" gridY="0">
+     <label msgId="a4f5a053-e043-4470-a969-7ebd1588d9f8" />
+    </cell>
+    <cell gridX="5" gridY="0">
+     <label msgId="012c26e8-8d3b-4104-9854-b0571aa99793" />
+    </cell>
+    <cell gridX="6" gridY="0">
+     <label msgId="bb7d56e0-bda0-4fa5-a690-e2d3b8f0d59f" />
+    </cell>
+    <cell gridX="0" gridY="1">
+     <label msgId="6ada649a-32a9-44af-bcde-e4faa7720a26" />
+    </cell>
+    <cell gridX="1" gridY="1">
+     <erpfield s3Name="0:matart" />
+    </cell>
+    <cell gridX="2" gridY="1">
+     <erpfield s3Name="0:zmge" />
+    </cell>
+    <cell gridX="3" gridY="1">
+     <erpfield s3Name="0:mate" />
+     <label msgId="6a8103cf-741f-49c1-8b45-5476411b8b6d" />
+    </cell>
+    <cell gridX="4" gridY="1">
+     <erpfield s3Name="0:le" />
+    </cell>
+    <cell gridX="5" gridY="1">
+     <erpfield s3Name="0:matvrel" />
+    </cell>
+    <cell gridX="6" gridY="1">
+     <erpfield s3Name="0:materel" />
+    </cell>
+    <cell gridX="0" gridY="2">
+     <label msgId="4e4a5397-754d-48c8-9019-4b029843e5b8" />
+    </cell>
+    <cell gridX="1" gridY="2">
+     <erpfield s3Name="0:matart2" />
+    </cell>
+    <cell gridX="2" gridY="2">
+     <erpfield s3Name="0:zmge2" />
+    </cell>
+    <cell gridX="3" gridY="2">
+     <erpfield s3Name="0:mate2" />
+     <label msgId="6fa0eca1-7802-4f8c-af7f-ec95858e9c2e" />
+    </cell>
+    <cell gridX="4" gridY="2">
+     <erpfield s3Name="0:le" />
+    </cell>
+    <cell gridX="5" gridY="2">
+     <erpfield s3Name="0:matvrel2" />
+    </cell>
+    <cell gridX="6" gridY="2">
+     <erpfield s3Name="0:materel2" />
+    </cell>
+    <cell gridX="0" gridY="3">
+     <label msgId="91bde1ec-2b3d-4354-abed-2b41120af2aa" />
+    </cell>
+    <cell gridX="1" gridY="3">
+     <erpfield s3Name="0:matart3" />
+    </cell>
+    <cell gridX="2" gridY="3">
+     <erpfield s3Name="0:zmge3" />
+    </cell>
+    <cell gridX="3" gridY="3">
+     <erpfield s3Name="0:mate3" />
+     <label msgId="31b159db-2376-4757-9aba-c37a3f646bcb" />
+    </cell>
+    <cell gridX="4" gridY="3">
+     <erpfield s3Name="0:le" />
+    </cell>
+    <cell gridX="5" gridY="3">
+     <erpfield s3Name="0:matvrel3" />
+    </cell>
+    <cell gridX="6" gridY="3">
+     <erpfield s3Name="0:materel3" />
+    </cell>
+    <cell gridX="0" gridY="4">
+     <label msgId="21daac59-3e0c-47b4-82aa-22e1a68a3d24" />
+    </cell>
+    <cell gridX="1" gridY="4">
+     <erpfield s3Name="0:matart4" />
+    </cell>
+    <cell gridX="2" gridY="4">
+     <erpfield s3Name="0:zmge4" />
+    </cell>
+    <cell gridX="3" gridY="4">
+     <erpfield s3Name="0:mate4" />
+     <label msgId="6cab00f5-efc3-4cb9-90f6-09f71279aed9" />
+    </cell>
+    <cell gridX="4" gridY="4">
+     <erpfield s3Name="0:le" />
+    </cell>
+    <cell gridX="5" gridY="4">
+     <erpfield s3Name="0:matvrel4" />
+    </cell>
+    <cell gridX="6" gridY="4">
+     <erpfield s3Name="0:materel4" />
+    </cell>
+    <cell gridX="0" gridY="5">
+     <label msgId="299b2a8c-d61a-46c3-8b17-43e126d042db" />
+    </cell>
+    <cell gridX="1" gridY="5">
+     <erpfield s3Name="0:matart5" />
+    </cell>
+    <cell gridX="2" gridY="5">
+     <erpfield s3Name="0:zmge5" />
+    </cell>
+    <cell gridX="3" gridY="5">
+     <erpfield s3Name="0:mate5" />
+     <label msgId="1df0a863-9485-425c-96dc-2ffddf138123" />
+    </cell>
+    <cell gridX="4" gridY="5">
+     <erpfield s3Name="0:le" />
+    </cell>
+    <cell gridX="5" gridY="5">
+     <erpfield s3Name="0:matvrel5" />
+    </cell>
+    <cell gridX="6" gridY="5">
+     <erpfield s3Name="0:materel5" />
+    </cell>
+   </layout.grid>
+  </cell>
+ </layout.grid>
+</frame>
+

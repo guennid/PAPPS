@@ -36,7 +36,8 @@ public class GlobalVars {
       public static String DBKonfigtxtfile="DBKonfig.txt";
       public static JTable jTablegd;
       public static String updatepfad="\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks";
-      public static double version=1.0;
+      public static double version=1.5;
+      public static String appdir="";
       
       
       

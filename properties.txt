@@ -1,4 +1,10 @@
 #Frameworks
-#Fri Feb 12 16:27:41 CET 2016
-FrameworksSource=\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\develop
+#Tue Nov 28 15:25:51 CET 2017
+Mandant=gmbhdevelop17r2
+abasServer=magellan
+FrameworksSource=\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks
+LinuxPass=gmbhdevelop17r2
+edpport=6550
 UpdateSource=\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks
+MandantPass=admin
+LinuxUser=gmbhdevelop17r2

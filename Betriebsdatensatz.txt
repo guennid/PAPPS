@@ -1,0 +1,4 @@
+﻿Nummer#Name ZD#Stammdaten#Gruppen#Namen der Gruppe#
+6#QS#ja#ja#Prüfplan,Prüfauftrag,Prüfanweisung,Stichproben,Prüfergebnis,Fehlerart,,,,#
+39#QM#ja#ja#QAM,,MaßnahmenEK,MaßnahmenVK,MaßnahmenIntern,Reklamationsgrund,Fehlerursache,MA-Gruppen,Abstellmaßnahmen,Aktion,Kosten,Abstellmaßnahme,,Kostenart,,,,,,#
+40#LiefBewertung#ja#ja#Lieferantenart,Fehlerart,Bewertung,Bewertungstyp,Unterscheidung,Fehlertyp,,,,,,,,,,,,,,#

@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
@@ -50,7 +51,8 @@ public class Schluessel {
       String datei="";
       EDPQuery edpSQ = session.createQuery();
       EDPEditor edpSE=session.createEditor();
-      
+      jTLog.append("===========Schlüssel=====================\n");
+      jTLog.update(jTLog.getGraphics());
         for (int i=0;i<table.getRowCount();i++)  
       {
           try {
@@ -63,12 +65,18 @@ public class Schluessel {
               edpSQ.startQuery("12:31","","nummer=="+table.getValueAt(i, 0),"id");
                if(edpSQ.getNextRecord())
                    {
-                        // Datensatz gibt es shcon, also editieren
+                    jTLog.append("Schlüssel "+table.getValueAt(i,1).toString()+" ändern");
+                    jTLog.update(jTLog.getGraphics());                        
+                    // Datensatz gibt es shcon, also editieren
                         edpSE.beginEdit(edpSQ.getField("id"));
+                        
                     }
                else
                     {
                         // Datensatz Neu anlegen 
+                    jTLog.append("Schlüssel "+table.getValueAt(i,1).toString()+" neu anlegen");
+                    jTLog.update(jTLog.getGraphics());
+                    jTLog.setCaretPosition(jTLog.getText().length());
                         edpSE.beginEditNew("12","31");
                          edpSE.setFieldVal("nummer", table.getValueAt(i,0).toString());
 
@@ -98,15 +106,21 @@ public class Schluessel {
                            edpSE.setFieldVal("bsel", zeilelist[8]);
                           // Und jetzt die Schleife über die Tabelle
                            edpSE.deleteAllRows();
-                           while( (zeile = br.readLine()) != null )
+                           while( (zeile = br.readLine()) != null)
                            {
+                            if (zeile.length()>0) 
+                                       {
                             zeilelist =zeile.split("#",3);
                             edpSE.insertRow(edpSE.getRowCount()+1);
                             edpSE.setFieldVal(zeilelist[0],"bvname", zeilelist[1]);
-                               
+                                       }
                            }
                            //Fertig, drum Speichern
                              edpSE.endEditSave();
+                             jTLog.append("           OK\n");
+                             jTLog.append("Schlüsselreorg notwendig!!!!!!!!!!!!!!!!!!!\n");
+                            jTLog.update(jTLog.getGraphics());
+                            jTLog.setCaretPosition(jTLog.getText().length());
           } catch (InvalidQueryException ex) {
               Logger.getLogger(Schluessel.class.getName()).log(Level.SEVERE, null, ex);
               jTLog.append(ex.toString());
@@ -135,6 +149,7 @@ public class Schluessel {
           }
         
       }
+    
      return true;   
     }
 }

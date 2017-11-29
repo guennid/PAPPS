@@ -28,27 +28,31 @@ import javax.swing.JTextArea;
 public class FOPS {
 
     public void foptxtTranscode(JTable jTFOPTXT, int zdalt, int zdneu) {
+       
         String alteMaske = "";
         String neueMaske = "";
 
         //SChleife über das Maskenarray
-        System.out.println(zdneu);
-        System.out.println(zdalt);
+        System.out.println("FOPTXT Transcode");
+        System.out.println("FOPTXT Transfer von Zusatzdatei "+zdalt+" nach "+zdneu);
+        
         for (int gruppen = 0; gruppen < 20; gruppen++) {
             if (GlobalVars.MaskArray[zdalt][gruppen] != null) {
                 alteMaske = GlobalVars.MaskArray[zdalt][gruppen].trim();
                 neueMaske = GlobalVars.MaskArray[zdneu][gruppen].trim();
-                System.out.println(alteMaske);
-                System.out.println(neueMaske);
+                System.out.println("Transferiere FOP.TXT von der Maske "+ alteMaske +" nach "+neueMaske);
+                
                 // Und nun einfach mit diesen Infos durch die jTable laufen 
                 for (int i = 0; i < jTFOPTXT.getRowCount(); i++) {
                     if (jTFOPTXT.getValueAt(i, 0).toString().equals(alteMaske)) {
                         // Und die Trefferersetzen
                         jTFOPTXT.setValueAt(neueMaske, i, 0);
+                        System.out.println(neueMaske+ "gesetzt in Zeile "+i);
                     }
                 }
             }
-        }      
+        } 
+        System.out.println("FOPTXT Transcode Ende");
     }
 
     public boolean foptxtinstall(String fwnummer, String LinuxUser, String LinuxPass, String Host, File dir, JTable table) {
@@ -90,13 +94,17 @@ public class FOPS {
             sshexitstatus = sshclient.sendcommand("cp fop.txt fop.txt.SIK.FW" + fwnummer, error, fromServer);
             s = new String(error.toByteArray());
             System.out.println(s + " " + fromServer);
-            // fop.txt ran catten
-            sshexitstatus = sshclient.sendcommand("cat  fopfw.txt  >>fop.txt", error, fromServer);
+             sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;s3_conv 51 < fopfw.txt >fopfw2.txt", error, fromServer);
             s = new String(error.toByteArray());
             System.out.println(s + " " + fromServer);
+            // fop.txt ran catten
+            sshexitstatus = sshclient.sendcommand("cat  fopfw2.txt  >>fop.txt", error, fromServer);
+             s = new String(error.toByteArray());
+            System.out.println(s + " " + fromServer);
+           
             //fop.txt.fw löschen
-            sshexitstatus = sshclient.sendcommand("rm fopfw.txt", error, fromServer);
-            s = new String(error.toByteArray());
+          //  sshexitstatus = sshclient.sendcommand("rm fopfw.txt", error, fromServer);
+         //   s = new String(error.toByteArray());
             System.out.println(s + " " + fromServer);
             return true;
         } catch (JSchException ex) {
@@ -115,7 +123,7 @@ public class FOPS {
         try {
             boolean status;
             // Arbeitsbereich erweitern
-            if (!isfile)
+            if (!isfile && !dir.equals(""))
             {
             jTLog.append("Arbeitsbereich "+ dir+" erweitern\n");
              status = Arbeitsbereiche.arbeitsbereicherweitern(dir,session);
@@ -132,8 +140,17 @@ public class FOPS {
                 // File irgendwo
                 if (!dir.contains("$HOMEDIR"))
                 {
-                sshexitstatus = sshclient.sendcommand("mkdir " + dir, error, fromServer);
-                sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
+                if (dir.equals(""))
+                     {// Kein verzeichnis zu erstellen
+                    
+                    sshexitstatus = sshclient.sendfile(file.toString(), file.getName());
+                      }
+                else
+                    {// nur wenn auch ein Verzeichnis vorne dran liegt
+                    sshexitstatus = sshclient.sendcommand("mkdir -p " + dir, error, fromServer);
+                    sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
+                      }
+                
                 }
                 else
                 {
@@ -150,8 +167,17 @@ public class FOPS {
                 sshexitstatus = sshclient.sendcommand("mkdir spx/" + dir, error, fromServer);
                 sshexitstatus = sshclient.sendfile(file.toString(), "spx/" + dir + "/" + file.getName());
             } else {
-                sshexitstatus = sshclient.sendcommand("mkdir " + dir, error, fromServer);
-                sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
+                if (!dir.equals(""))
+                {                
+                    sshexitstatus = sshclient.sendcommand("mkdir " + dir, error, fromServer);
+                    sshexitstatus = sshclient.sendfile(file.toString(), dir + "/" + file.getName());
+                }
+                else
+                {
+                    sshexitstatus = sshclient.sendfile(file.toString(), file.getName());
+                }
+                
+                
             }    
             }    
             

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S7" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid msgId="76d77bb7-b5e2-4ae5-8c0e-f9ab946b57e0">
+    <metainfo axis="row" grid="2" indent="large" />
+    <metainfo axis="row" grid="6" indent="large" />
+    <metainfo axis="row" grid="5" indent="large" />
+    <cell gridX="0" gridY="0">
+     <label msgId="4571babd-6bf9-47f6-aa55-22dc9f3f8506" />
+    </cell>
+    <cell alignX="fill" gridX="1" gridY="0">
+     <erpfield s3Name="0:ahnum" />
+    </cell>
+    <cell gridX="2" gridY="0" />
+    <cell gridX="0" gridY="1">
+     <label msgId="dbdec6c0-fba9-4281-92b6-4fea17ca8692" />
+    </cell>
+    <cell alignX="fill" gridX="1" gridY="1">
+     <erpfield s3Name="0:vorpapierc" />
+    </cell>
+    <cell gridX="2" gridY="1">
+     <erpfield s3Name="0:vorpapier" />
+    </cell>
+    <cell gridX="0" gridY="2">
+     <label msgId="433effb1-1c43-42e1-9d7e-f7f203026861" />
+    </cell>
+    <cell alignX="fill" gridX="1" gridY="2">
+     <erpfield s3Name="0:pdoku" />
+    </cell>
+    <cell gridX="2" gridY="2">
+     <erpfield access="readOnly" s3Name="0:pdokuname" />
+    </cell>
+    <cell gridX="0" gridY="3">
+     <label msgId="7d91f486-c0e0-4a8f-93e6-cee3fd3c6142" />
+    </cell>
+    <cell alignX="fill" gridX="1" gridY="3">
+     <erpfield s3Name="0:unterlagec" />
+    </cell>
+    <cell gridX="2" gridY="3">
+     <erpfield s3Name="0:unterlage" />
+    </cell>
+    <cell gridX="0" gridY="4">
+     <label msgId="4a846671-511f-4d5b-a77e-4887145e988d" />
+    </cell>
+    <cell alignX="fill" gridX="1" gridY="4">
+     <erpfield dimX="9" s3Name="0:verpackarc" />
+    </cell>
+    <cell gridX="2" gridY="4">
+     <erpfield s3Name="0:verpackart" />
+    </cell>
+    <cell alignX="fill" alignY="fill" gridX="0" gridY="5" sizeX="3">
+     <layout.grid>
+      <metainfo axis="column" grid="2" indent="large" />
+      <cell gridX="0" gridY="0" sizeX="2">
+       <groupline msgId="3c8078d2-b47c-46ca-a332-33cb42e70bf6" />
+      </cell>
+      <cell gridX="2" gridY="0" sizeX="2">
+       <groupline msgId="b5df8cd5-b09f-4f9f-87ff-51f14ba63085" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="d28bdc47-3508-426a-a394-3810e0e211de" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:urregion" />
+      </cell>
+      <cell gridX="2" gridY="1">
+       <label msgId="5b1873b0-d9ba-4812-baeb-e34c7cd5a372" />
+      </cell>
+      <cell gridX="3" gridY="1">
+       <erpfield s3Name="0:urland" />
+      </cell>
+      <cell gridX="0" gridY="2" />
+      <cell gridX="1" gridY="2" />
+      <cell gridX="2" gridY="2">
+       <label msgId="1764c88d-8731-4123-aca1-a1b2a820fa73" />
+      </cell>
+      <cell gridX="3" gridY="2">
+       <erpfield s3Name="0:bsregion" />
+      </cell>
+     </layout.grid>
+    </cell>
+   </layout.grid>
+  </cell>
+ </layout.grid>
+</frame>
+

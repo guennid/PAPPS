@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S6" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid>
+    <metainfo axis="column" grid="2" indent="large" />
+    <cell gridX="0" gridY="0" />
+    <cell gridX="1" gridY="0">
+     <groupline msgId="b7bed2ca-074a-430e-ae50-0b547502c0fa" />
+    </cell>
+    <cell gridX="2" gridY="0">
+     <groupline msgId="9d5efc81-5d19-4c18-a798-d33a008cdfa3" />
+    </cell>
+    <cell gridX="0" gridY="1" />
+    <cell gridX="1" gridY="1">
+     <label msgId="0317d336-ecae-4873-b7e4-1370d7317ae8" />
+     <erpfield s3Name="0:vbrutto" />
+    </cell>
+    <cell gridX="2" gridY="1">
+     <label msgId="268a3fed-dc4b-41f5-a2c0-a52b142d47fc" />
+     <erpfield s3Name="0:nvbrutto" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="2">
+     <label msgId="1bb87535-bbd0-4de6-a558-435f94f7c95e" />
+    </cell>
+    <cell gridX="1" gridY="2">
+     <erpfield s3Name="0:vpr" />
+     <erpfield s3Name="0:vwaehr" />
+     <label msgId="460ef730-9772-44df-af63-4c6fdc2a38ca" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="2">
+     <erpfield s3Name="0:nvpr" />
+     <erpfield s3Name="0:nvwaehr" />
+     <label msgId="b3a8a2d0-ae9a-465c-a9fa-0ef3a24d10b6" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="3">
+     <label msgId="66b86d7b-b541-4e9c-86e1-9d7819ef2174" />
+    </cell>
+    <cell gridX="1" gridY="3">
+     <erpfield s3Name="0:vpr2" />
+     <erpfield s3Name="0:vwaehr2" />
+     <label msgId="1172d0b2-a398-42bc-8921-e5bdf05cb370" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="3">
+     <erpfield s3Name="0:nvpr2" />
+     <erpfield s3Name="0:nvwaehr2" />
+     <label msgId="a593da43-bae0-478d-bb9c-ccc6fa641118" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="4">
+     <label msgId="2c2f92e8-c73f-4644-9787-85e0100d27f2" />
+    </cell>
+    <cell gridX="1" gridY="4">
+     <erpfield s3Name="0:vpr3" />
+     <erpfield s3Name="0:vwaehr3" />
+     <label msgId="d5cef394-a714-4301-89fa-81cf3665fe5b" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="4">
+     <erpfield s3Name="0:nvpr3" />
+     <erpfield s3Name="0:nvwaehr3" />
+     <label msgId="5046c820-0d90-4c08-9717-d561fcd77981" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="5">
+     <label msgId="5cc5f5ed-8395-4fe2-9f6f-add8269da704" />
+    </cell>
+    <cell gridX="1" gridY="5">
+     <erpfield s3Name="0:vpr4" />
+     <erpfield s3Name="0:vwaehr4" />
+     <label msgId="9dff3607-ae28-4c8d-82a1-82a88e320702" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="5">
+     <erpfield s3Name="0:nvpr4" />
+     <erpfield s3Name="0:nvwaehr4" />
+     <label msgId="b27d7c86-d5ea-4c9c-a063-aabb49ff32e4" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="6">
+     <label msgId="876be9b9-a36c-4a1f-856a-98ed0985de2b" />
+    </cell>
+    <cell gridX="1" gridY="6">
+     <erpfield s3Name="0:vpr5" />
+     <erpfield s3Name="0:vwaehr5" />
+     <label msgId="e6779eeb-2c58-4b75-a2e4-4fd1c1c33b05" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="6">
+     <erpfield s3Name="0:nvpr5" />
+     <erpfield s3Name="0:nvwaehr5" />
+     <label msgId="54999a28-2db7-4e31-bf80-c4ea8eb3e02f" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="7">
+     <label msgId="1acc223f-97d9-4d37-b028-546cd5f86f7c" />
+    </cell>
+    <cell gridX="1" gridY="7">
+     <erpfield s3Name="0:vpr6" />
+     <erpfield s3Name="0:vwaehr6" />
+     <label msgId="a11d9f1a-4ea0-47b6-86ee-61d6a836d671" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="7">
+     <erpfield s3Name="0:nvpr6" />
+     <erpfield s3Name="0:nvwaehr6" />
+     <label msgId="0399ece2-2d30-4f8d-88e0-adca6da31fad" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="8">
+     <label msgId="dde808ed-4d51-44fe-a3ad-8c36c1c3ff48" />
+    </cell>
+    <cell gridX="1" gridY="8">
+     <erpfield s3Name="0:vpr7" />
+     <erpfield s3Name="0:vwaehr7" />
+     <label msgId="6ac2f5c3-87fe-4bd7-9e5a-dd11996f5f37" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="8">
+     <erpfield s3Name="0:nvpr7" />
+     <erpfield s3Name="0:nvwaehr7" />
+     <label msgId="cd6dffd7-36e9-43f6-9173-ca33aa85e385" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="9">
+     <label msgId="adff72c9-41f5-433f-9773-47bd0bf1a038" />
+    </cell>
+    <cell gridX="1" gridY="9">
+     <erpfield s3Name="0:vpr8" />
+     <erpfield s3Name="0:vwaehr8" />
+     <label msgId="071886af-58f1-4cc2-824e-12db17e558d2" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="9">
+     <erpfield s3Name="0:nvpr8" />
+     <erpfield s3Name="0:nvwaehr8" />
+     <label msgId="3e3afb25-7d0f-44c1-8f5b-0ce19773e201" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell alignX="end" gridX="0" gridY="10">
+     <label msgId="76122ba1-c5e1-4e88-9a0c-3d2e21e114df" />
+    </cell>
+    <cell gridX="1" gridY="10">
+     <erpfield s3Name="0:vpr9" />
+     <erpfield s3Name="0:vwaehr9" />
+     <label msgId="233ccc69-5fdf-4b89-9427-04c7ba5bd8e8" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+    <cell gridX="2" gridY="10">
+     <erpfield s3Name="0:nvpr9" />
+     <erpfield s3Name="0:nvwaehr9" />
+     <label msgId="dc5d5865-d5b5-4f07-b279-28f9c2f738b8" />
+     <erpfield access="readOnly" s3Name="0:vpe" />
+    </cell>
+   </layout.grid>
+  </cell>
+ </layout.grid>
+</frame>
+

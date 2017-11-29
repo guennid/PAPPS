@@ -40,7 +40,7 @@ public class Infosysteme {
             try {
                 arb=jTinfosystem.getValueAt(i, 0).toString();
                 // Arbeitsbereich erweitern
-                jTLog.append("Arbeitsbereich "+ arb+" erweitern");
+                jTLog.append("Arbeitsbereich "+ arb+" erweitern\n");
                 status = Arbeitsbereiche.arbeitsbereicherweitern(arb,session);
                 name=jTinfosystem.getValueAt(i, 1).toString();
                 file= new File (jTinfosystem.getValueAt(i, 2).toString());
@@ -50,6 +50,7 @@ public class Infosysteme {
                 //Infosystem kopieren
                 jTLog.append("Infosystem "+file.getName()+" kopieren");
                 jTLog.update(jTLog.getGraphics());
+                jTLog.setCaretPosition(jTLog.getText().length());
                 sshclient.connect(GlobalVars.LinuxUser, GlobalVars.LinuxPass,GlobalVars.Host, 22);
                 sshexitstatus=sshclient.sendfile(file.toString(), file.getName());
                 jTLog.append("                                         OK\n");
@@ -67,20 +68,26 @@ public class Infosysteme {
                     //Infosystem installieren
                     jTLog.append("Infosystem "+file.getName()+" installieren\n");
                     jTLog.update(jTLog.getGraphics());
+                    jTLog.setCaretPosition(jTLog.getText().length());
                     sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh loadinfosys.sh -p "+GlobalVars.Mandantpass+" -a IMPORT -s "+name+" -w "+arb, error, fromServer);
                     // sshexitstatus=sshclient.sendcommand("ls", error, fromServer);
                     if (sshexitstatus==0)
                     {
                         jTLog.append(fromServer.toString());
+                        jTLog.append(error.toString());
+                        jTLog.append("OK");
+                        jTLog.setCaretPosition(jTLog.getText().length());
                     }
                     else
                     {
                         jTLog.append(error.toString());
+                      jTLog.setCaretPosition(jTLog.getText().length());
                     }
                 }
                 else
                 {
                     jTLog.append(error.toString());
+                    jTLog.setCaretPosition(jTLog.getText().length());
                 }
 
                 // Session beenden

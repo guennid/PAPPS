@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE popups SYSTEM "urn:x-abas.de:abasmenu.dtd">
+
+<popups>
+ <popup id="menuTable" />
+ <popup id="menuExecute">
+  <menuitem msgId="8450bf5fe955980ed6e04ca64f2780d0.1" s3Name="0:alge" />
+  <menuitem msgId="47a3d9d8f4949867cc4e9409f0b21784" s3Name="0:akle" />
+  <menuitem msgId="57176bbbfe7c145133f09194901609ff.1" s3Name="0:wartdl" />
+  <menuitem msgId="e74efa8a8392ecf7879f27a07476af8d.1" s3Name="0:kalkul" />
+  <menuitem msgId="722ea59b4dfdf589accf8394046cad7b" s3Name="0:kblatt" />
+  <menuitem msgId="d8ef88b5-e307-465c-a5cb-cdfba0dae35e" s3Name="0:blifofifoaend" scope="" />
+  <menuitem msgId="77b370e7-17de-4e35-9ba2-1aa14928f656" s3Name="0:aktebaneulad" view="noToolbar" />
+  <menuitem msgId="1e606914-cfe7-45bc-966a-39f7f19e0031" s3Name="0:dokumentbaneulad" view="noToolbar" />
+ </popup>
+</popups>
+

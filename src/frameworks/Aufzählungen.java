@@ -45,13 +45,13 @@ public class Aufzählungen {
         
             
         try {
-            if (datei.toString().contains("Werte"))
+            if (datei.toString().contains("Tabelle"))
                     {
                     // Wertemengen   
             fr = new FileReader(datei);
             BufferedReader br = new BufferedReader(fr);
             //Header einlesen
-            zeileaufz = br.readLine();
+           // zeileaufz = br.readLine();
            while( (zeileaufz = br.readLine()) != null )
            {
             zeilelistaufz =zeileaufz.split("#",11);
@@ -59,6 +59,23 @@ public class Aufzählungen {
             edpQW.startQuery(zeilelistaufz[0],"","nummer=="+ zeilelistaufz[1],"id");
             if (edpQW.getNextRecord())
             {
+                               jTLog.append("Wertemenge "+zeilelistaufz[1]+ " schon vorhanden !!!!");
+                               jTLog.setCaretPosition(jTLog.getText().length());
+                /*
+                if (zeilelistaufz[0].equals("109:1"))
+                        {
+                            jTLog.append("Wertemenge "+zeilelistaufz[1]+ " schon vorhanden !!!!");
+                             jTLog.append("Wertemenge "+zeilelistaufz[1]+ " geändert\n");
+                // Datensatz gibt es shcon, also editieren
+                        edpEW.beginEdit(edpQW.getField("id")); 
+                         edpEW.setFieldVal("such", zeilelistaufz[2]);
+                         edpEW.setFieldVal("name", zeilelistaufz[3]);
+                         edpEW.setFieldVal("name2", zeilelistaufz[4]);
+                         edpEW.setFieldVal("besch", zeilelistaufz[5]);
+                         edpEW.endEditSave();
+                        }
+                else
+                {    
                 jTLog.append("Wertemenge "+zeilelistaufz[1]+ " geändert\n");
                 // Datensatz gibt es shcon, also editieren
                         edpEW.beginEdit(edpQW.getField("id")); 
@@ -71,11 +88,28 @@ public class Aufzählungen {
                          edpEW.setFieldVal("icontxt", zeilelistaufz[8]);
                          edpEW.setFieldVal("besch", zeilelistaufz[9]);
                          edpEW.endEditSave();
-                         
+                }
+                         */
             }
             else
             {
                  // Datensatz Neu anlegen 
+                if (zeilelistaufz[0].equals("109:1"))
+                {
+                     String db=zeilelistaufz[0].substring(0,zeilelistaufz[0].indexOf(":"));
+                        String gruppe=zeilelistaufz[0].substring(zeilelistaufz[0].indexOf(":")+1,zeilelistaufz[0].length());
+                        edpEW.beginEditNew(db,gruppe);
+                         edpEW.setFieldVal("nummer", zeilelistaufz[1]);
+                         edpEW.setFieldVal("such", zeilelistaufz[2]);
+                         edpEW.setFieldVal("name", zeilelistaufz[3]);
+                         edpEW.setFieldVal("name2", zeilelistaufz[4]);
+                         edpEW.setFieldVal("besch", zeilelistaufz[5]);
+                         edpEW.endEditSave();
+                         jTLog.append("Wertemenge "+zeilelistaufz[1]+ " neu angelegt\n");
+                         jTLog.setCaretPosition(jTLog.getText().length());
+                }
+                else
+                {
                         String db=zeilelistaufz[0].substring(0,zeilelistaufz[0].indexOf(":"));
                         String gruppe=zeilelistaufz[0].substring(zeilelistaufz[0].indexOf(":")+1,zeilelistaufz[0].length());
                         edpEW.beginEditNew(db,gruppe);
@@ -90,7 +124,9 @@ public class Aufzählungen {
                          edpEW.setFieldVal("besch", zeilelistaufz[9]);
                          edpEW.endEditSave();
                          jTLog.append("Wertemenge "+zeilelistaufz[1]+ " neu angelegt\n");
+                         jTLog.setCaretPosition(jTLog.getText().length());
                        //   xxxxx
+                }
             }
            }
             }
@@ -107,6 +143,10 @@ public class Aufzählungen {
             edpQW.startQuery("107:01","","nummer=="+zeilelistaufz[1],"id");
             if (edpQW.getNextRecord())
             {
+                
+                  jTLog.append("Aufzählung "+zeilelistaufz[1]+ " schon vorhanden!!!\n");
+                  jTLog.setCaretPosition(jTLog.getText().length());
+             /*     
                   jTLog.append("Aufzählung "+zeilelistaufz[1]+ " geändert\n");
                 // Datensatz gibt es shcon, aslo editieren
                  edpEW.beginEdit(edpQW.getField("id")); 
@@ -138,11 +178,12 @@ public class Aufzählungen {
                      
                      
                 }
-                 edpEW.endEditSave();
+                 edpEW.endEditSave();*/
             }
             else
             {
                 jTLog.append("Aufzählung "+zeilelistaufz[1]+ " neu angelegt\n");
+                jTLog.setCaretPosition(jTLog.getText().length());
                 //Datensatz neu anlegen
                 edpEW.beginEditNew("107","01");
                 edpEW.setFieldVal("nummer",zeilelistaufz[1]);
@@ -174,6 +215,7 @@ public class Aufzählungen {
                      
                 }
                  edpEW.endEditSave();
+                  
                   
             }    
             }
@@ -238,7 +280,7 @@ public class Aufzählungen {
                edpEA.setFieldVal(edpEA.getCurrentRow(),"aufzelem" ,zeilelist[0]);
             }
             edpEA.endEditSave();*/
-            
+      
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Aufzählungen.class.getName()).log(Level.SEVERE, null, ex);
             jTLog.append(ex.toString());
@@ -262,7 +304,7 @@ public class Aufzählungen {
             jTLog.append(ex.toString());
         }
           
-        
+           jTLog.append("Aufzählungen fertig\n");   
         return true;
                 
             

@@ -1,2 +1,0 @@
-Nummer#Name ZD#stammdaten#gruppen#Namen der Gruppe#
-1#testgd#ja#ja#testgruppe,,,,,,,,#

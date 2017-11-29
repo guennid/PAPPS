@@ -1,2 +1,0 @@
-Nummer#Name ZD#Stammdaten#Gruppen#Namen der Gruppe#
-22#BDE-Schnittstelle#nein#ja#BDE-Import,,,,,,,,,#

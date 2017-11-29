@@ -1,2 +1,0 @@
-Nummer#Faktura#Preis#maintainer#version#ab abas#bis abas#
-1#ja#1000Euro#udo#1.0#2015#2016#

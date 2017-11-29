@@ -1,2 +1,0 @@
-..  Aufbau: Nummer des Pakets # Faktura Ja/Nein # Preis und Währung # Maintainer # Version # von abas Version # bis abas Version #
-1#ja#0.00 EUR#Udo Höfling#1.0#2014r4#2016r4#

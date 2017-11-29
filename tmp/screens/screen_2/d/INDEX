@@ -1,0 +1,13 @@
+main=screen_2_d_M.xml
+head=screen_2_d_S1.xml
+head=screen_2_d_S3.xml
+head=screen_2_d_S4.xml
+head=screen_2_d_S5.xml
+head=screen_2_d_S6.xml
+head=screen_2_d_S7.xml
+head=screen_2_d_S8.xml
+table=screen_2_d_T.xml
+lay=mask.2.d
+frame.screenId=2
+frame.prio=d
+frame.name=

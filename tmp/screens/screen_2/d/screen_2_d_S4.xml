@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S4" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <metainfo axis="row" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.notebook>
+    <pane.notebook msgId="5078820eb407f63fa9979115b2ede1fe.1">
+     <layout.grid>
+      <metainfo axis="column" grid="2" indent="large" />
+      <metainfo axis="row" grid="15" indent="large" />
+      <cell gridX="0" gridY="0">
+       <label msgId="6e2ee1c6d1ee1da0c54264077a3bf6b2.2" />
+      </cell>
+      <cell gridX="1" gridY="0" sizeX="3">
+       <erpfield s3Name="0:vbezbspr" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="a9c296a18e7704ff21de408ee75127ab" />
+      </cell>
+      <cell gridX="1" gridY="1" sizeX="3">
+       <erpfield dimY="3" s3Name="0:bem" />
+       <erpfield s3Name="0:catpicsz" />
+      </cell>
+      <cell gridX="0" gridY="2" sizeX="4">
+       <groupline msgId="49ad80d60f1612d8ab2d19019de5d552" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="e88db16e15d980502bc69abb03861652" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield s3Name="0:pmtyp" />
+      </cell>
+      <cell gridX="2" gridY="3">
+       <label msgId="ecf10c384ee42dcae05b5b6bd1d369f8" />
+      </cell>
+      <cell gridX="3" gridY="3">
+       <erpfield s3Name="0:vpkenn" />
+      </cell>
+      <cell gridX="0" gridY="4">
+       <label msgId="d7c297a83c994e106620a674e8e41b9e.1" />
+      </cell>
+      <cell gridX="1" gridY="4">
+       <erpfield dimX="15" s3Name="0:wstoff" />
+      </cell>
+      <cell gridX="2" gridY="4">
+       <label msgId="95e65e5520994162272f73bcf8d05c3a" />
+      </cell>
+      <cell gridX="3" gridY="4">
+       <erpfield s3Name="0:egtkenn" />
+      </cell>
+      <cell gridX="0" gridY="5" sizeX="2">
+       <groupline msgId="df19586c1efe01b619f58dcd05d1c846" />
+      </cell>
+      <cell gridX="2" gridY="5" sizeX="2">
+       <groupline msgId="0f6776a141c2013ef2527a5edb4c36ec" />
+      </cell>
+      <cell gridX="0" gridY="6">
+       <label msgId="4b68b6e2929ea7c3511a5f9c3a63c346.3" />
+      </cell>
+      <cell gridX="1" gridY="6">
+       <erpfield s3Name="0:packlge" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.3" />
+      </cell>
+      <cell gridX="2" gridY="6">
+       <label msgId="4b68b6e2929ea7c3511a5f9c3a63c346.4" />
+      </cell>
+      <cell gridX="3" gridY="6">
+       <erpfield s3Name="0:packlgei" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.4" />
+      </cell>
+      <cell gridX="0" gridY="7">
+       <label msgId="526407a60c19a5cb7d801e27ffb71051.3" />
+      </cell>
+      <cell gridX="1" gridY="7">
+       <erpfield s3Name="0:packbr" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.5" />
+      </cell>
+      <cell gridX="2" gridY="7">
+       <label msgId="526407a60c19a5cb7d801e27ffb71051.4" />
+      </cell>
+      <cell gridX="3" gridY="7">
+       <erpfield s3Name="0:packbri" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.6" />
+      </cell>
+      <cell gridX="0" gridY="8">
+       <label msgId="66cb5fc4dc66ab28c600e384d37bb9fa.1" />
+      </cell>
+      <cell gridX="1" gridY="8">
+       <erpfield s3Name="0:packhoe" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.7" />
+      </cell>
+      <cell gridX="2" gridY="8">
+       <label msgId="66cb5fc4dc66ab28c600e384d37bb9fa.2" />
+      </cell>
+      <cell gridX="3" gridY="8">
+       <erpfield s3Name="0:packhoei" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.8" />
+      </cell>
+      <cell gridX="0" gridY="9">
+       <label msgId="2fab5cf995f519b64c44acb58f42f396" />
+      </cell>
+      <cell gridX="1" gridY="9">
+       <erpfield s3Name="0:packhoeklap" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.9" />
+      </cell>
+      <cell gridX="2" gridY="9" />
+      <cell gridX="3" gridY="9" />
+      <cell gridX="0" gridY="10" sizeX="4">
+       <groupline msgId="1861100288fef00f03e4ad833454b726.1" />
+      </cell>
+      <cell gridX="0" gridY="11">
+       <label msgId="f8a7aa98d940d0142932b3f78589fd26" />
+      </cell>
+      <cell gridX="1" gridY="11">
+       <erpfield s3Name="0:vol" />
+       <label msgId="7937e91c700fc402a4c557f91ca5df1c.1" />
+       <erpfield s3Name="0:le" />
+      </cell>
+      <cell gridX="2" gridY="11">
+       <label msgId="61f18b68683d003123b47db17e17635a" />
+      </cell>
+      <cell gridX="3" gridY="11">
+       <erpfield s3Name="0:fuellgrad" />
+       <label msgId="0bcef9c45bd8a48eda1b26eb0c61c869.8" />
+      </cell>
+      <cell gridX="0" gridY="12" />
+      <cell gridX="1" gridY="12" />
+      <cell gridX="2" gridY="12">
+       <label msgId="08233f82375643a6325b7cefc2f70ec5" />
+      </cell>
+      <cell gridX="3" gridY="12">
+       <erpfield s3Name="0:voli" />
+       <label msgId="7937e91c700fc402a4c557f91ca5df1c.2" />
+       <erpfield s3Name="0:le" />
+      </cell>
+      <cell gridX="0" gridY="13" sizeX="4">
+       <groupline msgId="2101d27d729547572a22639e29dcf404" />
+      </cell>
+      <cell gridX="0" gridY="14">
+       <label msgId="9966b4c936c2d98cf4e309e249f7f498" />
+      </cell>
+      <cell gridX="1" gridY="14">
+       <erpfield dimX="12" s3Name="0:gewicht" />
+       <label msgId="ebe86682666f2ab3da0843ed3097e4b3.3" />
+      </cell>
+      <cell gridX="2" gridY="14">
+       <label msgId="ba320212bcff3b75c448efd5c292c860" />
+      </cell>
+      <cell gridX="3" gridY="14">
+       <erpfield dimX="12" s3Name="0:nutzlast" />
+       <label msgId="ebe86682666f2ab3da0843ed3097e4b3.4" />
+      </cell>
+      <cell gridX="0" gridY="15" sizeX="4">
+       <groupline />
+      </cell>
+      <cell gridX="0" gridY="16">
+       <label msgId="98e92e4a75196137859ddaab2c14d3d8" />
+      </cell>
+      <cell gridX="1" gridY="16">
+       <erpfield s3Name="0:stapelf" />
+      </cell>
+      <cell gridX="2" gridY="16">
+       <label msgId="a852b6743cb4bcc9333e50321a85754b" />
+      </cell>
+      <cell gridX="3" gridY="16">
+       <erpfield dimX="12" s3Name="0:auflast" />
+       <label msgId="ebe86682666f2ab3da0843ed3097e4b3.5" />
+      </cell>
+      <cell gridX="0" gridY="17" />
+      <cell gridX="1" gridY="17" />
+      <cell gridX="2" gridY="17">
+       <label msgId="e617273acee33571d1721024dedf253a" />
+      </cell>
+      <cell gridX="3" gridY="17">
+       <erpfield dimX="12" s3Name="0:ladehoe" />
+       <label msgId="b3cd915d758008bd19d0f2428fbb354a.10" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="0da3b78d9546e8fe0065cd3c9ed1879a.1">
+     <layout.grid>
+      <metainfo axis="column" grid="1" stretch="zoom" />
+      <metainfo axis="row" grid="2" indent="large" stretch="zoom" />
+      <cell gridX="0" gridY="0">
+       <label msgId="31589b68d1e42223c4b3363d4fe28d13.1" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="70" s3Name="0:catpics" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="93d8513e649021bf554b780fdb72ffbb.1" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield dimX="70" s3Name="0:catpicl" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="0" gridY="2">
+       <erpfield s3Name="0:catpicsz" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="1" gridY="2">
+       <erpfield s3Name="0:catpiclz" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+   </layout.notebook>
+  </cell>
+ </layout.grid>
+</frame>
+

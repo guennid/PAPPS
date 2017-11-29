@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S5" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid msgId="5d43a058-7ff4-478e-acbb-f624a0bbcc06">
+    <metainfo axis="row" grid="2" indent="large" />
+    <metainfo axis="column" grid="2" indent="large" />
+    <cell gridX="0" gridY="0">
+     <label msgId="ebbfa1d2-a03f-47ba-b517-a78336638ea3" />
+    </cell>
+    <cell gridX="1" gridY="0">
+     <erpfield s3Name="0:intrarel" />
+    </cell>
+    <cell gridX="2" gridY="0" />
+    <cell gridX="3" gridY="0" />
+    <cell gridX="0" gridY="1">
+     <label msgId="8136cc90-3d75-4b0f-acff-e5998858203a" />
+    </cell>
+    <cell gridX="1" gridY="1" sizeX="3">
+     <erpfield s3Name="0:ahnum" />
+     <erpfield access="readOnly" s3Name="0:ahnumname" />
+    </cell>
+    <cell gridX="0" gridY="2" sizeX="2">
+     <groupline msgId="f1061143-66e4-4567-878b-56075ddb1d34" />
+    </cell>
+    <cell gridX="2" gridY="2" sizeX="2">
+     <groupline msgId="e175dd54-5b45-4ba3-b006-eb1685222ea4" />
+    </cell>
+    <cell gridX="0" gridY="3">
+     <label msgId="323582ad-c5c9-470b-92c7-e6aedd963357" />
+    </cell>
+    <cell gridX="1" gridY="3">
+     <erpfield dimX="15" s3Name="0:urregion" />
+     <erpfield access="readOnly" s3Name="0:urregionname" />
+    </cell>
+    <cell gridX="2" gridY="3">
+     <label msgId="67c9b118-bf97-4ed2-98a9-debf726fdfca" />
+    </cell>
+    <cell gridX="3" gridY="3">
+     <erpfield dimX="15" s3Name="0:urland" />
+     <erpfield access="readOnly" s3Name="0:urlandname" />
+    </cell>
+    <cell gridX="0" gridY="4" />
+    <cell gridX="1" gridY="4" />
+    <cell gridX="2" gridY="4">
+     <label msgId="2f0e8de5-dd34-4b97-9e38-89c521bed4a8" />
+    </cell>
+    <cell gridX="3" gridY="4">
+     <erpfield dimX="15" s3Name="0:bsregion" />
+     <erpfield access="readOnly" s3Name="0:bsregionname" />
+    </cell>
+   </layout.grid>
+  </cell>
+ </layout.grid>
+</frame>
+

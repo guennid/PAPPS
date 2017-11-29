@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S3" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid msgId="7070a1c2-070c-41e6-9d84-ed3ef746fb6d">
+    <cell gridX="0" gridY="0">
+     <label msgId="f6432309-37b5-4b5e-a572-bd7f388c4524" />
+    </cell>
+    <cell gridX="1" gridY="0">
+     <erpfield s3Name="0:a1kbpr" />
+    </cell>
+    <cell gridX="0" gridY="1">
+     <label msgId="13a6a629-9ffb-4961-b539-72a6cf863557" />
+    </cell>
+    <cell gridX="1" gridY="1">
+     <erpfield s3Name="0:a2kbpr" />
+    </cell>
+    <cell gridX="0" gridY="2">
+     <label msgId="da2e1f8b-26e0-4427-b87e-65e91333bfc5" />
+    </cell>
+    <cell gridX="1" gridY="2">
+     <erpfield s3Name="0:a3kbpr" />
+    </cell>
+    <cell gridX="0" gridY="3">
+     <label msgId="49c31d60-86b2-4f5c-8290-eeff42034dc9" />
+    </cell>
+    <cell gridX="1" gridY="3">
+     <erpfield s3Name="0:a4kbpr" />
+    </cell>
+    <cell gridX="0" gridY="4">
+     <label msgId="9bf20625-0e46-4792-88f5-d315e92becda" />
+    </cell>
+    <cell gridX="1" gridY="4">
+     <erpfield s3Name="0:a5kbpr" />
+    </cell>
+   </layout.grid>
+  </cell>
+ </layout.grid>
+</frame>
+

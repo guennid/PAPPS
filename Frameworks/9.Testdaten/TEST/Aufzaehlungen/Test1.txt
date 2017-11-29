@@ -1,5 +1,0 @@
-[Aufzaehlung] 
-such#name#verweisart#
-[Wertemenge]
-such#katego#name#
-such2#katego#name2#

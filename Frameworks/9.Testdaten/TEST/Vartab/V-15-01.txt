@@ -1,7 +1,0 @@
-Name#Name2#K/T#Art#Art2#Skip#Bemerkung# 
-teytest1# #K#P15# #0# 1# 
-teytest2# #K#PS15# #0# 2#
-teytest3# #T#PT15# #0# 3#
-teytest4# #T#P15:1# #0# 4#
-teytest5# #T#PS15:1# #0# 5#
-teytest6# #T#PT15:1# #0# 6#  

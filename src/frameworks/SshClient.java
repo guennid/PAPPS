@@ -40,6 +40,9 @@ public class SshClient {
 		session = shell.getSession(username, host, port);
 		session.setPassword(password);
                 session.setConfig("StrictHostKeyChecking", "no");
+                session.setConfig(
+    "PreferredAuthentications", 
+    "publickey,keyboard-interactive,password");
 		session.connect();
                 
 		
@@ -56,6 +59,7 @@ public class SshClient {
             //sftpchannel = (ChannelSftp) channel;
             ((ChannelSftp)channel).put(source,target,null,sftpchannel.OVERWRITE);   
             //sftpchannel.put(source,target,sftpchannel.OVERWRITE);
+           channel.disconnect();
             return channel.getExitStatus();
         
     }
@@ -67,6 +71,7 @@ public class SshClient {
      
       //sftpchannel = (ChannelSftp) channel;
       ((ChannelSftp)channel).get(source, target, null,sftpchannel.OVERWRITE );
+      channel.disconnect();
       return channel.getExitStatus();   
     }
    

@@ -2,6 +2,7 @@ package frameworks;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 import de.abas.ceks.jedp.CantBeginEditException;
 import de.abas.ceks.jedp.CantBeginSessionException;
 import de.abas.ceks.jedp.CantReadFieldPropertyException;
@@ -43,11 +44,20 @@ import javax.swing.tree.DefaultTreeModel;
 import static frameworks.GlobalVars.ZDArray;
 import static frameworks.GlobalVars.ZDArrayDB;
 import static frameworks.GlobalVars.ZDArrayNeu;
+import java.awt.Desktop;
 import java.awt.Frame;
 import java.io.FileWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.Properties;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.synth.SynthLookAndFeel;
 
 /**
  *
@@ -67,40 +77,55 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewApplication
      */
- 
-
     public MainFrame() {
         try {
-            Reader reader = null;
-            
+            System.setProperty("sun.java2d.dpiaware", "false");
+            Properties props = new Properties();
+            props.put("logoString", "GD");
+            AluminiumLookAndFeel.setCurrentTheme(props);
+
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+            /* SYNTH
+             SynthLookAndFeel laf = new SynthLookAndFeel();
+             laf.load(MainFrame.class.getResourceAsStream("laf.xml"), MainFrame.class);
+             UIManager.setLookAndFeel(laf);
+             */
+            URL myIconUrl = this.getClass().getResource("puzzle.png");
+            this.setIconImage(new ImageIcon(myIconUrl, "Frameworks").getImage());
             initComponents();
-            jLversion.setText("Version "+String.valueOf(GlobalVars.version));
+            File f = new File("tmp");
+            if (!f.exists()) {
+                f.mkdir();
+            }
+            jLversion.setText("Version " + String.valueOf(GlobalVars.version));
             jLuser.setText(InetAddress.getLocalHost().getHostName());
-// Properties lesen
-            reader = new FileReader( "properties.txt" );
-            Properties  propEinstellungen = new Properties();
-            propEinstellungen.load(reader);
-            GlobalVars.source =new File (propEinstellungen.getProperty("FrameworksSource"));
-            GlobalVars.updatepfad=propEinstellungen.getProperty( "UpdateSource");
-            if (GlobalVars.updatepfad==null) {GlobalVars.updatepfad="";}
-            if (GlobalVars.source==null) {GlobalVars.source=new File("\\\\Magellan.abasag.intra\\gmbhowframework\\2015r4\\frameworks");}
-            //Ende Properties
-            rootnode = new DefaultMutableTreeNode("PAPPS");
+            // Properties lesen
+            MyProperties myproperties = new MyProperties();
+            myproperties.ReadProps();
+
+            rootnode = new DefaultMutableTreeNode("Frameworks");
             treeModel = new DefaultTreeModel(rootnode);
             jTree1.setModel(treeModel);
             DirList(GlobalVars.target, rootnode, true);
-            jTLinuxUser.setText("erp");
-            jTHost.setText("10.0.3.200");
-            jPLinux.setText("erp");
-            jTMandant.setText("erp");
-            jPMandant.setText("master");
-            jTedpPort.setText("6550");
-            
+            jTLinuxUser.setText(GlobalVars.LinuxUser);
+            jTHost.setText(GlobalVars.Host);
+            jPLinux.setText(GlobalVars.LinuxPass);
+            jTMandant.setText(GlobalVars.Mandant);
+            jPMandant.setText(GlobalVars.Mandantpass);
+            jTedpPort.setText(Integer.toString(GlobalVars.edpport));
+
             jTVartab.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
 
     }
 
@@ -130,12 +155,13 @@ public class MainFrame extends javax.swing.JFrame {
             comboarray = checkzd(dbint, grpint, table);
             if (comboarray != null) {
                 //checkbox= new DefaultCellEditor(new JComboBox(new Object[] {comboarray}));
+
                 checkbox = new DefaultCellEditor(new JComboBox(comboarray));
                 checkbox.addCellEditorListener(new CellEditorListener() {
 
                     @Override
                     public void editingStopped(ChangeEvent e) {
-                                         //  System.out.println("Ende");                                         
+                        //  System.out.println("Ende");                                         
                         //Den Frei Haken setzen in der Table
                         table.setValueAt(true, row, 4);
                         // die Dateivartab aus der TAbelle holen
@@ -149,12 +175,12 @@ public class MainFrame extends javax.swing.JFrame {
                                 //table.setValueAt("15", i, 3);
                             }
                         }
-                                           // FOPTXT Tablezeilen umsetzen
+                        // FOPTXT Tablezeilen umsetzen
                         // Mainframe instanzieren
                         MainFrame gui = ReferenceHolderClass.getGUI();
                         JTable jTablefoptxt = gui.getjTFOPTXT();  // hier hast du die TextArea
                         JTable jTschluessel = gui.getjTschluessel();
-                        JTable jTmasken=gui.getjTMasken();
+                        JTable jTmasken = gui.getjTMasken();
                         //            .getjTFOPTXT();
                         Vartab vartab = new Vartab();
 
@@ -172,14 +198,14 @@ public class MainFrame extends javax.swing.JFrame {
                         // Masken instanzieren
                         Masken masken = new Masken();
                         //Transcoder für Maskennumemr aufrufen
-                        
-                        masken.maskentranscode(jTmasken, suchzd,table.getCellEditor().getCellEditorValue().toString());
+
+                        masken.maskentranscode(jTmasken, suchzd, table.getCellEditor().getCellEditorValue().toString());
 
                     }
 
                     @Override
                     public void editingCanceled(ChangeEvent e) {
-                                          //      System.out.println("Cancel");
+                        //      System.out.println("Cancel");
                         // Brauchen wir nicht     
                     }
 
@@ -204,15 +230,12 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
-        jLversion = new javax.swing.JLabel();
-        jLuser = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTKurzInfo = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
+        jBDoku = new javax.swing.JButton();
         jTFrameworkNo = new javax.swing.JTextField();
         jTFrameworkpreis = new javax.swing.JTextField();
         jBKostenpflicht = new javax.swing.JCheckBox();
@@ -228,6 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTbisabas = new javax.swing.JTextField();
         canvas1 = new java.awt.Canvas();
         canvas2 = new java.awt.Canvas();
+        jBSinglesync = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTVartab = new javax.swing.JTable();
@@ -248,6 +272,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         jTschluessel = new javax.swing.JTable();
+        jPanel12 = new javax.swing.JPanel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTObjekte = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jBConnectionTest = new javax.swing.JButton();
@@ -275,11 +302,15 @@ public class MainFrame extends javax.swing.JFrame {
         jBInstallMasken = new javax.swing.JButton();
         jBPhase1 = new javax.swing.JButton();
         jBPhase2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jBInstallAufrufparameter = new javax.swing.JButton();
         jTKunde = new javax.swing.JTextField();
         jTInfos = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jLuser = new javax.swing.JLabel();
+        jLversion = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -290,25 +321,16 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Frameworks");
         setResizable(false);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                jTree1ValueChanged(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTree1);
-
-        jLversion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLversion.setText("version");
-
-        jLuser.setText("user");
-
         jTKurzInfo.setColumns(20);
         jTKurzInfo.setRows(5);
         jScrollPane2.setViewportView(jTKurzInfo);
 
-        jButton2.setText("Dokumentation");
+        jBDoku.setText("Dokumentation");
+        jBDoku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDokuActionPerformed(evt);
+            }
+        });
 
         jTFrameworkNo.setEditable(false);
 
@@ -338,6 +360,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTbisabas.setEditable(false);
 
+        jBSinglesync.setText("Sync des Frameworks");
+        jBSinglesync.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSinglesyncActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -346,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addComponent(jButton2)
+                        .addComponent(jBDoku)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -374,13 +403,15 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jTVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTbisabas, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jBKostenpflicht, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTFrameworkpreis, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 252, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jBKostenpflicht)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jBSinglesync)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel9)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jTFrameworkpreis, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(27, 27, 27)))))
                 .addGap(19, 19, 19))
         );
@@ -392,7 +423,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jBKostenpflicht)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(jTFrameworkpreis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -410,11 +441,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTMaintainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))))
+                            .addComponent(jLabel10)
+                            .addComponent(jBSinglesync))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jBDoku)
                 .addContainerGap())
         );
 
@@ -472,7 +504,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -555,7 +587,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("FOP/SPX/Dateien", jPanel4);
@@ -583,16 +615,16 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 897, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 787, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Masken", jPanel5);
@@ -631,16 +663,16 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 906, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Aufzählungen", jPanel11);
@@ -689,7 +721,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -732,19 +764,68 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 873, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Schlüssel", jPanel8);
+
+        jTObjekte.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Vartab", "Objekt", "Nummer", "Such", "Datei"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(jTObjekte);
+        if (jTObjekte.getColumnModel().getColumnCount() > 0) {
+            jTObjekte.getColumnModel().getColumn(0).setPreferredWidth(10);
+            jTObjekte.getColumnModel().getColumn(2).setPreferredWidth(15);
+            jTObjekte.getColumnModel().getColumn(3).setPreferredWidth(15);
+        }
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Objekte", jPanel12);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Verbindungsdaten"));
 
@@ -760,6 +841,17 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setText("Linuxuser");
 
         jLabel3.setText("Linuxpasswort");
+
+        jTLinuxUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTLinuxUserFocusLost(evt);
+            }
+        });
+        jTLinuxUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTLinuxUserActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Mandant");
 
@@ -838,6 +930,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane6.setAutoscrolls(true);
+
         jTLog.setEditable(false);
         jTLog.setColumns(20);
         jTLog.setRows(5);
@@ -902,11 +996,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Aufrufparameter");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jBInstallAufrufparameter.setText("Objekte");
+        jBInstallAufrufparameter.setEnabled(false);
+        jBInstallAufrufparameter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jBInstallObjekteActionPerformed(evt);
             }
         });
 
@@ -951,7 +1045,7 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jBInstallMasken)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4)))))
+                                        .addComponent(jBInstallAufrufparameter)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -977,11 +1071,11 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jBInstallInfosysteme)
                     .addComponent(jBinstallFOP)
                     .addComponent(jBInstallMasken)
-                    .addComponent(jButton4))
+                    .addComponent(jBInstallAufrufparameter))
                 .addGap(2, 2, 2)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1008,6 +1102,51 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Installation", jPanel7);
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jTree1ValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTree1);
+
+        jLuser.setText("user");
+
+        jLversion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLversion.setText("version");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTabbedPane1))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLuser, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLversion, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jTabbedPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLuser)
+                    .addComponent(jLversion)))
+        );
+
+        menuBar.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         menuBar.setForeground(new java.awt.Color(51, 51, 51));
 
         fileMenu.setMnemonic('f');
@@ -1046,30 +1185,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLuser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLversion, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLversion)
-                    .addComponent(jLuser)))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -1081,49 +1201,56 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
-        Thread sync = new Thread()
-                 {
-         public void run()
-         {
-        try {
-            MyLogger mylogger= new MyLogger();
-            mylogger.synclog();
-            Update update=new Update();
-            update.checkupdate();
-            
-            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));     
-             jTabbedPane1.setSelectedIndex(8);
-             //File source, File destination, boolean smart
-            jTLog.append("Frameworks werden abgeglichen\n");
-            jTLog.append("-------------------------------------\n");
-            jTLog.getGraphics();
-            FileSync.synchronize(GlobalVars.source, GlobalVars.target, true,jTLog);
-            // Verzeichnisstruktur der PAPPS einlesen und als Tree darstellen
-            //File dir = new File("C:\\Users\\gdenz.ABAS-PROJEKT\\Documents\\PAPPS");
-            File dir = new File(".\\PAPPS");
-            dir = GlobalVars.target;
-            rootnode = new DefaultMutableTreeNode("Frameworks");
-            treeModel = new DefaultTreeModel(rootnode);
-            jTree1.setModel(treeModel);
-            DirList(dir, rootnode, true);
-             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));  
-             
-             
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));     
-        }
 
-         }
-                 };
-         sync.start();
+        Thread sync = new Thread() {
+            public void run() {
+                try {
+                    MyLogger mylogger = new MyLogger();
+                    mylogger.synclog();
+                    Update update = new Update();
+                    update.checkupdate();
+
+                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    jTabbedPane1.setSelectedIndex(7);
+                    //File source, File destination, boolean smart
+                    jTLog.append("Frameworks werden abgeglichen\n");
+                    jTLog.append("-------------------------------------\n");
+                    jTLog.getGraphics();
+                    FileSync.synchronize(GlobalVars.source, GlobalVars.target, true, jTLog);
+            // Verzeichnisstruktur der PAPPS einlesen und als Tree darstellen
+                    //File dir = new File("C:\\Users\\gdenz.ABAS-PROJEKT\\Documents\\PAPPS");
+                    File dir = new File(".\\PAPPS");
+                    dir = GlobalVars.target;
+                    rootnode = new DefaultMutableTreeNode("Frameworks");
+                    treeModel = new DefaultTreeModel(rootnode);
+                    jTree1.setModel(treeModel);
+                    DirList(dir, rootnode, true);
+                    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                }
+
+            }
+        };
+        sync.start();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         //Alle Install Buttons deaktivieren
         jBInstallInfosysteme.setEnabled(false);
+         jBPhase1.setEnabled(false);
+        jBPhase2.setEnabled(false);
+        jBInstallAufzaehlungen.setEnabled(false);
+        jBInstallVartab.setEnabled(false);
+        jBInstallSchluessel.setEnabled(false);
+        
+        jBinstallFOP.setEnabled(false);
+        jBInstallMasken.setEnabled(false);
+        jBInstallAufrufparameter.setEnabled(false);
+        
 
         if (node == null) {
             //NOthing selected
@@ -1134,7 +1261,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 if (nodeInfo instanceof PappInfo) {
                     PappInfo pappinfo = (PappInfo) nodeInfo;
-
+                    GlobalVars.appdir = pappinfo.dir.toString();
                     //Kurzinfo einlesen
                     KurzInfoLesen(pappinfo.dir);
                     Frameworklesen(pappinfo.dir);
@@ -1142,7 +1269,9 @@ public class MainFrame extends javax.swing.JFrame {
                     DefaultTableModel model = (DefaultTableModel) jTFOP.getModel();
                     // Tabellenzeilen löschen
                     model.setNumRows(0);
-                    
+                    DefaultTableModel modelfoptxt = (DefaultTableModel) jTFOPTXT.getModel();
+                    modelfoptxt.setNumRows(0);
+
                     SystemLesen(pappinfo.dir, "Infosysteme");
                     SystemLesen(pappinfo.dir, "Vartab");
                     SystemLesen(pappinfo.dir, "SPX");
@@ -1151,98 +1280,130 @@ public class MainFrame extends javax.swing.JFrame {
                     SystemLesen(pappinfo.dir, "Schluessel");
                     SystemLesen(pappinfo.dir, "Masken");
                     SystemLesen(pappinfo.dir, "Files");
+                    SystemLesen(pappinfo.dir, "Objekte");
                     GlobalVars.dir = pappinfo.dir;
+                    jBDoku.setEnabled(false);
+                    File file = new File(pappinfo.dir + "\\Dokumentation\\");
+
+                    if (file.isDirectory()) {
+
+                        if (file.list().length > 0) {
+                            jBDoku.setEnabled(true);
+                        }
+                    }
                 }
             }
         }
 
 
     }//GEN-LAST:event_jTree1ValueChanged
-    
-    private void jMenuEinstellungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEinstellungenActionPerformed
-        try {
-            //Einstellungen Dialog
-            FileWriter writer = null;
-            Properties propEinstellungen;
-            
-            Einstellungen XE=new Einstellungen(this,true,GlobalVars.source.toString(), GlobalVars.updatepfad.toString());
-            
-            XE.setVisible(true);
-            GlobalVars.source = new File (XE.getFrameworkSourcePath());
-            GlobalVars.updatepfad = new String (XE.getUpdatepfad());
-            // Variablenwert abspeichern
-            writer = new FileWriter( "properties.txt" );
-            
-            propEinstellungen = new Properties();
-            propEinstellungen.setProperty( "FrameworksSource", GlobalVars.source.toString() );
-            propEinstellungen.setProperty( "UpdateSource", GlobalVars.updatepfad.toString() );
-            propEinstellungen.store( writer, "Frameworks" );
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-        
+    private void jMenuEinstellungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEinstellungenActionPerformed
+        Einstellungen XE = new Einstellungen(this, true, GlobalVars.source.toString(), GlobalVars.updatepfad.toString());
+        XE.setVisible(true);
+        GlobalVars.source = new File(XE.getFrameworkSourcePath());
+        GlobalVars.updatepfad = new String(XE.getUpdatepfad());
+        MyProperties myproperties = new MyProperties();
+        myproperties.WriteProps();
+
+
     }//GEN-LAST:event_jMenuEinstellungenActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        if(checkInstall())
-        {
-            MyLogger mylogger = new MyLogger();
-            mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Aufrufparameter");
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jBPhase2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPhase2ActionPerformed
-        if(checkInstall())
-        {
-            //schlüssel
-            if (jBInstallSchluessel.isEnabled()){ jBInstallSchluesselActionPerformed(evt);}
-            if (jBInstallInfosysteme.isEnabled()){jBInstallInfosystemeActionPerformed(evt);}
-            if (jBinstallFOP.isEnabled()){jBinstallFOPActionPerformed(evt);}
-            if (jBInstallMasken.isEnabled()){jBInstallMaskenActionPerformed(evt);}
-            //if (jBInstallAufrufparameter.isEnabled()){jBInstallAufrufparameterActionPerformed(evt);}
-
-        }
-    }//GEN-LAST:event_jBPhase2ActionPerformed
-
-    private void jBPhase1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPhase1ActionPerformed
-        if(checkInstall())
-        {
-            // Aufzählungen
-            if (jBInstallAufzaehlungen.isEnabled())
-            {jBInstallAufzaehlungenActionPerformed(evt);}
-            //Vartab
-            if (jBInstallVartab.isEnabled())
-            {jBInstallVartabActionPerformed(evt);}
-
-        }
-
-    }//GEN-LAST:event_jBPhase1ActionPerformed
-
-    private void jBInstallMaskenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallMaskenActionPerformed
-        if(checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+    private void jBInstallObjekteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallObjekteActionPerformed
+        
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+                Buttonsfree(false);
                     File file = null;
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     String passwd = new String(jPMandant.getPassword());
-                    EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+                    EDPSession session = SessionAufbauen(GlobalVars.Host,GlobalVars.edpport, GlobalVars.Mandant,GlobalVars.Mandantpass);
 
                     // Aufzählungen Installieren
-                    Masken masken=new Masken();
-                    boolean status = masken.maskenInstall(jTMasken,jTLog, session,jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText());
-                    if (status) jTLog.append("Masken erfolgreich verarbeitet");
+                    Objekte objekte = new Objekte();
+                    boolean status = objekte.Install(  session,jTLog,jTObjekte);
+                    if (status) {
+                        jTLog.append("Objekte erfolgreich verarbeitet");
+                    }
                     jTLog.append("--------------------------------\n");
                     jTLog.paint(jTLog.getGraphics());
                     session.endSession();
                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                     MyLogger mylogger = new MyLogger();
-                    mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Masken");
+                    mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Objekte");
+                        //Alle Buttons freigeben
+                    Buttonsfree(true);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                }
+
+            };
+            sync.start();
+        }
+    }//GEN-LAST:event_jBInstallObjekteActionPerformed
+
+    private void jBPhase2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPhase2ActionPerformed
+        if (checkInstall()) {
+            //schlüssel
+            if (jBInstallSchluessel.isEnabled()) {
+                jBInstallSchluesselActionPerformed(evt);
+            }
+            if (jBInstallInfosysteme.isEnabled()) {
+                jBInstallInfosystemeActionPerformed(evt);
+            }
+            if (jBinstallFOP.isEnabled()) {
+                jBinstallFOPActionPerformed(evt);
+            }
+            if (jBInstallMasken.isEnabled()) {
+                jBInstallMaskenActionPerformed(evt);
+            }
+            //if (jBInstallAufrufparameter.isEnabled()){jBInstallAufrufparameterActionPerformed(evt);}
+
+        }
+    }//GEN-LAST:event_jBPhase2ActionPerformed
+
+    private void jBPhase1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPhase1ActionPerformed
+        if (checkInstall()) {
+            // Aufzählungen
+            if (jBInstallAufzaehlungen.isEnabled()) {
+                jBInstallAufzaehlungenActionPerformed(evt);
+            }
+            //Vartab
+            if (jBInstallVartab.isEnabled()) {
+                jBInstallVartabActionPerformed(evt);
+            }
+
+        }
+
+    }//GEN-LAST:event_jBPhase1ActionPerformed
+
+    private void jBInstallMaskenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallMaskenActionPerformed
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+        Buttonsfree(false);
+                    File file = null;
+                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    String passwd = new String(jPMandant.getPassword());
+                    EDPSession session = SessionAufbauen(GlobalVars.Host,GlobalVars.edpport, GlobalVars.Mandant,GlobalVars.Mandantpass);
+
+                    // Aufzählungen Installieren
+                    Masken masken = new Masken();
+                    boolean status = masken.maskenInstall(jTMasken, jTLog, session, jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText());
+                    if (status) {
+                        jTLog.append("Masken erfolgreich verarbeitet");
+                    }
+                    jTLog.append("--------------------------------\n");
+                    jTLog.paint(jTLog.getGraphics());
+                    session.endSession();
+                    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+                    MyLogger mylogger = new MyLogger();
+                    mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Masken");
+                        //Alle Buttons freigeben
+                    Buttonsfree(true);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
 
             };
@@ -1251,55 +1412,56 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBInstallMaskenActionPerformed
 
     private void jBInstallSchluesselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallSchluesselActionPerformed
-        if(checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+           Buttonsfree(false);
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     String passwd = new String(jPMandant.getPassword());
-                    EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+                    EDPSession session = SessionAufbauen(GlobalVars.Host,GlobalVars.edpport,GlobalVars.Mandant,GlobalVars.Mandantpass);
                     if (session != null) {
 
                         Schluessel schluessel = new Schluessel();
-                        boolean status = schluessel.Schluesselinstall(jTschluessel,session, jTLog);
+                        boolean status = schluessel.Schluesselinstall(jTschluessel, session, jTLog);
 
                         session.endSession();
                         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                         MyLogger mylogger = new MyLogger();
-                        mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Schlüssel");
+                        mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Schlüssel");
                     }
+                    //Alle Buttons freigeben
+                  Buttonsfree(true);
                 }
-
+                 
             };
             sync.start();
         }
     }//GEN-LAST:event_jBInstallSchluesselActionPerformed
 
     private void jBInstallVartabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallVartabActionPerformed
-        if(checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+           Buttonsfree(false);
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     jTLog.append("=============================\n");
                     jTLog.append("Vartab erweitern");
                     //edpSession Aufbauen
                     String passwd = new String(jPMandant.getPassword());
-                    EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+                    EDPSession session = SessionAufbauen(GlobalVars.Host, GlobalVars.edpport,GlobalVars.Mandant,GlobalVars.Mandantpass);
                     //    EDPSession session=SessionAufbauen(jTHost.getText(),6550,jTMandant.getText(),Arrays.toString(jPMandant.getPassword()));
                     if (session != null) {
                         //Install Routine in Klasse Vartab aufrufen
                         //Klasse erzeugen
                         Vartab vartab = new Vartab();
 
-                        vartab.install(jTVartab, session, jTFrameworkNo.getText(),jTLog);
+                        vartab.install(jTVartab, session, jTFrameworkNo.getText(), jTLog);
                         session.endSession();
-                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                     
                     }
+                        //Alle Buttons freigeben
+                   Buttonsfree(true);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
             };
             sync.start();
@@ -1308,16 +1470,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBInstallAufzaehlungenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallAufzaehlungenActionPerformed
 
-        if (checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+                    // Alle Knöpfe deaktivieren
+                Buttonsfree(false);
+                     //
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     File file = null;
                     String passwd = new String(jPMandant.getPassword());
-                    EDPSession session = SessionAufbauen(jTHost.getText(), 6550, jTMandant.getText(), passwd);
+                    EDPSession session = SessionAufbauen(GlobalVars.Host, GlobalVars.edpport, GlobalVars.Mandant,GlobalVars.Mandantpass);
 
                     // Aufzählungen Installieren
                     Aufzählungen aufzählungen = new Aufzählungen();
@@ -1330,9 +1492,11 @@ public class MainFrame extends javax.swing.JFrame {
 
                         MyLogger mylogger = new MyLogger();
 
-                        mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Vartab");
+                        mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Vartab");
                     }
                     session.endSession();
+                    //Alle Buttons freigeben
+                    Buttonsfree(true);
 
                 }
             };
@@ -1342,13 +1506,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBInstallAufzaehlungenActionPerformed
 
     private void jBinstallFOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBinstallFOPActionPerformed
-        if(checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
 
+       Buttonsfree(false);
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     //SPX und FOP kopieren
                     jTLog.append("FOP's und Spx werden kopiert \n");
@@ -1360,29 +1522,32 @@ public class MainFrame extends javax.swing.JFrame {
 
                         File file = new File(jTFOP.getValueAt(i, 4).toString());
                         jTLog.append(file.getName() + " kopieren \n");
+                        jTLog.setCaretPosition(jTLog.getText().length());
 
                         String dir = (jTFOP.getValueAt(i, 0)).toString();
                         EDPSession session = SessionAufbauen(GlobalVars.Host, GlobalVars.edpport, GlobalVars.Mandant, GlobalVars.Mandantpass);
-                        if (jTFOP.getValueAt(i,3).toString().length()>0)
-                        {
+                        if (jTFOP.getValueAt(i, 3).toString().length() > 0) {
                             // Files werden installiert
-                            boolean status = fops.install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), file, dir, session, jTLog,true);
-                        }
-                        else
-                        {//Fops oder spx werden installiert
-                            boolean status = fops.install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), file, dir, session, jTLog,false);
+                            boolean status = fops.install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), file, dir, session, jTLog, true);
+                        } else {//Fops oder spx werden installiert
+                            boolean status = fops.install(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), file, dir, session, jTLog, false);
                         }
 
                         session.endSession();
 
                     }
                     // fop.txt verändern
-                    jTLog.append("=============================\n");
-                    jTLog.append("FOP.TXT wird erweitert");
+                    jTLog.append("========FOP.TXT================\n");
+                    jTLog.append("FOP.TXT wird erweitert\n");
                     boolean status = fops.foptxtinstall(jTFrameworkNo.getText(), jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), GlobalVars.dir, jTFOPTXT);
                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     MyLogger mylogger = new MyLogger();
-                    mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Fops");
+                    mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Fops");
+                        //Alle Buttons freigeben
+                    jTLog.append("Fertig\n");
+                    jTLog.setCaretPosition(jTLog.getText().length());
+                   Buttonsfree(true);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
             };
             sync.start();
@@ -1390,22 +1555,23 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBinstallFOPActionPerformed
 
     private void jBInstallInfosystemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInstallInfosystemeActionPerformed
-        if(checkInstall())
-        {
-            Thread sync = new Thread()
-            {
-                public void run()
-                {
+        if (checkInstall()) {
+            Thread sync = new Thread() {
+                public void run() {
+        Buttonsfree(false);
                     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     Infosysteme infosysteme = new Infosysteme();
                     //    (JTable jTinfosystem, JTextArea jTLog,String LinuxUser, String LinuxPass, String Host, String MandantPass)
                     EDPSession session = SessionAufbauen(GlobalVars.Host, GlobalVars.edpport, GlobalVars.Mandant, GlobalVars.Mandantpass);
 
-                    boolean status = infosysteme.install(jTinfosystem, jTLog,session);
+                    boolean status = infosysteme.install(jTinfosystem, jTLog, session);
                     session.endSession();
                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     MyLogger mylogger = new MyLogger();
-                    mylogger.InstallLogWrite(jLuser.getText(),jTKunde.getText(),jTFrameworkNo.getText(),jTInfos.getText(),"Infosysteme");
+                    mylogger.InstallLogWrite(jLuser.getText(), jTKunde.getText(), jTFrameworkNo.getText(), jTInfos.getText(), "Infosysteme");
+                        //Alle Buttons freigeben
+                  Buttonsfree(true);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
             };
             sync.start();
@@ -1422,6 +1588,19 @@ public class MainFrame extends javax.swing.JFrame {
         GlobalVars.Mandant = jTMandant.getText();
         GlobalVars.Mandantpass = new String(jPMandant.getPassword());
         GlobalVars.edpport = Integer.parseInt(jTedpPort.getText());
+
+        // Verbindung wird neu getestet also deaktivieren wir alle Instaaller Buttons
+        jBPhase1.setEnabled(false);
+        jBPhase2.setEnabled(false);
+        jBInstallAufzaehlungen.setEnabled(false);
+        jBInstallVartab.setEnabled(false);
+        jBInstallSchluessel.setEnabled(false);
+        jBInstallInfosysteme.setEnabled(false);
+        jBinstallFOP.setEnabled(false);
+        jBInstallMasken.setEnabled(false);
+        jBInstallAufrufparameter.setEnabled(false);
+        //
+
         jTLog.append("----------Verbindungstest----------\n");
         jTLog.append("EDP Verbindung aufbauen");
         jTLog.paint(jTLog.getGraphics());
@@ -1501,125 +1680,175 @@ public class MainFrame extends javax.swing.JFrame {
                 jTLog.paint(jTLog.getGraphics());
                 edpE1.endEditCancel();
                 session.endSession();
+                // und nun noch auf shell anmelden und edp ausführen
+                jTLog.append("Shellzugriff testen ");
+                jTLog.paint(jTLog.getGraphics());
 
+                ByteArrayOutputStream error = new ByteArrayOutputStream();
+                StringBuilder fromServer = new StringBuilder();
+                int sshexitstatus = 0;
+                SshClient sshclient = new SshClient();
+                sshclient.connect(GlobalVars.LinuxUser, GlobalVars.LinuxPass, GlobalVars.Host, 22);
+                sshexitstatus = sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m " + jTMandant.getText() + " -p " + new String(jPMandant.getPassword()) + " -a T", error, fromServer);
+                MyProperties myproperties = new MyProperties();
+                myproperties.WriteProps();
+                JOptionPane.showMessageDialog(this, "EDP Verbindung und Mandantenzugriff war erfolgreich!\n Bitte nun das gewünschte Framework anwählen !!!", "EDP Verbindung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                GlobalVars.VerbindungOK = true;
+                jTLog.append("                          OK\n");
+                jTLog.paint(jTLog.getGraphics());        
+          
+               // Alles leer machen, damit neu geladen wird
+                
+               
+                
+       
             } catch (InvalidQueryException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
+
                 GlobalVars.VerbindungOK = false;
             } catch (CantBeginEditException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
                 GlobalVars.VerbindungOK = false;
+
             } catch (CantReadFieldPropertyException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
                 GlobalVars.VerbindungOK = false;
-            }
-            JOptionPane.showMessageDialog(null, "EDP Verbindung und Mandantenzugriff war erfolgreich!", "EDP Verbindung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-            GlobalVars.VerbindungOK = true;
 
+            } catch (JSchException ex) {
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                GlobalVars.VerbindungOK = false;
+
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
+                GlobalVars.VerbindungOK = false;
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                jTLog.append("FEHLER !!! - " + ex.getMessage().toString());
+                jTLog.paint(jTLog.getGraphics());
+                GlobalVars.VerbindungOK = false;
+
+            }
+
+            if (!GlobalVars.VerbindungOK) {
+                JOptionPane.showMessageDialog(this, "EDP Verbindung und Mandantenzugriff war nicht erfolgreich!\n", "Verbindung fehlerhaft", JOptionPane.ERROR_MESSAGE);
+
+            }
         }
 
         // session.endSession();
 
         /*
-        try {
-            ByteArrayOutputStream error= new ByteArrayOutputStream();
-            StringBuilder fromServer=new StringBuilder();
-            int sshexitstatus=0;
-            SshClient sshclient=new SshClient();
-            sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
-            sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -a T",error,fromServer);
-            //edpexport.sh -l 12:10 -f zdgn,zdgn2
-            // sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn8,zdgn9,zdgn10",error,fromServer);
+         try {
+         ByteArrayOutputStream error= new ByteArrayOutputStream();
+         StringBuilder fromServer=new StringBuilder();
+         int sshexitstatus=0;
+         SshClient sshclient=new SshClient();
+         sshclient.connect(jTLinuxUser.getText(), new String(jPLinux.getPassword()), jTHost.getText(), 22);
+         sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -a T",error,fromServer);
+         //edpexport.sh -l 12:10 -f zdgn,zdgn2
+         // sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn8,zdgn9,zdgn10",error,fromServer);
 
-            if ((fromServer.indexOf("Kunde:Kunde")==0)&&(sshexitstatus==0))
-            {
-                //Verbindung erfoglreich
-                JOptionPane.showMessageDialog (null, "Ssh Verbindung und Mandantenzugriff war erfolgreich!", "Ssh Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);
+         if ((fromServer.indexOf("Kunde:Kunde")==0)&&(sshexitstatus==0))
+         {
+         //Verbindung erfoglreich
+         JOptionPane.showMessageDialog (null, "Ssh Verbindung und Mandantenzugriff war erfolgreich!", "Ssh Verbindung erfolgreich",JOptionPane.INFORMATION_MESSAGE);
 
-                // ZD's abholen
-                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdname,zdname2,zdname3,zdname4,zdname5,zdname6,zdname7,zdname8,zdname9,zdname10,zdname11,,zdname12,zdname13,zdname14,zdname15,zdname16,zdname17,zdname18,zdname19,zdname20,zdname21,zdname22,zdname23,zdname24,zdname25,zdname26,zdname27,zdname28,zdname29,zdname30,zdname31,zdname32,zdname33,zdname34,zdname35,zdname36,zdname37,zdname38,zdname39,zdname40",error,fromServer);
-                if (sshexitstatus==0)
-                {
-                    int zdnummer=0;
-                    String zdantwort=fromServer.toString();
-                    while (zdantwort.indexOf(";")!=-1)
-                    {
-                        // Noch ne ZD raus schneiden mit allen Gruppen
-                        String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
-                        //Die Gruppen rausschneiden
-                        if (!zd.equals(""))
-                        {
-                            ZDArray[zdnummer][0]=zd;
-                            ZDArray[zdnummer][1]=zd;
-                            ZDArray[zdnummer][2]=zd;
-                            ZDArray[zdnummer][3]=zd;
-                            ZDArray[zdnummer][4]=zd;
-                            ZDArray[zdnummer][5]=zd;
-                            ZDArray[zdnummer][6]=zd;
-                            ZDArray[zdnummer][7]=zd;
-                            ZDArray[zdnummer][8]=zd;
-                            ZDArray[zdnummer][9]=zd;
-                            ZDArray[zdnummer][10]=zd;
-                            ZDArray[zdnummer][11]=zd;
-                            ZDArray[zdnummer][12]=zd;
-                            ZDArray[zdnummer][13]=zd;
-                            ZDArray[zdnummer][14]=zd;
-                            ZDArray[zdnummer][15]=zd;
-                            ZDArray[zdnummer][16]=zd;
-                            ZDArray[zdnummer][17]=zd;
-                            ZDArray[zdnummer][18]=zd;
-                            ZDArray[zdnummer][19]=zd;
-                        }
+         // ZD's abholen
+         sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdname,zdname2,zdname3,zdname4,zdname5,zdname6,zdname7,zdname8,zdname9,zdname10,zdname11,,zdname12,zdname13,zdname14,zdname15,zdname16,zdname17,zdname18,zdname19,zdname20,zdname21,zdname22,zdname23,zdname24,zdname25,zdname26,zdname27,zdname28,zdname29,zdname30,zdname31,zdname32,zdname33,zdname34,zdname35,zdname36,zdname37,zdname38,zdname39,zdname40",error,fromServer);
+         if (sshexitstatus==0)
+         {
+         int zdnummer=0;
+         String zdantwort=fromServer.toString();
+         while (zdantwort.indexOf(";")!=-1)
+         {
+         // Noch ne ZD raus schneiden mit allen Gruppen
+         String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
+         //Die Gruppen rausschneiden
+         if (!zd.equals(""))
+         {
+         ZDArray[zdnummer][0]=zd;
+         ZDArray[zdnummer][1]=zd;
+         ZDArray[zdnummer][2]=zd;
+         ZDArray[zdnummer][3]=zd;
+         ZDArray[zdnummer][4]=zd;
+         ZDArray[zdnummer][5]=zd;
+         ZDArray[zdnummer][6]=zd;
+         ZDArray[zdnummer][7]=zd;
+         ZDArray[zdnummer][8]=zd;
+         ZDArray[zdnummer][9]=zd;
+         ZDArray[zdnummer][10]=zd;
+         ZDArray[zdnummer][11]=zd;
+         ZDArray[zdnummer][12]=zd;
+         ZDArray[zdnummer][13]=zd;
+         ZDArray[zdnummer][14]=zd;
+         ZDArray[zdnummer][15]=zd;
+         ZDArray[zdnummer][16]=zd;
+         ZDArray[zdnummer][17]=zd;
+         ZDArray[zdnummer][18]=zd;
+         ZDArray[zdnummer][19]=zd;
+         }
 
-                        // Und den Reststring kürzen um die erste ZD
-                        zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
-                        zdnummer++;
-                    }
-                }
+         // Und den Reststring kürzen um die erste ZD
+         zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
+         zdnummer++;
+         }
+         }
 
-                // ZD's die Gruppen  abholen
-                sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn9,zdgn10,zdgn11,,zdgn12,zdgn13,zdgn14,zdgn15,zdgn16,zdgn17,zdgn18,zdgn19,zdgn20,zdgn21,zdgn22,zdgn23,zdgn24,zdgn25,zdgn26,zdgn27,zdgn28,zdgn29,zdgn30,zdgn31,zdgn32,zdgn33,zdgn34,zdgn35,zdgn36,zdgn37,zdgn38,zdgn39,zdgn40",error,fromServer);
-                if (sshexitstatus==0)
-                {
-                    int zdnummer=0;
-                    String zdantwort=fromServer.toString();
-                    while (zdantwort.indexOf(";")!=-1)
-                    {
-                        // Noch ne ZD raus schneiden mit allen Gruppen
-                        String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
-                        //Die Gruppen rausschneiden
-                        int gruppennummer=0;
-                        while (zd.indexOf(",")!=-1)
-                        {
-                            String gruppe=zd.substring(0,zd.indexOf(","));
-                            // if (gruppe.equals(null)) gruppe="";
-                            if (!gruppe.equals(""))
-                            {
-                                ZDArray[zdnummer][gruppennummer]=gruppe;
-                            }
-                            zd=zd.substring(zd.indexOf(",")+1,zd.length());
-                            gruppennummer++;
-                        }
-                        // Und den Reststring kürzen um die erste ZD
-                        zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
-                        zdnummer++;
-                    }
-                }
-            }
-            else
-            {
-                JOptionPane.showMessageDialog (null, "Mandantenzugriff fehlerhaft!\n\n"+error, "Mandantenzugriff gescheitert", JOptionPane.ERROR_MESSAGE);
-            }
-            System.out.println(fromServer);
-            System.out.println(error);
-            sshclient.sessiondisconnect();
-            // fromServer.close();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSchException ex) {
-            JOptionPane.showMessageDialog (null, "Fehler bei Aufbau der Ssh Verbindung:\n"+ex, "Ssh Verbdindung gescheitert", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+         // ZD's die Gruppen  abholen
+         sshexitstatus=sshclient.sendcommand("eval `sh denv.sh`;sh edpexport.sh -m "+jTMandant.getText()+" -p "+new String (jPMandant.getPassword())+" -l 12:10 -f zdgn,zdgn2,zdgn3,zdgn4,zdgn5,zdgn6,zdgn7,zdgn8,zdgn9,zdgn10,zdgn11,,zdgn12,zdgn13,zdgn14,zdgn15,zdgn16,zdgn17,zdgn18,zdgn19,zdgn20,zdgn21,zdgn22,zdgn23,zdgn24,zdgn25,zdgn26,zdgn27,zdgn28,zdgn29,zdgn30,zdgn31,zdgn32,zdgn33,zdgn34,zdgn35,zdgn36,zdgn37,zdgn38,zdgn39,zdgn40",error,fromServer);
+         if (sshexitstatus==0)
+         {
+         int zdnummer=0;
+         String zdantwort=fromServer.toString();
+         while (zdantwort.indexOf(";")!=-1)
+         {
+         // Noch ne ZD raus schneiden mit allen Gruppen
+         String zd =    zdantwort.substring(0,zdantwort.indexOf(";"));
+         //Die Gruppen rausschneiden
+         int gruppennummer=0;
+         while (zd.indexOf(",")!=-1)
+         {
+         String gruppe=zd.substring(0,zd.indexOf(","));
+         // if (gruppe.equals(null)) gruppe="";
+         if (!gruppe.equals(""))
+         {
+         ZDArray[zdnummer][gruppennummer]=gruppe;
+         }
+         zd=zd.substring(zd.indexOf(",")+1,zd.length());
+         gruppennummer++;
+         }
+         // Und den Reststring kürzen um die erste ZD
+         zdantwort=zdantwort.substring(zdantwort.indexOf(";")+1,zdantwort.length());
+         zdnummer++;
+         }
+         }
+         }
+         else
+         {
+         JOptionPane.showMessageDialog (null, "Mandantenzugriff fehlerhaft!\n\n"+error, "Mandantenzugriff gescheitert", JOptionPane.ERROR_MESSAGE);
+         }
+         System.out.println(fromServer);
+         System.out.println(error);
+         sshclient.sessiondisconnect();
+         // fromServer.close();
+         } catch (InterruptedException ex) {
+         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (JSchException ex) {
+         JOptionPane.showMessageDialog (null, "Fehler bei Aufbau der Ssh Verbindung:\n"+ex, "Ssh Verbdindung gescheitert", JOptionPane.ERROR_MESSAGE);
+         } catch (IOException ex) {
+         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
     }//GEN-LAST:event_jBConnectionTestActionPerformed
 
     private void jTVartabVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTVartabVetoableChange
@@ -1648,9 +1877,90 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTVartabFocusLost
 
+    private void jBDokuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDokuActionPerformed
+        try {
+            // TODO add your handling code here:
+            Runtime.getRuntime().exec("explorer.exe " + GlobalVars.dir + "\\Dokumentation\\");
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jBDokuActionPerformed
+
+    private void jBSinglesyncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSinglesyncActionPerformed
+
+        Thread sync = new Thread() {
+            public void run() {
+
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+
+                if (node == null) {
+                    //NOthing selected
+                    return;
+                } else {
+                    Object nodeInfo = node.getUserObject();
+                    if (node.isLeaf()) {
+
+                        if (nodeInfo instanceof PappInfo) {
+                            try {
+                                PappInfo pappinfo = (PappInfo) nodeInfo;
+                                String fwDir = pappinfo.dir.toString();
+                                System.out.println("Verzeichnis für Single Sync" +fwDir);
+                                
+                                // MyLogger mylogger = new MyLogger();
+                                // mylogger.synclog();
+                                // Auf Update prüfen
+                                Update update = new Update();
+                                update.checkupdate();
+                                // Cursor auf Sanduhr
+                                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                jTabbedPane1.setSelectedIndex(7);
+                                
+                                
+                                jTLog.append("Framework "+ jTFrameworkNo.getText()+" wird abgeglichen\n");
+                                jTLog.append("-------------------------------------\n");
+                                jTLog.getGraphics();
+                                // wir müssen erst mal die Pfade umbauen
+                                fwDir=fwDir.substring(fwDir.indexOf("Frameworks")+("Frameworks").length(),fwDir.length());
+                                File sourceDir=new File (GlobalVars.source.toString() + fwDir);
+                                File targetDir=new File (GlobalVars.target.toString() +fwDir);
+                                FileSync.synchronize(sourceDir, targetDir, true, jTLog);
+                                  setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                            } catch (IOException ex) {
+                                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                        }
+
+                    }
+                }
+
+            }
+        };
+        sync.start();
+
+
+    }//GEN-LAST:event_jBSinglesyncActionPerformed
+
+    private void jTLinuxUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTLinuxUserActionPerformed
+       
+    }//GEN-LAST:event_jTLinuxUserActionPerformed
+
+    private void jTLinuxUserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTLinuxUserFocusLost
+       
+        if (jTLinuxUser.getText().equals("root"))
+       {
+           JOptionPane.showMessageDialog(this, "root ist nicht der richtige User, bitte den Mandantenuser wie z.b. demo, erp, entw eintragen", "Falscher Linuxuser", JOptionPane.ERROR_MESSAGE);
+           jTLinuxUser.setText("");
+       }
+    }//GEN-LAST:event_jTLinuxUserFocusLost
+
     public void SystemLesen(File dir, String system) {
         DefaultTableModel model = null;
         String arbdir;
+        String arbdirMain;
         String name;
         String such;
         int dbint = 0;
@@ -1658,6 +1968,11 @@ public class MainFrame extends javax.swing.JFrame {
         int dbneu = 0;
         boolean vartabfrei;
         System.out.println(system);
+        if (system.equals("Objekte")) {
+            model = (DefaultTableModel) jTObjekte.getModel();
+            // Tabellenzeilen löschen
+            model.setNumRows(0);
+        }
         if (system.equals("Schluessel")) {
             model = (DefaultTableModel) jTschluessel.getModel();
             // Tabellenzeilen löschen
@@ -1683,7 +1998,7 @@ public class MainFrame extends javax.swing.JFrame {
             // Tabellenzeilen löschen
             //model.setNumRows(0);
         }
-        if (system.equals("FilesSUB")) {
+        if (system.equals("FilesSUB") || system.equals("Files")) {
             model = (DefaultTableModel) jTFOP.getModel();
             // Tabellenzeilen löschen
             //model.setNumRows(0);
@@ -1698,7 +2013,7 @@ public class MainFrame extends javax.swing.JFrame {
             // Tabellenzeilen löschen
             model.setNumRows(0);
         }
-        if (!system.equals("SPXSUB") && !system.equals("FOPSUB")&& !system.equals("FilesSUB")) {
+        if (!system.equals("SPXSUB") && !system.equals("FOPSUB") && !system.equals("FilesSUB")) {
             dir = new File(dir.toString() + "\\" + system);
         }
         File[] files = dir.listFiles();
@@ -1707,6 +2022,7 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.print(files[i].getName());
                 if (files[i].isDirectory()) {
                     System.out.print(" (Ordner)\n");
+                  
                     if (system.contains("SPX")) {
                         // In Ordner absteigen rekursiv
                         SystemLesen(files[i], "SPXSUB");
@@ -1725,24 +2041,49 @@ public class MainFrame extends javax.swing.JFrame {
                         jBinstallFOP.setEnabled(true);
                         jBPhase2.setEnabled(true);
                     }
-                   
+
                 } else {
+                      if (system.equals("Objekte")) {
+                     
+                       name=files[i].getName();
+                       String vartab=name.substring(0,name.indexOf("."));
+                          String objekt = name.substring(name.indexOf(".")+1,name.length()-4);
+                           FileReader fr;
+                           try {
+                               fr = new FileReader(files[i]);
+                                BufferedReader br = new BufferedReader(fr);
+                                //Header einlesen
+                                String zeile = br.readLine();
+                                //
+                                zeile = br.readLine();
+                                 String[] zeilelist = zeile.split("#", 8);
+                                 model.addRow(new Object[]{vartab, objekt,zeilelist[0],zeilelist[1], files[i]});
+                           } catch (FileNotFoundException ex) {
+                              Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                          } catch (IOException ex) {
+                              Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                          }
+                      
+                       
+                    }
                     if (system.equals("Infosysteme")) {
                         jBInstallInfosysteme.setEnabled(true);
                         jBPhase2.setEnabled(true);
                         arbdir = files[i].getName();
-                        
+
                         //arbdir = arbdir.substring(3, 7);
-                        arbdir = arbdir.substring(3,arbdir.length());
-                        arbdir=arbdir.substring(0,arbdir.indexOf("."));
+                        arbdir = arbdir.substring(3, arbdir.length());
+                        arbdir = arbdir.substring(0, arbdir.indexOf("."));
                         name = files[i].getName();
-                        name = name.substring(8, name.length() - 4);
+                        name = name.substring(3, name.length());
+                        name = name.substring(name.indexOf(".") + 1, name.length() - 4);
+                        
                         model.addRow(new Object[]{arbdir, name, files[i]});
                     }
                     if (system.equals("Vartab")) {
 
-                        arbdir = files[i].getParent();
-                        arbdir = arbdir.substring(arbdir.lastIndexOf("\\") + 1, arbdir.length());
+                        arbdirMain = files[i].getParent();
+                        arbdir = arbdirMain.substring(arbdirMain.lastIndexOf("\\") + 1, arbdirMain.length());
                         name = files[i].getName();
                         if (!name.equals(GlobalVars.Betriebsdatensatztxtfile) && (!name.equals(GlobalVars.DBKonfigtxtfile))) {
                             String db = name.substring(2, name.lastIndexOf("-"));
@@ -1751,8 +2092,8 @@ public class MainFrame extends javax.swing.JFrame {
                             gruppeint = parseInt(gruppe);
                             vartabfrei = true;
 
-                            if ((dbint == 15) || (dbint >= 18 && dbint <= 37) || (dbint >= 41 && dbint <= 51) || (dbint >= 71 && dbint <= 80)) {
-                                     //wir habene ine Zusatzdatenbank
+                            if ((dbint == 15) || (dbint >= 18 && dbint <= 26) || (dbint>=29 &&dbint <=37)||(dbint >= 41 && dbint <= 51) || (dbint >= 71 && dbint <= 80)) {
+                                //wir habene ine Zusatzdatenbank
                                 // Ob diese frei ist, muss geprüft werden, deshalb erst mal auf False setzen
                                 vartabfrei = false;
                                 //CheckZD aufrufen
@@ -1765,14 +2106,21 @@ public class MainFrame extends javax.swing.JFrame {
                                     vartabfrei = true;
 
                                 } else {
-                                     // JComboBox combo = new JComboBox(comboarray);
-                                    //jTVartab.getColumn("DB Neu").setCellEditor(new DefaultCellEditor(combo));
-                                    jTVartab.getColumn("DB Neu").setCellEditor((new MyCellEditor()));
-                                   //   TableColumn mengenspalte=jTVartab.getColumnModel().getColumn("DB Neu");
-                                    //   mengenspalte.setCellEditor(new MyCellEditor());
+                                    // EIn Eintrag oder mehrere ?
+                                    if (comboarray.length == 1) {
+                                        // wenn nur Eintrag im Array, dann ist die ZD fix, also rein schreiben
+                                        dbneu = Integer.parseInt(comboarray[0]);
+                                        //    dbneu=comboarray[0];                                  
+                                    } else {
+
+                                        jTVartab.getColumn("DB Neu").setCellEditor((new MyCellEditor()));
+
+                                    }
                                 }
                             }
                             model.addRow(new Object[]{name, db, gruppe, dbneu, vartabfrei, files[i]});
+                            // jBInstallVartab.setEnabled(true);
+                            // jBPhase1.setEnabled(true);
                         }
                     }
                     if (system.equals("FOP")) {
@@ -1780,6 +2128,7 @@ public class MainFrame extends javax.swing.JFrame {
                         if (name.equals(GlobalVars.foptxtfile)) {
                             // Fop Model erst mal retten
                             DefaultTableModel modelfoptxt = (DefaultTableModel) jTFOPTXT.getModel();
+                            modelfoptxt.setNumRows(0);
                             //Fop.txt einlesen 
                             FileReader fr;
                             try {
@@ -1787,17 +2136,28 @@ public class MainFrame extends javax.swing.JFrame {
                                 BufferedReader br = new BufferedReader(fr);
                                 //Header einlesen
                                 String zeile = br.readLine();
-                                while ((zeile = br.readLine()) != null && (!zeile.startsWith("#"))) {
-                                    if (zeile.contains("[C]") || zeile.contains("[S]")) {
-                                        //Zeile splitten mit CS
-                                        String[] zeilelist = zeile.split("\\s+", 8);
-                                        modelfoptxt.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[3], zeilelist[4], zeilelist[5], zeilelist[6], zeilelist[7]});
-                                    } else {
-                                        //Zeile splitten ohne CS
-                                        String[] zeilelist = zeile.split("\\s", 7);
-                                        modelfoptxt.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[3], zeilelist[4], zeilelist[5], "", zeilelist[6]});
+                                //
+                                while ((zeile = br.readLine()) != null) {
+                                    if (!zeile.startsWith("#")) {
+                                        if (zeile.contains("[C]") || zeile.contains("[S]")) {
+                                            //Zeile splitten mit CS
+                                            String[] zeilelist = zeile.split("\\s+", 8);
+                                            
+                                            zeilelist[1] = new String(zeilelist[1].getBytes("windows-1252"), "UTF-8");
+                                        // //   zeilelist[1] = zeilelist[1].replaceAll("\\?", "ä");
+                                           // Ende
+                                                  //  String resultString = subjectString.replaceAll("[^\\x00-\\x7F]", "");
+                                            modelfoptxt.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[3], zeilelist[4], zeilelist[5], zeilelist[6], zeilelist[7]});
+                                            char c = zeilelist[1].charAt(0); // c='a'
+                                            int ascii = (int)c;
+                                            
+                                            System.out.println(c + " - "+ ascii);
+                                        } else {
+                                            //Zeile splitten ohne CS
+                                            String[] zeilelist = zeile.split("\\s", 7);
+                                            modelfoptxt.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[3], zeilelist[4], zeilelist[5], "", zeilelist[6]});
+                                        }
                                     }
-
                                 }
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1805,13 +2165,25 @@ public class MainFrame extends javax.swing.JFrame {
                                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
+                        } else { // Andere Files im Mandantenverzeichnis
+                            model = (DefaultTableModel) jTFOP.getModel();
+                            name = files[i].getName();
+                            arbdir = "";
+                            arbdir = "";
+                            //arbdir.substring(arbdir.lastIndexOf("\\") + 1, arbdir.length());
+                            name = files[i].getName();
+                            model.addRow(new Object[]{arbdir, name, "", "", files[i]});
+                            jBinstallFOP.setEnabled(true);
+                            jBPhase2.setEnabled(true);
                         }
                     }
                     if (system.equals("SPXSUB")) {
                         arbdir = files[i].getParent();
                         arbdir = arbdir.substring(arbdir.lastIndexOf("\\") + 1, arbdir.length());
                         name = files[i].getName();
-                        model.addRow(new Object[]{arbdir, "", name,"", files[i]});
+                        model.addRow(new Object[]{arbdir, "", name, "", files[i]});
+                        jBinstallFOP.setEnabled(true);
+                        jBPhase2.setEnabled(true);
                     }
                     if (system.equals("FOPSUB")) {
                         name = files[i].getName();
@@ -1820,18 +2192,26 @@ public class MainFrame extends javax.swing.JFrame {
                         arbdir = arbdir.substring(arbdir.lastIndexOf("\\") + 1, arbdir.length());
                         name = files[i].getName();
                         model.addRow(new Object[]{arbdir, name, "", "", files[i]});
+                        jBinstallFOP.setEnabled(true);
+                        jBPhase2.setEnabled(true);
 
                     }
-                     if (system.equals("FilesSUB")) {
+                    if (system.equals("FilesSUB") || system.equals("Files")) {
                         name = files[i].getName();
 
                         arbdir = files[i].getParent();
-                        arbdir = arbdir.substring(arbdir.lastIndexOf("Files\\") + 6, arbdir.length());
+                        if (arbdir.length() > arbdir.lastIndexOf("Files") + 6) {
+                            arbdir = arbdir.substring(arbdir.lastIndexOf("Files") + 6, arbdir.length());
+                        } else {
+                            arbdir = "";
+                        }
                         //falls Homedir auftaucht, so muss dies $HOMEDIR sein, damit es in den s3 kopiert wird.
-                        arbdir=arbdir.replaceAll("HOMEDIR", "\\$HOMEDIR");
-                         arbdir=arbdir.replaceAll("\\\\", "/");
+                        arbdir = arbdir.replaceAll("HOMEDIR", "\\$HOMEDIR");
+                        arbdir = arbdir.replaceAll("\\\\", "/");
                         name = files[i].getName();
-                        model.addRow(new Object[]{arbdir, "","",name, files[i]});
+                        model.addRow(new Object[]{arbdir, "", "", name, files[i]});
+                        jBinstallFOP.setEnabled(true);
+                        jBPhase2.setEnabled(true);
 
                     }
                     if (system.equals("Aufzaehlung")) {
@@ -1842,25 +2222,25 @@ public class MainFrame extends javax.swing.JFrame {
                         model.addRow(new Object[]{such, files[i]});
 
                     }
-                     if (system.equals("Masken")) {
-                        
-                        if (files[i].getName().endsWith(".xml")){                                                 
-                        String xml=files[i].getName();
-                        String maske=xml.substring(xml.indexOf(".")+1, xml.length());
-                        maske = maske.substring(0,maske.indexOf("."));
-                        String resource=xml.substring(0,xml.indexOf("-"))+"-Resources.language";
-                        model.addRow(new Object[]{maske,maske,xml,resource});
+                    if (system.equals("Masken")) {
+
+                        if (files[i].getName().endsWith(".xml")) {
+                            String xml = files[i].getName();
+                            String maske = xml.substring(xml.indexOf(".") + 1, xml.length());
+                            maske = maske.substring(0, maske.indexOf("."));
+                            String resource = xml.substring(0, xml.indexOf("-")) + "-Resources.language";
+                            model.addRow(new Object[]{maske, maske, xml, resource});
                         }
-                        if (files[i].getName().endsWith(".tgz")){                                                 
-                        String xml=files[i].getName();
-                        String maske=xml.substring(xml.indexOf(".")+1, xml.length());
-                        maske = maske.substring(0,maske.indexOf("."));
-                        model.addRow(new Object[]{maske,maske,xml,"TGZ"});
+                        if (files[i].getName().endsWith(".tgz")) {
+                            String xml = files[i].getName();
+                            String maske = xml.substring(xml.indexOf(".") + 1, xml.length());
+                            maske = maske.substring(0, maske.indexOf("."));
+                            model.addRow(new Object[]{maske, maske, xml, "TGZ"});
                         }
                         jBInstallMasken.setEnabled(true);
                         jBPhase2.setEnabled(true);
                     }
-                    
+
                     if (system.equals("Schluessel")) {
                         try {
                             FileReader fr;
@@ -1869,7 +2249,8 @@ public class MainFrame extends javax.swing.JFrame {
                             //Header einlesen
                             String zeile = br.readLine();
                             while ((zeile = br.readLine()) != null) {
-                                if (zeile.startsWith("1FW")) {
+                                // if (zeile.startsWith("*FW")) {
+                                if (zeile.contains("FW")) {
                                     String[] zeilelist = zeile.split("#", 8);
                                     model.addRow(new Object[]{zeilelist[0], zeilelist[1], zeilelist[2], zeilelist[4], files[i].toString()});
                                 }
@@ -1888,10 +2269,42 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+        // Zum Schluss müssen wir nun noch schauen ob wir FOPS Schlüssel und Masken transcodieren müssen, falls die ZD schon im Betreibsdatensatz gesetzt wurde
+        // Dazu laufen wir nun erst mal die Vartab Table durch und schauen welche Infos vorhanden sind
+        // int altenummer=7;
+        // int neuenummer=6;
+
+        for (int i = 0; i < jTVartab.getRowCount(); i++) {
+            int altenummer = Integer.parseInt(jTVartab.getValueAt(i, 1).toString());
+            int neuenummer = Integer.parseInt(jTVartab.getValueAt(i, 3).toString());
+            if ((altenummer != neuenummer) && (neuenummer != 0)) {
+
+                //Schluessel instanzieren
+                Schluessel schluessel = new Schluessel();
+                //Transcoder aufrufen für 1. Stufe ( bei Shclüsseln ist es zweistufig, also später bei Import wird der rest transcodiert
+                schluessel.schluesseltranscode1(jTschluessel, String.valueOf(altenummer), String.valueOf(neuenummer));
+                // Masken instanzieren
+                Masken masken = new Masken();
+                        //Transcoder für Maskennumemr aufrufen
+
+                masken.maskentranscode(jTMasken, String.valueOf(altenummer), String.valueOf(neuenummer));
+                Vartab vartab = new Vartab();
+                // Leider ist die Vartabnummer nicht passend zum FOP transocoder, wir bruachen hier die Datei
+                altenummer = vartab.Vartab2ZD(altenummer);
+                neuenummer = vartab.Vartab2ZD(neuenummer);
+                FOPS fops = new FOPS();
+                // Tanscoder aufrufen
+                fops.foptxtTranscode(jTFOPTXT, altenummer, neuenummer);
+            }
+        }
+
     }
 
     public static String[] checkzd(int dbint, int gruppeint, JTable table) {
         int dbtable = 0;
+        String name = "";
+        boolean zdgefunden = false;
+
 //Array mit den in jTVartab belegten ZD aufbauen        
 // Aber prüfen ob nicht schon in Table belegt
         for (int i = 1; i <= GlobalVars.maxZDB; i++) {
@@ -1919,32 +2332,109 @@ public class MainFrame extends javax.swing.JFrame {
          if ((dbint>=41)&&(dbint<=51)) dbint=dbint-22;
          if ((dbint>=71)&&(dbint<=80)) dbint=dbint-41;*/
         dbint = Vartab.Vartab2ZD(dbint);
-
+        // In alte Nummer steht die ZD drin also zum Beispiel die 6 für die Datei6
+        int altenummer = dbint;
         if (ZDArrayDB[dbint] == null || ZDArrayDB[dbint].equals("")) {
             return null;
         } else {
-            // Schauen welche DB komplett frei ist
-            //String[] comboarray= new String[5];
-            for (int i = 1; i <= GlobalVars.maxZDB; i++) {
-                if (ZDArrayDB[i].equals("")) {
-                    // Im Array ist die db Frei
-                    // Aber nun noch schaune ob die evtl. in der jTVartab belegt wurde vom User
-                    if (ZDArrayNeu[i][0].equals("")) {
-                        // Immer noch frei, also in die Combobox rein schieben
-                    /*if (i==0) dbint=15;
-                         if ((i>=1)&&(i<=9)) dbint=i+17;
-                         if ((i>=10)&&(i<=18)) dbint=i+19;
-                         if ((i>=19)&&(i<=29)) dbint=i+22;
-                         if ((i>=30)&&(i<=39)) dbint=i+41;*/
-                        dbint = Vartab.ZD2Vartab(i);
-                        combo.add(Integer.toString(dbint));
+
+            FileReader fr = null;
+            name = "";
+            try {
+                // Name der ZD abholen die wir setzen müssen, einlesen der Betriebsdaten
+                String betriebsdaten = GlobalVars.appdir + "\\Vartab\\" + GlobalVars.Betriebsdatensatztxtfile;
+                fr = new FileReader(betriebsdaten);
+                BufferedReader br = new BufferedReader(fr);
+                String zeile = "";
+                // Header Zeile
+                zeile = br.readLine();
+                // Normale Zeile
+                while ((zeile = br.readLine()) != null) {
+                    //zeile = br.readLine();
+                    String[] zeilelist = zeile.split("#", 6);
+                    if (String.valueOf(dbint).equals(zeilelist[0])) {
+                        name = zeilelist[1];
+                        System.out.println("ZD " + name + "wird gesucht");
                     }
+                }
+                br.close();
+
+                // Schauen ob die DB schon gesetzt wurde zum Framework
+                for (int i = 1; i <= GlobalVars.maxZDB; i++) {
+                    System.out.println(ZDArrayDB[i].toString());
+                    if (ZDArrayDB[i].equals(name)) {
+
+                        // ZD mit passendem Namen gefunden
+                        // In neuenummer steht die Datei drin also zum Beispiel 7 für die Datei7
+                        int neuenummer = i;
+
+                        dbint = Vartab.ZD2Vartab(i);
+                        System.out.println("ZD " + dbint + "gefunden");
+
+                        combo.add(Integer.toString(dbint));
+                        zdgefunden = true;
+                        //
+                        /*
+                         MainFrame gui = ReferenceHolderClass.getGUI();
+                         JTable jTablefoptxt = gui.getjTFOPTXT();  
+                         JTable jTschluessel = gui.getjTschluessel();
+                         JTable jTmasken=gui.getjTMasken();
+                         Vartab vartab = new Vartab();
+                        
+                         //int neuenummer = vartab.Vartab2ZD(Integer.parseInt(table.getCellEditor().getCellEditorValue().toString()));
+
+                        
+                         // SChlüssel und fops und Masken transcodieren
+                         FOPS fops = new FOPS();
+                         // Tanscoder aufrufen
+                         fops.foptxtTranscode(jTablefoptxt, altenummer, neuenummer);
+                         //Schluessel instanzieren
+                         Schluessel schluessel = new Schluessel();
+                         //Transcoder aufrufen für 1. Stufe ( bei Shclüsseln ist es zweistufig, also später bei Import wird der rest transcodiert
+                         //schluessel.schluesseltranscode1(jTschluessel, Integer.toString(dbint), table.getCellEditor().getCellEditorValue().toString());
+                         // Masken instanzieren
+                         Masken masken = new Masken();
+                         //Transcoder für Maskennumemr aufrufen
+                        
+                         //masken.maskentranscode(jTmasken, Integer.toString(dbint),table.getCellEditor().getCellEditorValue().toString());
+                         */
+                    }
+                }
+                // Schauen welche DB komplett frei ist
+                //String[] comboarray= new String[5];
+                if (!zdgefunden) {// Zd mit passendenm Namen wurde noch nicht gefunden
+                    for (int i = 1; i <= GlobalVars.maxZDB; i++) {
+                        if (ZDArrayDB[i].equals("")) {
+                            // Im Array ist die db Frei
+                            // Aber nun noch schaune ob die evtl. in der jTVartab belegt wurde vom User
+                            if (ZDArrayNeu[i][0].equals("")) {
+                                // Immer noch frei, also in die Combobox rein schieben
+                                /*if (i==0) dbint=15;
+                                 if ((i>=1)&&(i<=9)) dbint=i+17;
+                                 if ((i>=10)&&(i<=18)) dbint=i+19;
+                                 if ((i>=19)&&(i<=29)) dbint=i+22;
+                                 if ((i>=30)&&(i<=39)) dbint=i+41;*/
+                                dbint = Vartab.ZD2Vartab(i);
+                                combo.add(Integer.toString(dbint));
+                            }
+                        }
+                    }
+                }
+                return combo.toArray(new String[combo.size()]);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fr.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
-            return combo.toArray(new String[combo.size()]);
         }
-
+        return null;
     }
 
     public void Frameworklesen(File dir) {
@@ -1969,6 +2459,7 @@ public class MainFrame extends javax.swing.JFrame {
             jTababas.setText(zeilelist[5]);
             jTbisabas.setText(zeilelist[6]);
         } catch (FileNotFoundException ex) {
+            jTLog.append("Framework.txt fehlt zu diesem Framework");
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1982,7 +2473,8 @@ public class MainFrame extends javax.swing.JFrame {
             fstream = new FileInputStream(dir.toString() + "\\Kurzinfo.txt");
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in,StandardCharsets.UTF_8));
+
             String strLine = null;
             String newStrLine = null;
             try {
@@ -1996,7 +2488,7 @@ public class MainFrame extends javax.swing.JFrame {
                     }
 
                     String inhalt = jTKurzInfo.getText();
-                    jTKurzInfo.setText(inhalt+newStrLine + "\r\n");
+                    jTKurzInfo.setText(inhalt + newStrLine + "\r\n");
 
                 }    //Close the input stream
             } catch (IOException ex) {
@@ -2009,6 +2501,8 @@ public class MainFrame extends javax.swing.JFrame {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (FileNotFoundException ex) {
+            //Datei nicht vorhanden
+            jTLog.append("Kurzinfo zu diesem Framework fehlt");
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
         }
@@ -2024,12 +2518,15 @@ public class MainFrame extends javax.swing.JFrame {
                 if (files[i].isDirectory()) {
                     System.out.print(" (Ordner)\n");
                     //SystemNode =   new DefaultMutableTreeNode(files[i].getName());
+                   if (!files[i].getName().equals("develop")&& !files[i].getName().equals("Frameworks"))
+                   {
                     SystemNode = new DefaultMutableTreeNode(new PappInfo(files[i].getName(), files[i]));
                     node.add(SystemNode);
                     sysdir = files[i];
                     if (absteigen) {
                         DirList(sysdir, SystemNode, false);
                     }
+                   }
 
                 } else {
                     System.out.print(" (Datei)\n");
@@ -2063,18 +2560,17 @@ public class MainFrame extends javax.swing.JFrame {
     public JTable getjTFOPTXT() {
         return this.jTFOPTXT;
     }
- 
+
 // getter für Instanzierung wegen static/non static
     public JTable getjTschluessel() {
         return this.jTschluessel;
     }
 
-  // getter für Instanzierung wegen static/non static
+    // getter für Instanzierung wegen static/non static
     public JTable getjTMasken() {
         return this.jTMasken;
     }
-  
-    
+
     class PappInfo {
 
         private String name;
@@ -2145,18 +2641,49 @@ public class MainFrame extends javax.swing.JFrame {
             return false;
         }
     }
-public boolean checkInstall()
-{
-    if ((jTKunde.getText().length()>0) &&(jTInfos.getText().length()>0))
-            {
-              return true;
-            }
-            else 
-            {
-                  JOptionPane.showMessageDialog(null,"Bitte Kunde und Infos zum Installationszweck eintragen", "Bitte Eintragen" , JOptionPane.ERROR_MESSAGE);
-                    return false;
-                    }
-}
+
+    public boolean checkInstall() {
+        if ((jTKunde.getText().length() > 0) && (jTInfos.getText().length() > 0)) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Bitte Kunde und Infos zum Installationszweck eintragen", "Bitte Eintragen", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    
+    public void Buttonsfree(boolean free)
+    {
+        if (free)
+        {
+            if (jTVartab.getRowCount()>0)jBInstallVartab.setEnabled(true);
+            if (jTAufzaehlungen.getRowCount()>0) jBInstallAufzaehlungen.setEnabled(true);
+            if (jTschluessel.getRowCount()>0) jBInstallSchluessel.setEnabled(true);
+            if (jTinfosystem.getRowCount()>0)jBInstallInfosysteme.setEnabled(true);
+            if (jTFOP.getRowCount()>0)jBinstallFOP.setEnabled(true);
+            if (jTMasken.getRowCount()>0)jBInstallMasken.setEnabled(true);
+             jBInstallAufrufparameter.setEnabled(false);
+            jBPhase1.setEnabled(true);
+            jBPhase2.setEnabled(true);
+        
+        
+        
+        
+        
+        
+       
+        }
+        else
+        { jBPhase1.setEnabled(false);
+        jBPhase2.setEnabled(false);
+        jBInstallAufzaehlungen.setEnabled(false);
+        jBInstallVartab.setEnabled(false);
+        jBInstallSchluessel.setEnabled(false);
+        jBInstallInfosysteme.setEnabled(false);
+        jBinstallFOP.setEnabled(false);
+        jBInstallMasken.setEnabled(false);
+        jBInstallAufrufparameter.setEnabled(false);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
@@ -2164,6 +2691,8 @@ public boolean checkInstall()
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton jBConnectionTest;
+    private javax.swing.JButton jBDoku;
+    private javax.swing.JButton jBInstallAufrufparameter;
     private javax.swing.JButton jBInstallAufzaehlungen;
     private javax.swing.JButton jBInstallInfosysteme;
     private javax.swing.JButton jBInstallMasken;
@@ -2172,9 +2701,8 @@ public boolean checkInstall()
     private javax.swing.JCheckBox jBKostenpflicht;
     private javax.swing.JButton jBPhase1;
     private javax.swing.JButton jBPhase2;
+    private javax.swing.JButton jBSinglesync;
     private javax.swing.JButton jBinstallFOP;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2199,15 +2727,18 @@ public boolean checkInstall()
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -2230,6 +2761,7 @@ public boolean checkInstall()
     private javax.swing.JTextField jTMaintainer;
     private javax.swing.JTextField jTMandant;
     private javax.swing.JTable jTMasken;
+    private javax.swing.JTable jTObjekte;
     private javax.swing.JTable jTVartab;
     private javax.swing.JTextField jTVersion;
     private javax.swing.JTextField jTababas;

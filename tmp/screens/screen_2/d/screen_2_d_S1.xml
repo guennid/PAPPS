@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="S1" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <metainfo axis="row" grid="0" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.notebook>
+    <pane.notebook msgId="8f0ca2185f684aa4edeae4b25a65239b" scope="CONF_KSPR_de">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.1" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name" />
+      </cell>
+      <cell gridX="2" gridY="0">
+       <erpfield msgId="2dfecde211a4b8b1d4bb453b6c18da6b" s3Name="0:nameueb" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.1" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez" />
+      </cell>
+      <cell gridX="2" gridY="1">
+       <erpfield msgId="2dfecde211a4b8b1d4bb453b6c18da6b.1" s3Name="0:vkbezueb" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.1" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez" />
+      </cell>
+      <cell gridX="2" gridY="2">
+       <erpfield msgId="2dfecde211a4b8b1d4bb453b6c18da6b.2" s3Name="0:vbezueb" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.1" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez" />
+      </cell>
+      <cell gridX="2" gridY="3">
+       <erpfield msgId="2dfecde211a4b8b1d4bb453b6c18da6b.3" s3Name="0:ebezueb" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="319be822a88df6a7585360f99e2b62f8" scope="CONF_KSPR_en">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.2" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name2" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.2" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez2" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.2" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez2" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.2" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez2" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="b42ee3896b0743dada15bf0bbdf830fa" scope="CONF_KSPR_fr">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.3" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name3" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.3" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez3" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.3" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez3" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.3" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez3" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="d961416d60a912b77d56ea49907c2fbe" scope="CONF_KSPR_es">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.4" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name4" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.4" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez4" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.4" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez4" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.4" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez4" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="1df38244440a25a0e51e5095b8d10738" scope="CONF_KSPR_it">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.5" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name5" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.5" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez5" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.5" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez5" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.5" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez5" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="d05756b42c92bcd38e11513f6cfbb8d3" scope="CONF_KSPR_pl">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.6" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name6" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.6" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez6" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.6" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez6" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.6" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez6" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="670dbf8ed552b6a561abb9173f77861e" scope="CONF_KSPR_ru">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.7" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name7" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.7" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez7" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.7" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez7" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.7" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez7" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="5075658b937858e8d4d687114ef730f0" scope="CONF_KSPR_hu">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.8" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name8" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.8" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez8" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.8" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez8" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.8" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez8" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="1cb1de4f2fb42500a49dff67121030eb" scope="CONF_KSPR_cs">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.9" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name9" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.9" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez9" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.9" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez9" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.9" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez9" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="f49e68a61fa5d3e37ea3ff8f129afc1c" scope="CONF_KSPR_tr">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.10" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name10" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.10" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez10" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.10" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez10" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.10" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez10" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="14c1308788a49d03c5a5a0ebdae91ac9" scope="CONF_KSPR_1">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.11" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name11" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.11" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez11" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.11" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez11" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.11" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez11" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="be5ae9331dd979f78bf14bfd9e5524ea" scope="CONF_KSPR_2">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.12" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name12" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.12" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez12" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.12" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez12" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.12" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez12" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="349e8608496e624c7e6e1055999d17ab" scope="CONF_KSPR_3">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.13" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name13" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.13" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez13" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.13" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez13" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.13" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez13" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="fcd4ae242d446abcdb8fd3f0a7fffb1b" scope="CONF_KSPR_en_US">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.14" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name14" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.14" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez14" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.14" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez14" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.14" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez14" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="a9d6955ed1fc732a42ac6238a37adae4" scope="CONF_KSPR_ro">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.15" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name15" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.15" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez15" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.15" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez15" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.15" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez15" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="aac434f3ef0ae3e5102d5b5a5193b57f" scope="CONF_KSPR_id">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.16" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name16" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.16" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez16" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.16" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez16" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.16" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez16" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="eba854e3272ba2a40adf9d8fa63e859c" scope="CONF_KSPR_nl">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.17" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name17" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.17" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez17" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.17" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez17" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.17" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez17" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="18f5f70d3dea48195db1a6f4fef4a7d8" scope="CONF_KSPR_mk">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.18" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name18" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.18" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez18" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.18" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez18" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.18" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez18" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="1d6c342290ba83f682b04c13a7fdc27f" scope="CONF_KSPR_bg">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.19" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name19" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.19" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez19" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.19" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez19" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.19" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez19" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="415637cb0a9e561e861773cda6148ec2" scope="CONF_KSPR_sr">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.20" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name20" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.20" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez20" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.20" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez20" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.20" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez20" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="383dedda5c5bf85bfbd0d6e68b37dc2e" scope="CONF_KSPR_sl">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.21" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name21" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.21" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez21" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.21" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez21" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.21" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez21" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="073735b8e1a5bcaac499c2a3b17be832" scope="CONF_KSPR_sk">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.22" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name22" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.22" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez22" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.22" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez22" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.22" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez22" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="98abac87aa99030b87b97fd772f08aff" scope="CONF_KSPR_pt">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.23" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name23" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.23" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez23" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.23" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez23" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.23" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez23" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="b993ddf3db9e1d2a03ede1219491a4c0" scope="CONF_KSPR_zh_CN">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.24" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name24" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.24" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez24" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.24" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez24" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.24" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez24" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="f54caf4a2646b43d69b776dec0fe03f4" scope="CONF_KSPR_zh_TW">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.25" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name25" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.25" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez25" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.25" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez25" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.25" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez25" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="11fdee8f59d1e64558f1752d0eafa2a9" scope="CONF_KSPR_el">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.26" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name26" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.26" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez26" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.26" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez26" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.26" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez26" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="bf4a09eb3f2874e3a53cb31669f8d3bf" scope="CONF_KSPR_th">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.27" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name27" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.27" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez27" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.27" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez27" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.27" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez27" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="b8bdb0ac65afb74c71fb799bfbf078d8" scope="CONF_KSPR_ar">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.28" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name28" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.28" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez28" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.28" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez28" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.28" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez28" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="d15a2d23b3394ce52362c06a6cce9da4" scope="CONF_KSPR_fa">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.29" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name29" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.29" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez29" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.29" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez29" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.29" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez29" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="e0775193c1844133c9b9627d86acb704" scope="CONF_KSPR_vi">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.30" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name30" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.30" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez30" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.30" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez30" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.30" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez30" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="f8aa4393427c2f2fd010f7adc5812517" scope="CONF_KSPR_ur">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.31" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name31" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.31" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez31" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.31" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez31" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.31" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez31" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="7c3395ab-2ccc-412e-a027-c4b805ef3ba6" scope="CONF_KSPR_ja">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="1d6c271b95bca32c9ade05e1698ed2a1.32" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield dimX="38" s3Name="0:name32" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="96a4df65e98960939c4c9e56dc0668d5.32" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="0:vkbez32" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="4ae252288723c82a7cace3b12fafbd50.32" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield dimY="7" s3Name="0:vbez32" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <label msgId="869abf4c739154ed5d6e31d551e2d4a7.32" />
+      </cell>
+      <cell gridX="1" gridY="3">
+       <erpfield dimY="7" s3Name="0:ebez32" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+   </layout.notebook>
+  </cell>
+ </layout.grid>
+</frame>
+

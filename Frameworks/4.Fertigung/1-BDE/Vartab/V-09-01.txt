@@ -1,3 +1,0 @@
-Name#NeuerName#K/T#Art#NeueArt#Skip#Bemerkung#
-biyexport##nein#B##nein#an BDE übergeben#
-biyexdat##nein#GD2##nein#Exportdatum#

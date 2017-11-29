@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frame SYSTEM "urn:x-abas.de:abasscreens-1.00.dtd">
+
+<frame frameType="T" stdHelp="2.2.1">
+ <layout.grid>
+  <metainfo axis="column" grid="0" stretch="zoom" />
+  <metainfo axis="row" grid="1" stretch="zoom" />
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="0">
+   <layout.grid>
+    <cell gridX="0" gridY="0">
+     <label msgId="82595f5008fe419669e7684791f581c6.3" />
+    </cell>
+    <cell gridX="1" gridY="0">
+     <erpfield s3Name="1:elex" />
+     <erpfield s3Name="1:elname" />
+    </cell>
+   </layout.grid>
+  </cell>
+  <cell alignX="fill" alignY="fill" gridX="0" gridY="1">
+   <layout.notebook>
+    <pane.notebook msgId="25ff82d615dc6a48340c72f9167c47ed.1" scope="CONF_FERT">
+     <layout.grid>
+      <metainfo axis="column" grid="2" indent="large" />
+      <metainfo axis="row" grid="3" indent="large" />
+      <metainfo axis="row" grid="2" indent="large" />
+      <cell gridX="0" gridY="0" sizeX="4">
+       <groupline msgId="babf474c1ded6b3e341e3bc096a47514" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="0" gridY="1" sizeX="4">
+       <layout.grid>
+        <cell gridX="0" gridY="0">
+         <label msgId="1b8d59d293f4956861e9333ddade9d8d.1" />
+        </cell>
+        <cell gridX="1" gridY="0">
+         <label msgId="a2c0bf2c88c2addefd510ed3952aab8f.1" />
+        </cell>
+        <cell gridX="2" gridY="0">
+         <label msgId="10901e2cfd2e38865718c88a0a066428.1" />
+        </cell>
+        <cell gridX="3" gridY="0">
+         <label msgId="5510df775248f3bce42edf74e86981ae.1" />
+        </cell>
+        <cell gridX="4" gridY="0">
+         <label msgId="27f933a2c57666f5d5702f0b040aa143" />
+        </cell>
+        <cell gridX="0" gridY="1">
+         <erpfield s3Name="1:lge" />
+         <erpfield s3Name="1:ellme" />
+        </cell>
+        <cell gridX="1" gridY="1">
+         <erpfield s3Name="1:breite" />
+         <erpfield s3Name="1:elbme" />
+        </cell>
+        <cell gridX="2" gridY="1">
+         <erpfield s3Name="1:elanzahl" />
+         <erpfield s3Name="1:melle" />
+        </cell>
+        <cell gridX="3" gridY="1">
+         <erpfield s3Name="1:nutzen" />
+        </cell>
+        <cell gridX="4" gridY="1">
+         <erpfield s3Name="1:gesamtm" />
+         <erpfield s3Name="1:elle" />
+        </cell>
+       </layout.grid>
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="0f8f7f4f283a892c8002a38c20f4a083" />
+      </cell>
+      <cell gridX="1" gridY="2" sizeX="3">
+       <erpfield dimY="3" s3Name="1:ptext" />
+      </cell>
+      <cell gridX="0" gridY="3" sizeX="4">
+       <groupline msgId="cb00c0986db4d5ed95c1f3e9a67d3967.2" />
+      </cell>
+      <cell gridX="0" gridY="4">
+       <label msgId="4821cb9ef42fb8f88e9d69212bb6f3fe.1" />
+      </cell>
+      <cell gridX="1" gridY="4">
+       <erpfield s3Name="1:mgr" />
+       <erpfield access="readOnly" s3Name="1:mgrname" />
+      </cell>
+      <cell gridX="2" gridY="4">
+       <label msgId="c253464043924e95a4e6615a0426ecc2" />
+      </cell>
+      <cell gridX="3" gridY="4">
+       <erpfield dimX="11" s3Name="1:lgr" />
+      </cell>
+      <cell gridX="0" gridY="5">
+       <label msgId="ebe0771b5d877f8b4f7888438ea67300" />
+      </cell>
+      <cell gridX="1" gridY="5">
+       <erpfield dimX="9" s3Name="1:manz" />
+      </cell>
+      <cell gridX="2" gridY="5">
+       <label msgId="be90fcb3-50b1-4453-b3e4-a97d82b2aaab" />
+      </cell>
+      <cell gridX="3" gridY="5">
+       <erpfield dimX="11" s3Name="1:lgrruesten" />
+      </cell>
+      <cell gridX="0" gridY="6">
+       <label msgId="c745fbc21b527b30017c5a7891f293d5" />
+      </cell>
+      <cell gridX="1" gridY="6">
+       <erpfield dimX="9" s3Name="1:pverlust" />
+       <label msgId="0bcef9c45bd8a48eda1b26eb0c61c869.6" />
+      </cell>
+      <cell gridX="2" gridY="6">
+       <label msgId="a6f9e0ff5878d09e39e479c556775510" />
+      </cell>
+      <cell gridX="3" gridY="6">
+       <erpfield s3Name="1:amge" />
+       <erpfield s3Name="1:elle" />
+      </cell>
+      <cell gridX="0" gridY="7">
+       <label msgId="6a567348043f2e922d817f1ee9c7790b" />
+      </cell>
+      <cell gridX="1" gridY="7">
+       <erpfield dimX="9" s3Name="1:vkpverlust" />
+       <label msgId="0bcef9c45bd8a48eda1b26eb0c61c869.7" />
+      </cell>
+      <cell gridX="2" gridY="7">
+       <label msgId="11dc9fbc-aa85-489a-befc-65f9e43045ee" />
+      </cell>
+      <cell gridX="3" gridY="7">
+       <erpfield s3Name="1:manbu" />
+      </cell>
+      <cell gridX="0" gridY="8" sizeX="4">
+       <groupline msgId="d914d24d59c20c6cedf1bc52acdf1cd3.3" />
+      </cell>
+      <cell gridX="0" gridY="9">
+       <label msgId="18ba1e98e443deee7b9d509a116bbdb8" scope="CONF_VARIANT" />
+      </cell>
+      <cell gridX="1" gridY="9">
+       <erpfield s3Name="1:var" scope="CONF_VARIANT" />
+      </cell>
+      <cell gridX="2" gridY="9" />
+      <cell gridX="3" gridY="9" />
+      <cell gridX="0" gridY="10">
+       <label msgId="9a5b59bd04bb06daf987ff902abd3f4d" />
+      </cell>
+      <cell gridX="1" gridY="10">
+       <erpfield s3Name="1:bua" />
+      </cell>
+      <cell gridX="2" gridY="10">
+       <label msgId="09b5cb1f00594534df6f2067f83da522" />
+      </cell>
+      <cell gridX="3" gridY="10">
+       <erpfield s3Name="1:lfbeist" />
+      </cell>
+      <cell gridX="0" gridY="11">
+       <label msgId="619b6ff0db117a315f0c638ad549c08f" />
+      </cell>
+      <cell gridX="1" gridY="11">
+       <erpfield dimX="6" s3Name="1:pzeit" />
+       <erpfield s3Name="1:pzeiteinh" />
+      </cell>
+      <cell gridX="2" gridY="11">
+       <label msgId="cabb599c8c4cc5d7b4e6afe18dd7f6a1" />
+      </cell>
+      <cell gridX="3" gridY="11">
+       <erpfield s3Name="1:elrab" />
+      </cell>
+      <cell gridX="0" gridY="12">
+       <label msgId="c05f558a531c522b9079cab1e87b7991" />
+      </cell>
+      <cell gridX="1" gridY="12">
+       <erpfield dimX="6" s3Name="1:tlzeit" />
+       <erpfield s3Name="1:tlzeiteinh" />
+      </cell>
+      <cell gridX="2" gridY="12">
+       <label msgId="ab3fd491aa562d4cd8c34ba6f362561b" />
+      </cell>
+      <cell gridX="3" gridY="12">
+       <erpfield s3Name="1:elprg" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="24f276e7577323bb2683e86cd8c7a2e6">
+     <layout.grid>
+      <metainfo axis="row" grid="2" indent="large" />
+      <metainfo axis="row" grid="4" indent="large" />
+      <cell gridX="0" gridY="0" sizeX="5">
+       <groupline msgId="babf474c1ded6b3e341e3bc096a47514.1" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="0" gridY="1" sizeX="5">
+       <layout.grid>
+        <cell gridX="0" gridY="0">
+         <label msgId="1b8d59d293f4956861e9333ddade9d8d.2" />
+        </cell>
+        <cell gridX="1" gridY="0">
+         <label msgId="a2c0bf2c88c2addefd510ed3952aab8f.2" />
+        </cell>
+        <cell gridX="2" gridY="0">
+         <label msgId="10901e2cfd2e38865718c88a0a066428.2" />
+        </cell>
+        <cell gridX="3" gridY="0">
+         <label msgId="bf2e101e09efeab61c7715741cee4596" />
+        </cell>
+        <cell gridX="0" gridY="1">
+         <erpfield dimX="10" s3Name="1:lge" />
+         <erpfield s3Name="1:ellme" />
+        </cell>
+        <cell gridX="1" gridY="1">
+         <erpfield dimX="10" s3Name="1:breite" />
+         <erpfield s3Name="1:elbme" />
+        </cell>
+        <cell gridX="2" gridY="1">
+         <erpfield s3Name="1:elanzahl" />
+         <erpfield s3Name="1:melle" />
+        </cell>
+        <cell gridX="3" gridY="1">
+         <erpfield s3Name="1:gesamtz" />
+         <label msgId="f45588abcef273bc03ff69b1d7ce02ed" />
+        </cell>
+       </layout.grid>
+      </cell>
+      <cell gridX="0" gridY="2" sizeX="5">
+       <groupline msgId="d92a8333dd3ccb895cc65f7455b71206" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="0" gridY="3" sizeX="5">
+       <layout.grid>
+        <cell gridX="0" gridY="0">
+         <label msgId="4b68b6e2929ea7c3511a5f9c3a63c346.2" />
+        </cell>
+        <cell gridX="1" gridY="0">
+         <label msgId="526407a60c19a5cb7d801e27ffb71051.2" />
+        </cell>
+        <cell gridX="2" gridY="0">
+         <label msgId="2624da43ee05b7e0b73dfc94024f9677.9" />
+        </cell>
+        <cell gridX="0" gridY="1">
+         <erpfield s3Name="1:melflme" />
+         <erpfield s3Name="1:mellme" />
+         <label msgId="3389dae361af79b04c9c8e7057f60cc6.1" />
+        </cell>
+        <cell gridX="1" gridY="1">
+         <erpfield s3Name="1:melfbme" />
+         <erpfield s3Name="1:melbme" />
+         <label msgId="43ec3e5dee6e706af7766fffea512721.7" />
+         <erpfield s3Name="1:elfle" />
+        </cell>
+        <cell gridX="2" gridY="1">
+         <erpfield s3Name="1:elle" />
+        </cell>
+       </layout.grid>
+      </cell>
+      <cell gridX="0" gridY="4" sizeX="5">
+       <groupline msgId="284c7cd455529a0fe75c7c29b5531b60" />
+      </cell>
+      <cell alignX="fill" alignY="fill" gridX="0" gridY="5" sizeX="5">
+       <layout.grid>
+        <cell gridX="0" gridY="0">
+         <label msgId="a7091a8cd0fd280fe678be5f6694c948" />
+        </cell>
+        <cell gridX="1" gridY="0">
+         <erpfield s3Name="1:mzrsek" />
+         <label msgId="8928a9e1d6a1d235d77567649336a823" />
+         <erpfield s3Name="1:mzr" />
+        </cell>
+        <cell gridX="0" gridY="1">
+         <label msgId="99ad41f1843ac3f45d1f95fbfe43f719" />
+        </cell>
+        <cell gridX="1" gridY="1">
+         <erpfield s3Name="1:mzesek" />
+         <label msgId="8928a9e1d6a1d235d77567649336a823.1" />
+         <erpfield s3Name="1:mze" />
+        </cell>
+       </layout.grid>
+      </cell>
+      <cell gridX="0" gridY="6" sizeX="5">
+       <groupline />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="a59be598-825d-497e-aded-e95cb593252e">
+     <layout.grid>
+      <cell gridX="0" gridY="0">
+       <label msgId="e692d9bf-a1c4-4373-a669-122b3d8e9731" />
+      </cell>
+      <cell gridX="1" gridY="0">
+       <erpfield s3Name="1:filter" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <label msgId="9304320a-e761-4111-a199-7eedcc273ebc.1" />
+      </cell>
+      <cell gridX="1" gridY="1">
+       <erpfield s3Name="1:filtervgl" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <label msgId="bc4a2ccb-9d3d-45c0-9896-d9f0d99c9a47.1" />
+      </cell>
+      <cell gridX="1" gridY="2">
+       <erpfield s3Name="1:filtervgl2" />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+    <pane.notebook msgId="cd13fa68e942df71505c22947e1bb215.1" scope="CONF_SERABWICK">
+     <layout.grid>
+      <metainfo axis="row" grid="2" indent="large" />
+      <cell gridX="0" gridY="0">
+       <erpfield msgId="105a8b52d77d9c44977d1e044ec6af17.1" s3Name="1:tersatzt" />
+      </cell>
+      <cell gridX="0" gridY="1">
+       <erpfield msgId="c6dfcb76df568bb38c9042a5d90d1789.1" s3Name="1:tverschlt" />
+      </cell>
+      <cell gridX="0" gridY="2">
+       <erpfield msgId="bbd31a6d7c33a7ce241177c7867dfd88.1" s3Name="1:tnwpflicht" />
+      </cell>
+      <cell gridX="0" gridY="3">
+       <erpfield msgId="9c3ac95442dfcca0cc197e9273e32ba2.1" s3Name="1:tserarchiv" />
+      </cell>
+      <cell gridX="0" gridY="4">
+       <groupline />
+      </cell>
+     </layout.grid>
+    </pane.notebook>
+   </layout.notebook>
+  </cell>
+ </layout.grid>
+</frame>
+
